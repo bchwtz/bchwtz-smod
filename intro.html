@@ -135,7 +135,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#a-collapsible-section-with-markdown"><i class="fa fa-check"></i><b>2.1</b> A collapsible section with markdown</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#heading"><i class="fa fa-check"></i><b>2.2</b> Heading</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>3</b> Literature</a></li>
 <li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
 <li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a><ul>
@@ -336,7 +339,25 @@ Figure 2.1: Here is a nice figure!
 </tbody>
 </table>
 <p>You can write citations, too. For example, we are using the <strong>bookdown</strong> package <span class="citation">(Xie <a href="#ref-R-bookdown" role="doc-biblioref">2020</a>)</span> in this sample book, which was built on top of R Markdown and <strong>knitr</strong> <span class="citation">(Xie <a href="#ref-xie2015" role="doc-biblioref">2015</a>)</span>.</p>
+<p>OH wowo</p>
+<div id="a-collapsible-section-with-markdown" class="section level2">
+<h2><span class="header-section-number">2.1</span> A collapsible section with markdown</h2>
+<details>
+<p><summary>Click to expand!</summary></p>
+</div>
+<div id="heading" class="section level2">
+<h2><span class="header-section-number">2.2</span> Heading</h2>
+<ol style="list-style-type: decimal">
+<li>A numbered</li>
+<li>list
+<ul>
+<li>With some</li>
+<li>Sub bullets</li>
+</ul></li>
+</ol>
+</details>
 
+</div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">

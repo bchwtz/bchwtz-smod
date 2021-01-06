@@ -2,6 +2,8 @@ fig:nice-fig
 tab:nice-tab
 prerequisites
 intro
+a-collapsible-section-with-markdown
+heading
 literature
 methods
 applications
