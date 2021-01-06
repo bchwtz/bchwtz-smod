@@ -46,3 +46,20 @@ OH wowo
      * With some
      * Sub bullets
 </details>
+
+## A collapsible code section with markdown
+<details>
+  <summary>Click to expand!</summary>
+  
+```{r}
+rnorm(1)
+```
+  
+  
+  1. A numbered
+  2. list
+     * With some
+     * Sub bullets
+</details>
+
+Lorem ipsum dolor sit amet why are the references broken?
