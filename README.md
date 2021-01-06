@@ -8,5 +8,4 @@ You can find the preview of this example at https://bookdown.org/yihui/bookdown-
 Link to the Course: Statistical Modeling
 https://bchwtz.github.io/bchwtz-smod/
 
----
 
