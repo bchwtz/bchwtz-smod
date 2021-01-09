@@ -1,0 +1,40 @@
+# Factor Analysis
+
+## Foundations
+
+## Implementation
+
+## Basic Example
+
+```{r}
+ski <- data.frame(skiers = paste0("S", c(1:5)),
+                  cost = c(32, 61, 59, 36, 62),
+                  lift = c(64, 37, 40, 62, 46),
+                  depth = c(65, 62, 45, 34, 43),
+                  powder = c(67, 65, 43, 35, 40))
+```
+
+
+
+```{r}
+R <- cor(ski[ ,-1]) # Calculating correlation Matrix
+V <- eigen(R)$values # Calculating eigenvalues
+V
+```
+
+Manual Scree plot
+
+```{r}
+#Screeplot
+plot(V, type = "b", ylab = "Eigenvalue", xlab="Index", xaxt="n")
+axis(1, at=1:length(V))
+abline(h=1, lty = "dotted", col="red")
+```
+
+## Exemplary Analysis
+
+```{r}
+paste("File written on", Sys.time())
+```
+
+factana
