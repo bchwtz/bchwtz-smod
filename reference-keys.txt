@@ -1,6 +1,7 @@
 prerequisites
 factor-analysis
 foundations
+estimation
 principal-component-method
 principal-factor-solution
 maximum-likelihood-estimation
