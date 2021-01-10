@@ -32,6 +32,7 @@ $$
 \underset{\;\\Communality}{\boldsymbol L \boldsymbol L^T} + 
 \underset{\;\\Uniqueness}{\boldsymbol \Psi}
 $$
+
 ## Estimation
 
 Work in Progress ...
