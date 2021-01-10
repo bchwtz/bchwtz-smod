@@ -52,7 +52,7 @@ Work in Progress ...
 
 In R there are multiple implementations of factor analysis available. Each model variant and each implementation comes with its own strengths and drawbacks. A good starting point is the `factanal()` function that comes with the preinstalled `stats` package. However, more elaborate and flexible approaches are available for download (e.g. in the `psych` package). In this part we are focusing on the the factor analysis procedure that is implemented in the `factanal()` function, which performs  maximum-likelihood factor analysis on a covariance, correlation or data matrix. For using `factanal()` four arguments are essential `x` to input the data, `factors` to specify the number of factors that should be used, `scores` to specify the method used to calculate the factor scores and `rotation` to specify the method for orthogonal or oblique rotation.
 
-```{r}
+```{r, eval=FALSE}
 factanal(x,        # Data
          factors,  # Number of factors
          scores,   # Method to calculate factor scores
@@ -82,6 +82,8 @@ kable_paper(kbl(items), "hover", full_width = F)
 ```
 
 </details>
+
+
 
 ### Selecting numbers of Factors
 
