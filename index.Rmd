@@ -25,6 +25,7 @@ knitr::write_bib(c(
 
 ```{r, include=FALSE}
 # Load Packages
-library(c("knitr","kableExtra"))
+library("knitr")
+library("kableExtra")
 ```
 
