@@ -51,6 +51,10 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 
 
 <style type="text/css">
@@ -136,14 +140,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
 <li class="chapter" data-level="2" data-path="factor-analysis.html"><a href="factor-analysis.html"><i class="fa fa-check"></i><b>2</b> Factor Analysis</a><ul>
-<li class="chapter" data-level="2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#foundations"><i class="fa fa-check"></i><b>2.1</b> Foundations</a></li>
-<li class="chapter" data-level="2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#basic-example"><i class="fa fa-check"></i><b>2.2</b> Basic Example</a></li>
+<li class="chapter" data-level="2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#foundations"><i class="fa fa-check"></i><b>2.1</b> Foundations</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-component-method"><i class="fa fa-check"></i><b>2.1.1</b> Principal Component Method</a></li>
+<li class="chapter" data-level="2.1.2" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-factor-solution"><i class="fa fa-check"></i><b>2.1.2</b> Principal Factor Solution</a></li>
+<li class="chapter" data-level="2.1.3" data-path="factor-analysis.html"><a href="factor-analysis.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>2.1.3</b> Maximum Likelihood Estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#rotation"><i class="fa fa-check"></i><b>2.2</b> Rotation</a></li>
 <li class="chapter" data-level="2.3" data-path="factor-analysis.html"><a href="factor-analysis.html#basic-factor-analysis-in-r"><i class="fa fa-check"></i><b>2.3</b> Basic Factor Analysis in R</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="factor-analysis.html"><a href="factor-analysis.html#data-description"><i class="fa fa-check"></i><b>2.3.1</b> Data Description</a></li>
-<li class="chapter" data-level="2.3.2" data-path="factor-analysis.html"><a href="factor-analysis.html#the-factanal-function"><i class="fa fa-check"></i><b>2.3.2</b> The <code>factanal()</code> Function</a></li>
-<li class="chapter" data-level="2.3.3" data-path="factor-analysis.html"><a href="factor-analysis.html#selecting-numbers-of-factors"><i class="fa fa-check"></i><b>2.3.3</b> Selecting numbers of Factors</a></li>
-<li class="chapter" data-level="2.3.4" data-path="factor-analysis.html"><a href="factor-analysis.html#applying-factor-analysis"><i class="fa fa-check"></i><b>2.3.4</b> Applying Factor Analysis</a></li>
-<li class="chapter" data-level="2.3.5" data-path="factor-analysis.html"><a href="factor-analysis.html#interpreting-the-factors"><i class="fa fa-check"></i><b>2.3.5</b> Interpreting the Factors</a></li>
+<li class="chapter" data-level="2.3.2" data-path="factor-analysis.html"><a href="factor-analysis.html#selecting-numbers-of-factors"><i class="fa fa-check"></i><b>2.3.2</b> Selecting numbers of Factors</a></li>
+<li class="chapter" data-level="2.3.3" data-path="factor-analysis.html"><a href="factor-analysis.html#applying-factor-analysis"><i class="fa fa-check"></i><b>2.3.3</b> Applying Factor Analysis</a></li>
+<li class="chapter" data-level="2.3.4" data-path="factor-analysis.html"><a href="factor-analysis.html#interpreting-the-factors"><i class="fa fa-check"></i><b>2.3.4</b> Interpreting the Factors</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#exercises"><i class="fa fa-check"></i>Exercises</a></li>
 </ul></li>
@@ -171,7 +178,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="system-info" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> System Info</h1>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="system-info.html#cb12-1"></a><span class="kw">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="system-info.html#cb10-1"></a><span class="kw">sessionInfo</span>()</span></code></pre></div>
 <pre><code>## R version 4.0.3 (2020-10-10)
 ## Platform: x86_64-apple-darwin17.0 (64-bit)
 ## Running under: macOS Catalina 10.15.7

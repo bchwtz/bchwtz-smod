@@ -1,10 +1,12 @@
 prerequisites
 factor-analysis
 foundations
-basic-example
+principal-component-method
+principal-factor-solution
+maximum-likelihood-estimation
+rotation
 basic-factor-analysis-in-r
 data-description
-the-factanal-function
 selecting-numbers-of-factors
 applying-factor-analysis
 interpreting-the-factors
