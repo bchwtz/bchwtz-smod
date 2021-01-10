@@ -1,8 +1,8 @@
 # Factor Analysis
 
-Statistically speaking the main goal of factor analysis is to describe the covariance structure among many variables in terms of a few underlying, but unobservable random quantities, called factors. This usually happens by assuming that the supposed variables can be organized into (contextually meaningful) groups. The variables in a given group are assumed to be highly correlated and thus represent or are related to a latent construct. While the correlation within a group of variables is high, the correlation between different groups is expected to be low. Following that argumentation it should be possible to condense the information from multiple observed variables within a group into a single unobserved factor variable. While Explanatory Factor Analysis (EFA) aims at finding the mentioned groups Confirmatory Factor Analysis (CFA) aims at confirming an *a priori* hypothesized variable grouping constellation.
+Statistically speaking the main goal of factor analysis is to describe the covariance structure among many variables in terms of a few underlying, but unobservable random quantities, called factors. This usually happens by assuming that the supposed variables can be organized into (contextually meaningful) groups. The variables in a given group are assumed to be highly correlated and thus represent or are related to a latent construct. While the correlation within a group of variables is high, the correlation between different groups should be low. Following that argumentation it may be possible to condense the information from multiple observed variables within a group into a single unobserved factor variable. While Explanatory Factor Analysis (EFA) aims at finding the mentioned groups Confirmatory Factor Analysis (CFA) aims at confirming an *a priori* hypothesized variable grouping constellation.
 
-While EFA and CFA serve different purposes when doing research, their foundation meaning the model formulation, the estimation and the derivation of quantities of interest follows the same scheme, which will be presented below.
+While EFA and CFA serve different purposes when doing research, their foundation, especially the model formulation, the estimation and the derivation of quantities of interest is highly comparable and  will be presented below. 
 
 ## Foundations
 
@@ -13,6 +13,13 @@ X_2 - \mu_2 = l_{21} F_1 + l_{22} F_2 + \ldots + l_{2m} F_m + \epsilon_2 \\
 X_p - \mu_p = l_{p1} F_1 + l_{p2} F_2 + \ldots + l_{pm} F_m + \epsilon_p
 $$
 Although the equations above seem to be related to multiple regression equations the fact that all quantities on the right hand side are unobseved (in fact only $X$ is observed) distinguishes this factor model from regression problems. The factor analysis model can also be written in matrix notation, which allows for easier derivation of some of the following procedures and thus should be considered valuable as well.
+
+$$
+\underset{p \times 1}{\boldsymbol X}  = 
+\underset{p \times 1}{\boldsymbol \mu} +
+\underset{p \times m}{\boldsymbol L} \; \underset{m \times p}{\boldsymbol F} +
+\underset{p \times 1}{\boldsymbol \epsilon}
+$$
 
 $$
 \underset{p \times 1}{\boldsymbol X - \boldsymbol \mu}  = 
@@ -27,39 +34,32 @@ $$
 $$
 ## Estimation
 
-## Basic Example
+Work in Progress ...
 
-```{r}
-ski <- data.frame(skiers = paste0("S", c(1:5)),
-                  cost = c(32, 61, 59, 36, 62),
-                  lift = c(64, 37, 40, 62, 46),
-                  depth = c(65, 62, 45, 34, 43),
-                  powder = c(67, 65, 43, 35, 40))
-```
+### Principal Component Method
+
+### Principal Factor Solution
+
+### Maximum Likelihood Estimation
 
 
+## Rotation
 
-```{r}
-R <- cor(ski[ ,-1]) # Calculating correlation Matrix
-V <- eigen(R)$values # Calculating eigenvalues
-V
-```
-
-Remember that the Eigenvalue-Decomposition 
-
-$$ R = V L V^T$$
-Reconstructing the correlation Matrix with given Eigenvalues and eigenvectors
-```{r}
-eigen(R)$vectors %*% diag(eigen(R)$values) %*% t(eigen(R)$vectors)
-```
-
-Manual Scree plot
-
-
-
+Work in Progress ...
 
 
 ## Basic Factor Analysis in R
+
+In R there are multiple implementations of factor analysis available. Each model variant and each implementation comes with its own strengths and drawbacks. A good starting point is the `factanal()` function that comes with the preinstalled `stats` package. However, more elaborate and flexible approaches are available for download (e.g. in the `psych` package). In this part we are focusing on the the factor analysis procedure that is implemented in the `factanal()` function, which performs  maximum-likelihood factor analysis on a covariance, correlation or data matrix. For using `factanal()` four arguments are essential `x` to input the data, `factors` to specify the number of factors that should be used, `scores` to specify the method used to calculate the factor scores and `rotation` to specify the method for orthogonal or oblique rotation.
+
+```{r}
+factanal(x,        # Data
+         factors,  # Number of factors
+         scores,   # Method to calculate factor scores
+         rotation) # Method for rotation
+```
+
+While `x` and `factors` must be specified by the user the arguments `scores` and `rotation` use default values. Factor scores could be calculated either using Thompsons method (`scores = "regression"`), based on Bartlett's weighted least-squares approach (`scores = "Bartlett"`) or not calculated at all (defaul: `scores = "none"`). Applying factor rotation can either be done using the default Varimax option (`rotation = "varimax"`) for orthogonal transformation or using `rotation = "Bartlett"` for an oblique transformation. Alternatively results can be obtained without applying a transformation using `rotation = "none"`.
 
 ### Data Description
 
@@ -69,8 +69,19 @@ d <- na.omit(d)
 questionnaire <- d[,26:35]
 ```
 
-### The `factanal()` Function
 
+
+
+<details>
+  <summary>50 Items - Click to expand!</summary>
+  
+```{r}
+load("data/big5questions.rda")
+items <- q
+kable_paper(kbl(items), "hover", full_width = F)
+```
+
+</details>
 
 ### Selecting numbers of Factors
 
@@ -146,3 +157,11 @@ abline(h = 0, v = 0, col="darkgrey")
 
 
 ## Exercises {-}
+
+```{r}
+ski <- data.frame(skiers = paste0("S", c(1:5)),
+                  cost = c(32, 61, 59, 36, 62),
+                  lift = c(64, 37, 40, 62, 46),
+                  depth = c(65, 62, 45, 34, 43),
+                  powder = c(67, 65, 43, 35, 40))
+```
