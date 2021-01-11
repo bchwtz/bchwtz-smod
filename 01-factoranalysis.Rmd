@@ -76,14 +76,19 @@ The variable `q` contains the questions from the questionnaire (50 items) while 
 ```{r}
 head(q, n=6) # Show first 6 rows from the dataframe
 ```
-The object `q` contains three variables (columns), the question ID `Q`, an indication if the question is positively (`coding == "P"`) or negatively (`coding == "N"`)  formulated and the actaul formulation of the item `question`. The responses are located in the object `d`.
+The object `q` contains three variables (columns), the question ID `Q`, an indication if the question is positively (`coding == "P"`) or negatively (`coding == "N"`)  formulated and the actual formulation of the item `question`. The responses are saved in object `d`.
 
 ```{r}
-head(d)
-dim(d)
+head(d, n=6)
+dim(d)         # Dimensions of the data matrix
 ```
 
-In total we have `r nrow(d)` observations and `r ncol(d)` 
+In total we have `r nrow(d)` observations and `r ncol(d)` variables in the dataframe. The first 50 columns represent the responses to the items introduced above. The remaining three variables (`r tail(colnames(d),3)`) provide metadata and some technical information, which can be used to perform plausibility checks and cleanup the data.
+
+- `IPC`: Is an abbreviation for IP (Internet Protocol Adress) Count and lists the number of records from the user's IP address in the dataset. For max cleanliness is is recommended to only use records where this value is 1. It should, however, be noted that high values can have multiple causes and do no necessarily represent abusive usage of the survey service. They can be because of shared networks (e.g. entire universities) or multiple submissions.
+- `testelapse`: Is the time in seconds spent on the page with the survey questions.
+- `country`: Indicates the country of the responded, but is determined by technical information and was *not asked as a question*.
+
 
 
 <details>
@@ -96,10 +101,13 @@ rnorm(5)
 
 </details>
 
+```{r}
+d_cleaned <- na.omit(d) # Remove rows with missing values.
+```
 
 
 ```{r}
-d_small <- d[ ,1:6]
+d_small <- d_cleaned[ ,1:6]
 ```
 
 
