@@ -95,12 +95,17 @@ rnorm(5)
 
 
 
+```{r}
+d_small <- d[ ,c(1:3,12:15)]
+```
+
+
 ### Selecting numbers of Factors
 
 ```{r}
 # Calculate Correlation Matrix, Eigenvalues & Proportion of Variance
-R <- cor(questionnaire)
-eigval <- eigen(R)$values
+R <- cor(d_small)
+eigval <- eigen(d_small)$values
 proptotvar <- eigval / sum(eigval)
 ```
 
@@ -122,9 +127,9 @@ knitr::kable(df, digits=4, booktabs=T)
 ### Applying Factor Analysis
 
 ```{r}
-fa_none <- factanal(questionnaire , factors = 2, rotation = "none")
-fa_varimax <- factanal(questionnaire , factors = 2, rotation = "varimax")
-fa_promax <- factanal(questionnaire, factors = 2, rotation = "promax")
+fa_none <- factanal(d_small , factors = 2, rotation = "none")
+fa_varimax <- factanal(d_small , factors = 2, rotation = "varimax")
+fa_promax <- factanal(d_small, factors = 2, rotation = "promax")
 ```
 
 
@@ -149,7 +154,7 @@ plot(fa_varimax$loadings[,1],
 
 text(fa_varimax$loadings[,1]-0.08, 
      fa_varimax$loadings[,2]+0.08,
-     colnames(questionnaire),
+     colnames(d_small),
      col="blue")
 abline(h = 0, v = 0, col="darkgrey")
 
