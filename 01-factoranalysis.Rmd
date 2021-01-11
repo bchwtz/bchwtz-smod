@@ -83,6 +83,9 @@ head(d)
 dim(d)
 ```
 
+In total we have `r nrow(d)` observations and `r ncol(d)` 
+
+
 <details>
   <summary>50 Items - Click to expand!</summary>
   
@@ -96,7 +99,7 @@ rnorm(5)
 
 
 ```{r}
-d_small <- d[ ,c(1:3,12:15)]
+d_small <- d[ ,1:6]
 ```
 
 
