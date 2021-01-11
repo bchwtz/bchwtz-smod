@@ -62,24 +62,33 @@ factanal(x,        # Data
 
 While `x` and `factors` must be specified by the user the arguments `scores` and `rotation` use default values. Factor scores could be calculated either using Thompsons method (`scores = "regression"`), based on Bartlett's weighted least-squares approach (`scores = "Bartlett"`) or not calculated at all (defaul: `scores = "none"`). Applying factor rotation can either be done using the default Varimax option (`rotation = "varimax"`) for orthogonal transformation or using `rotation = "Bartlett"` for an oblique transformation. Alternatively results can be obtained without applying a transformation using `rotation = "none"`.
 
-### Data Description
+### Data Preparation and Description
+
+Lets get our hands dirty and apply what we learned. The following code loads some data that results from a questionnaire with 50 questions.
 
 ```{r}
-d <- readRDS("data/big5_responses_DE.rds")
-d <- na.omit(d)
-questionnaire <- d[,26:35]
+q <- readRDS("data/fa_questions.rds")  # Questions asked
+d <- readRDS("data/fa_sample.rds")     # Response data
 ```
 
+The variable `q` contains the questions from the questionnaire (50 items) while `d` contains the actual responses. Respondents hat the option to answer each question using a 5-point Likert-Scale, that was labeled 1=Disagree, 3=Neutral, 5=Agree. However, the data is not pre-processed and needs to be thoroughly investigated and potentially cleaned up before it can be used for analytic procedures.
 
+```{r}
+head(q, n=6) # Show first 6 rows from the dataframe
+```
+The object `q` contains three variables (columns), the question ID `Q`, an indication if the question is positively (`coding == "P"`) or negatively (`coding == "N"`)  formulated and the actaul formulation of the item `question`. The responses are located in the object `d`.
 
+```{r}
+head(d)
+dim(d)
+```
 
 <details>
   <summary>50 Items - Click to expand!</summary>
   
 ```{r}
-load("data/big5questions.rda")
-items <- q
-kable_paper(kbl(items), "hover", full_width = F)
+rnorm(5)
+#kable_paper(kbl(items), "hover", full_width = F)
 ```
 
 </details>
