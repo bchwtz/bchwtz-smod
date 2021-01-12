@@ -1008,7 +1008,7 @@ I use difficult words.
 <span id="cb34-3"><a href="factor-analysis.html#cb34-3"></a>         scores,   <span class="co"># Method to calculate factor scores</span></span>
 <span id="cb34-4"><a href="factor-analysis.html#cb34-4"></a>         rotation) <span class="co"># Method for rotation</span></span></code></pre></div>
 <p>While <code>x</code> and <code>factors</code> must be specified by the user the arguments <code>scores</code> and <code>rotation</code> use default values. Factor scores could be calculated either using Thompsons method (<code>scores = "regression"</code>), based on Bartlett’s weighted least-squares approach (<code>scores = "Bartlett"</code>) or not calculated at all (defaul: <code>scores = "none"</code>). Applying factor rotation can either be done using the default Varimax option (<code>rotation = "varimax"</code>) for orthogonal transformation or using <code>rotation = "Bartlett"</code> for an oblique transformation. Alternatively results can be obtained without applying a transformation using <code>rotation = "none"</code>.</p>
-<p>Based on our prior investigation we are now applying factor analysis with 2 factors. To get started we do not apply any rotational techniques, but start interpreting the results we obtain from that simple algorithm. This allows us to discuss the impact and effect of applying rotational transformations to the loading matrix in a subsequent step. As method for calculating the factor scores we apply the regression method. The results are estimated using Maximum Likelihood.</p>
+<p>Based on our prior investigation we are now applying factor analysis with 2 factors. To get started we do not apply any rotational techniques, but start interpreting the results we obtain from that simple algorithm. This allows us to discuss the impact and effect of applying rotational transformations to the loading matrix in a subsequent step. As method for calculating the factor scores we apply the regression method. The results are estimated using Maximum Likelihood and stored in <code>fa_none</code>.</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="factor-analysis.html#cb35-1"></a>fa_none &lt;-<span class="st"> </span><span class="kw">factanal</span>(d_small , </span>
 <span id="cb35-2"><a href="factor-analysis.html#cb35-2"></a>                    <span class="dt">factors =</span> <span class="dv">2</span>,</span>
 <span id="cb35-3"><a href="factor-analysis.html#cb35-3"></a>                    <span class="dt">scores =</span> <span class="st">&quot;regression&quot;</span>,</span>
@@ -1039,27 +1039,52 @@ I use difficult words.
 ## Test of the hypothesis that 2 factors are sufficient.
 ## The chi square statistic is 22.04 on 4 degrees of freedom.
 ## The p-value is 0.000197</code></pre>
-<p>The results for our initial factor analysis are stored in <code>fa_none</code>. The output above shows the following information:</p>
 <ul>
-<li><p><em>Call:</em></p></li>
-<li><p><em>Uniqueness:</em></p></li>
-<li><p><em>Loadings:</em></p></li>
-<li><p><em>Explained Variance:</em></p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="factor-analysis.html#cb37-1"></a><span class="co"># Calculating Sum of Squares (SS) loadings</span></span>
-<span id="cb37-2"><a href="factor-analysis.html#cb37-2"></a><span class="kw">round</span>(<span class="kw">apply</span>(fa_none<span class="op">$</span>loadings<span class="op">^</span><span class="dv">2</span>,<span class="dv">2</span>,sum), <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
-<pre><code>## Factor1 Factor2 
-##  1.5509  0.6788</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="factor-analysis.html#cb39-1"></a><span class="co"># Calculating Sum of Squares (SS) loadings by eigenvalue decomposition of squared loading matrix.</span></span>
-<span id="cb39-2"><a href="factor-analysis.html#cb39-2"></a>L &lt;-<span class="st"> </span>fa_none<span class="op">$</span>loadings</span>
-<span id="cb39-3"><a href="factor-analysis.html#cb39-3"></a><span class="kw">round</span>(<span class="kw">eigen</span>( L <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(L))<span class="op">$</span>values, <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
-<pre><code>## [1] 1.5530 0.6768 0.0000 0.0000 0.0000 0.0000</code></pre></li>
-<li><p><em>Likelihood Ratio Test:</em></p></li>
+<li><p><strong>Call:</strong> The model output starts with the call that we used to apply the <code>factanal()</code> function.</p></li>
+<li><p><strong>Uniqueness:</strong> The first numerical values in the output represent the estimates for the uniqueness <span class="math inline">\(\hat\Psi\)</span>, which range from 0 to 1. The uniqueness can be interpreted as the proportion of variance of the variables that cannot be explained by a linear combination of the factors. Therefore a high value of the uniqueness indicates, that the factors do not account well for the variability of the respective variable.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="factor-analysis.html#cb37-1"></a>fa_none<span class="op">$</span>uniquenesses</span></code></pre></div>
+<pre><code>##       Q01       Q04       Q11       Q17       Q28       Q33 
+## 0.5132742 0.4828866 0.7739827 0.9398312 0.5255999 0.5347008</code></pre></li>
+<li><p><strong>Loadings:</strong> The next section represents the factor loading estimates <span class="math inline">\(\hat{L}\)</span>, which lie between -1 and 1. These loadings can be interpreted as the contribution of each variable from the dataset to the specific factor (below per column). While the output above suppresses values, which are smaller than 0.1 for easier visual group allocation, the full matrix can be easily extractes as shown below.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="factor-analysis.html#cb39-1"></a><span class="co"># Loadings</span></span>
+<span id="cb39-2"><a href="factor-analysis.html#cb39-2"></a>loadings &lt;-<span class="kw">unclass</span>(fa_none<span class="op">$</span>loadings)</span>
+<span id="cb39-3"><a href="factor-analysis.html#cb39-3"></a>loadings</span></code></pre></div>
+<pre><code>##          Factor1     Factor2
+## Q01  0.682308422 -0.14554047
+## Q04  0.704855799 -0.14244505
+## Q11  0.242092933  0.40915548
+## Q17 -0.003552154  0.24526805
+## Q28  0.255876655  0.63947448
+## Q33  0.681511127 -0.02900794</code></pre>
+<p>Squaring the loadings and summing them up (by column) yields the fraction of total variance explained by factor, which is usally referred to as communality <span class="math inline">\(\hat L \hat L^T\)</span>. *A good factor model yields in high values for the communality and low values for the uniqueness.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="factor-analysis.html#cb41-1"></a><span class="co"># Communalities</span></span>
+<span id="cb41-2"><a href="factor-analysis.html#cb41-2"></a>communalities &lt;-<span class="st"> </span><span class="kw">apply</span>(fa_none<span class="op">$</span>loadings<span class="op">^</span><span class="dv">2</span>, <span class="dv">1</span>, sum)</span>
+<span id="cb41-3"><a href="factor-analysis.html#cb41-3"></a>communalities</span></code></pre></div>
+<pre><code>##        Q01        Q04        Q11        Q17        Q28        Q33 
+## 0.48672681 0.51711229 0.22601720 0.06016903 0.47440047 0.46529888</code></pre></li>
 </ul>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="factor-analysis.html#cb41-1"></a>L &lt;-<span class="st"> </span>fa_none<span class="op">$</span>loadings</span>
-<span id="cb41-2"><a href="factor-analysis.html#cb41-2"></a>Psi &lt;-<span class="st"> </span><span class="kw">diag</span>(fa_none<span class="op">$</span>uniquenesses)</span>
-<span id="cb41-3"><a href="factor-analysis.html#cb41-3"></a>R_hat &lt;-<span class="st"> </span>L <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(L) <span class="op">+</span><span class="st"> </span>Psi</span></code></pre></div>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="factor-analysis.html#cb42-1"></a><span class="co"># Residual Matrix</span></span>
-<span id="cb42-2"><a href="factor-analysis.html#cb42-2"></a><span class="kw">round</span>(R <span class="op">-</span><span class="st"> </span>R_hat, <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="factor-analysis.html#cb43-1"></a>  <span class="co"># Recalculating Uniqueness</span></span>
+<span id="cb43-2"><a href="factor-analysis.html#cb43-2"></a>  <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>communalities </span></code></pre></div>
+<pre><code>##       Q01       Q04       Q11       Q17       Q28       Q33 
+## 0.5132732 0.4828877 0.7739828 0.9398310 0.5255995 0.5347011</code></pre>
+<ul>
+<li><p><strong>Explained Variance:</strong></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="factor-analysis.html#cb45-1"></a><span class="co"># Calculating Sum of Squares (SS) loadings</span></span>
+<span id="cb45-2"><a href="factor-analysis.html#cb45-2"></a><span class="kw">round</span>(<span class="kw">apply</span>(fa_none<span class="op">$</span>loadings<span class="op">^</span><span class="dv">2</span>, <span class="dv">2</span>, sum), <span class="dt">digits=</span><span class="dv">4</span>)</span>
+<span id="cb45-3"><a href="factor-analysis.html#cb45-3"></a><span class="co">## Factor1 Factor2 </span></span>
+<span id="cb45-4"><a href="factor-analysis.html#cb45-4"></a><span class="co">##  1.5509  0.6788</span></span>
+<span id="cb45-5"><a href="factor-analysis.html#cb45-5"></a></span>
+<span id="cb45-6"><a href="factor-analysis.html#cb45-6"></a><span class="co"># Calculating Sum of Squares (SS) loadings by eigenvalue decomposition of squared loading matrix.</span></span>
+<span id="cb45-7"><a href="factor-analysis.html#cb45-7"></a>L_hat &lt;-<span class="st"> </span>fa_none<span class="op">$</span>loadings</span>
+<span id="cb45-8"><a href="factor-analysis.html#cb45-8"></a><span class="kw">round</span>(<span class="kw">eigen</span>( L_hat <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(L_hat))<span class="op">$</span>values, <span class="dt">digits=</span><span class="dv">4</span>)</span>
+<span id="cb45-9"><a href="factor-analysis.html#cb45-9"></a><span class="co">## [1] 1.5530 0.6768 0.0000 0.0000 0.0000 0.0000</span></span></code></pre></div></li>
+<li><p><strong>Likelihood Ratio Test:</strong></p></li>
+</ul>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="factor-analysis.html#cb46-1"></a>L_hat &lt;-<span class="st"> </span>fa_none<span class="op">$</span>loadings</span>
+<span id="cb46-2"><a href="factor-analysis.html#cb46-2"></a>Psi_hat &lt;-<span class="st"> </span><span class="kw">diag</span>(fa_none<span class="op">$</span>uniquenesses)</span>
+<span id="cb46-3"><a href="factor-analysis.html#cb46-3"></a>R_hat &lt;-<span class="st"> </span>L_hat <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(L_hat) <span class="op">+</span><span class="st"> </span>Psi_hat</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="factor-analysis.html#cb47-1"></a><span class="co"># Residual Matrix</span></span>
+<span id="cb47-2"><a href="factor-analysis.html#cb47-2"></a><span class="kw">round</span>(R <span class="op">-</span><span class="st"> </span>R_hat, <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##         Q01     Q04     Q11     Q17     Q28     Q33
 ## Q01  0.0000  0.0008  0.0123 -0.0011 -0.0050 -0.0020
 ## Q04  0.0008  0.0000 -0.0189  0.0044  0.0075  0.0010
@@ -1067,51 +1092,52 @@ I use difficult words.
 ## Q17 -0.0011  0.0044 -0.0050  0.0000  0.0028 -0.0037
 ## Q28 -0.0050  0.0075 -0.0002  0.0028  0.0000 -0.0033
 ## Q33 -0.0020  0.0010  0.0088 -0.0037 -0.0033  0.0000</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="factor-analysis.html#cb44-1"></a>fa_varimax &lt;-<span class="st"> </span><span class="kw">factanal</span>(d_small , <span class="dt">factors =</span> <span class="dv">2</span>, <span class="dt">rotation =</span> <span class="st">&quot;varimax&quot;</span>)</span>
-<span id="cb44-2"><a href="factor-analysis.html#cb44-2"></a>fa_promax &lt;-<span class="st"> </span><span class="kw">factanal</span>(d_small, <span class="dt">factors =</span> <span class="dv">2</span>, <span class="dt">rotation =</span> <span class="st">&quot;promax&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="factor-analysis.html#cb45-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
-<span id="cb45-2"><a href="factor-analysis.html#cb45-2"></a><span class="co"># par(mfrow = c(1,3), pty=&quot;s&quot;) # Force plots to be quadratic</span></span>
-<span id="cb45-3"><a href="factor-analysis.html#cb45-3"></a></span>
-<span id="cb45-4"><a href="factor-analysis.html#cb45-4"></a><span class="kw">plot</span>(fa_none<span class="op">$</span>loadings[,<span class="dv">1</span>], </span>
-<span id="cb45-5"><a href="factor-analysis.html#cb45-5"></a>     fa_none<span class="op">$</span>loadings[,<span class="dv">2</span>],</span>
-<span id="cb45-6"><a href="factor-analysis.html#cb45-6"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
-<span id="cb45-7"><a href="factor-analysis.html#cb45-7"></a>     <span class="dt">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>, </span>
-<span id="cb45-8"><a href="factor-analysis.html#cb45-8"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb45-9"><a href="factor-analysis.html#cb45-9"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb45-10"><a href="factor-analysis.html#cb45-10"></a>     <span class="dt">main =</span> <span class="st">&quot;No rotation&quot;</span>)</span>
-<span id="cb45-11"><a href="factor-analysis.html#cb45-11"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">v =</span> <span class="dv">0</span>, <span class="dt">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
-<span id="cb45-12"><a href="factor-analysis.html#cb45-12"></a></span>
-<span id="cb45-13"><a href="factor-analysis.html#cb45-13"></a><span class="kw">plot</span>(fa_varimax<span class="op">$</span>loadings[,<span class="dv">1</span>], </span>
-<span id="cb45-14"><a href="factor-analysis.html#cb45-14"></a>     fa_varimax<span class="op">$</span>loadings[,<span class="dv">2</span>],</span>
-<span id="cb45-15"><a href="factor-analysis.html#cb45-15"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
-<span id="cb45-16"><a href="factor-analysis.html#cb45-16"></a>     <span class="dt">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>, </span>
-<span id="cb45-17"><a href="factor-analysis.html#cb45-17"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb45-18"><a href="factor-analysis.html#cb45-18"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb45-19"><a href="factor-analysis.html#cb45-19"></a>     <span class="dt">main =</span> <span class="st">&quot;Varimax rotation&quot;</span>)</span>
-<span id="cb45-20"><a href="factor-analysis.html#cb45-20"></a></span>
-<span id="cb45-21"><a href="factor-analysis.html#cb45-21"></a><span class="kw">text</span>(fa_varimax<span class="op">$</span>loadings[,<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.08</span>, </span>
-<span id="cb45-22"><a href="factor-analysis.html#cb45-22"></a>     fa_varimax<span class="op">$</span>loadings[,<span class="dv">2</span>]<span class="op">+</span><span class="fl">0.08</span>,</span>
-<span id="cb45-23"><a href="factor-analysis.html#cb45-23"></a>     <span class="kw">colnames</span>(d_small),</span>
-<span id="cb45-24"><a href="factor-analysis.html#cb45-24"></a>     <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</span>
-<span id="cb45-25"><a href="factor-analysis.html#cb45-25"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">v =</span> <span class="dv">0</span>, <span class="dt">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
-<span id="cb45-26"><a href="factor-analysis.html#cb45-26"></a></span>
-<span id="cb45-27"><a href="factor-analysis.html#cb45-27"></a>rotmat &lt;-<span class="st"> </span>fa_varimax<span class="op">$</span>rotmat</span>
-<span id="cb45-28"><a href="factor-analysis.html#cb45-28"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">1</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
-<span id="cb45-29"><a href="factor-analysis.html#cb45-29"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">2</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">2</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
-<span id="cb45-30"><a href="factor-analysis.html#cb45-30"></a></span>
-<span id="cb45-31"><a href="factor-analysis.html#cb45-31"></a><span class="kw">plot</span>(fa_promax<span class="op">$</span>loadings[,<span class="dv">1</span>], </span>
-<span id="cb45-32"><a href="factor-analysis.html#cb45-32"></a>     fa_promax<span class="op">$</span>loadings[,<span class="dv">2</span>],</span>
-<span id="cb45-33"><a href="factor-analysis.html#cb45-33"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
-<span id="cb45-34"><a href="factor-analysis.html#cb45-34"></a>     <span class="dt">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>,</span>
-<span id="cb45-35"><a href="factor-analysis.html#cb45-35"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb45-36"><a href="factor-analysis.html#cb45-36"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb45-37"><a href="factor-analysis.html#cb45-37"></a>     <span class="dt">main =</span> <span class="st">&quot;Promax rotation&quot;</span>)</span>
-<span id="cb45-38"><a href="factor-analysis.html#cb45-38"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">v =</span> <span class="dv">0</span>, <span class="dt">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
-<span id="cb45-39"><a href="factor-analysis.html#cb45-39"></a></span>
-<span id="cb45-40"><a href="factor-analysis.html#cb45-40"></a>rotmat &lt;-<span class="st"> </span>fa_promax<span class="op">$</span>rotmat</span>
-<span id="cb45-41"><a href="factor-analysis.html#cb45-41"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">1</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
-<span id="cb45-42"><a href="factor-analysis.html#cb45-42"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">2</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">2</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="bchwtz-smod_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>Lets estimate two additional factor analyses to illustrate the effect of apply rotational transformations.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="factor-analysis.html#cb49-1"></a>fa_varimax &lt;-<span class="st"> </span><span class="kw">factanal</span>(d_small , <span class="dt">factors =</span> <span class="dv">2</span>, <span class="dt">rotation =</span> <span class="st">&quot;varimax&quot;</span>)</span>
+<span id="cb49-2"><a href="factor-analysis.html#cb49-2"></a>fa_promax &lt;-<span class="st"> </span><span class="kw">factanal</span>(d_small, <span class="dt">factors =</span> <span class="dv">2</span>, <span class="dt">rotation =</span> <span class="st">&quot;promax&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="factor-analysis.html#cb50-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb50-2"><a href="factor-analysis.html#cb50-2"></a><span class="co"># par(mfrow = c(1,3), pty=&quot;s&quot;) # Force plots to be quadratic</span></span>
+<span id="cb50-3"><a href="factor-analysis.html#cb50-3"></a></span>
+<span id="cb50-4"><a href="factor-analysis.html#cb50-4"></a><span class="kw">plot</span>(fa_none<span class="op">$</span>loadings[,<span class="dv">1</span>], </span>
+<span id="cb50-5"><a href="factor-analysis.html#cb50-5"></a>     fa_none<span class="op">$</span>loadings[,<span class="dv">2</span>],</span>
+<span id="cb50-6"><a href="factor-analysis.html#cb50-6"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
+<span id="cb50-7"><a href="factor-analysis.html#cb50-7"></a>     <span class="dt">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>, </span>
+<span id="cb50-8"><a href="factor-analysis.html#cb50-8"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-9"><a href="factor-analysis.html#cb50-9"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-10"><a href="factor-analysis.html#cb50-10"></a>     <span class="dt">main =</span> <span class="st">&quot;No rotation&quot;</span>)</span>
+<span id="cb50-11"><a href="factor-analysis.html#cb50-11"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">v =</span> <span class="dv">0</span>, <span class="dt">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
+<span id="cb50-12"><a href="factor-analysis.html#cb50-12"></a></span>
+<span id="cb50-13"><a href="factor-analysis.html#cb50-13"></a><span class="kw">plot</span>(fa_varimax<span class="op">$</span>loadings[,<span class="dv">1</span>], </span>
+<span id="cb50-14"><a href="factor-analysis.html#cb50-14"></a>     fa_varimax<span class="op">$</span>loadings[,<span class="dv">2</span>],</span>
+<span id="cb50-15"><a href="factor-analysis.html#cb50-15"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
+<span id="cb50-16"><a href="factor-analysis.html#cb50-16"></a>     <span class="dt">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>, </span>
+<span id="cb50-17"><a href="factor-analysis.html#cb50-17"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-18"><a href="factor-analysis.html#cb50-18"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-19"><a href="factor-analysis.html#cb50-19"></a>     <span class="dt">main =</span> <span class="st">&quot;Varimax rotation&quot;</span>)</span>
+<span id="cb50-20"><a href="factor-analysis.html#cb50-20"></a></span>
+<span id="cb50-21"><a href="factor-analysis.html#cb50-21"></a><span class="kw">text</span>(fa_varimax<span class="op">$</span>loadings[,<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.08</span>, </span>
+<span id="cb50-22"><a href="factor-analysis.html#cb50-22"></a>     fa_varimax<span class="op">$</span>loadings[,<span class="dv">2</span>]<span class="op">+</span><span class="fl">0.08</span>,</span>
+<span id="cb50-23"><a href="factor-analysis.html#cb50-23"></a>     <span class="kw">colnames</span>(d_small),</span>
+<span id="cb50-24"><a href="factor-analysis.html#cb50-24"></a>     <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb50-25"><a href="factor-analysis.html#cb50-25"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">v =</span> <span class="dv">0</span>, <span class="dt">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
+<span id="cb50-26"><a href="factor-analysis.html#cb50-26"></a></span>
+<span id="cb50-27"><a href="factor-analysis.html#cb50-27"></a>rotmat &lt;-<span class="st"> </span>fa_varimax<span class="op">$</span>rotmat</span>
+<span id="cb50-28"><a href="factor-analysis.html#cb50-28"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">1</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb50-29"><a href="factor-analysis.html#cb50-29"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">2</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">2</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb50-30"><a href="factor-analysis.html#cb50-30"></a></span>
+<span id="cb50-31"><a href="factor-analysis.html#cb50-31"></a><span class="kw">plot</span>(fa_promax<span class="op">$</span>loadings[,<span class="dv">1</span>], </span>
+<span id="cb50-32"><a href="factor-analysis.html#cb50-32"></a>     fa_promax<span class="op">$</span>loadings[,<span class="dv">2</span>],</span>
+<span id="cb50-33"><a href="factor-analysis.html#cb50-33"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
+<span id="cb50-34"><a href="factor-analysis.html#cb50-34"></a>     <span class="dt">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>,</span>
+<span id="cb50-35"><a href="factor-analysis.html#cb50-35"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-36"><a href="factor-analysis.html#cb50-36"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-37"><a href="factor-analysis.html#cb50-37"></a>     <span class="dt">main =</span> <span class="st">&quot;Promax rotation&quot;</span>)</span>
+<span id="cb50-38"><a href="factor-analysis.html#cb50-38"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">v =</span> <span class="dv">0</span>, <span class="dt">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
+<span id="cb50-39"><a href="factor-analysis.html#cb50-39"></a></span>
+<span id="cb50-40"><a href="factor-analysis.html#cb50-40"></a>rotmat &lt;-<span class="st"> </span>fa_promax<span class="op">$</span>rotmat</span>
+<span id="cb50-41"><a href="factor-analysis.html#cb50-41"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">1</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb50-42"><a href="factor-analysis.html#cb50-42"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">2</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">2</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="bchwtz-smod_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 </div>
 <div id="interpreting-the-factors" class="section level3">
 <h3><span class="header-section-number">2.4.4</span> Interpreting the Factors</h3>
@@ -1119,11 +1145,11 @@ I use difficult words.
 </div>
 <div id="exercises" class="section level2 unnumbered">
 <h2>Exercises</h2>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="factor-analysis.html#cb46-1"></a>ski &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">skiers =</span> <span class="kw">paste0</span>(<span class="st">&quot;S&quot;</span>, <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)),</span>
-<span id="cb46-2"><a href="factor-analysis.html#cb46-2"></a>                  <span class="dt">cost =</span> <span class="kw">c</span>(<span class="dv">32</span>, <span class="dv">61</span>, <span class="dv">59</span>, <span class="dv">36</span>, <span class="dv">62</span>),</span>
-<span id="cb46-3"><a href="factor-analysis.html#cb46-3"></a>                  <span class="dt">lift =</span> <span class="kw">c</span>(<span class="dv">64</span>, <span class="dv">37</span>, <span class="dv">40</span>, <span class="dv">62</span>, <span class="dv">46</span>),</span>
-<span id="cb46-4"><a href="factor-analysis.html#cb46-4"></a>                  <span class="dt">depth =</span> <span class="kw">c</span>(<span class="dv">65</span>, <span class="dv">62</span>, <span class="dv">45</span>, <span class="dv">34</span>, <span class="dv">43</span>),</span>
-<span id="cb46-5"><a href="factor-analysis.html#cb46-5"></a>                  <span class="dt">powder =</span> <span class="kw">c</span>(<span class="dv">67</span>, <span class="dv">65</span>, <span class="dv">43</span>, <span class="dv">35</span>, <span class="dv">40</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="factor-analysis.html#cb51-1"></a>ski &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">skiers =</span> <span class="kw">paste0</span>(<span class="st">&quot;S&quot;</span>, <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)),</span>
+<span id="cb51-2"><a href="factor-analysis.html#cb51-2"></a>                  <span class="dt">cost =</span> <span class="kw">c</span>(<span class="dv">32</span>, <span class="dv">61</span>, <span class="dv">59</span>, <span class="dv">36</span>, <span class="dv">62</span>),</span>
+<span id="cb51-3"><a href="factor-analysis.html#cb51-3"></a>                  <span class="dt">lift =</span> <span class="kw">c</span>(<span class="dv">64</span>, <span class="dv">37</span>, <span class="dv">40</span>, <span class="dv">62</span>, <span class="dv">46</span>),</span>
+<span id="cb51-4"><a href="factor-analysis.html#cb51-4"></a>                  <span class="dt">depth =</span> <span class="kw">c</span>(<span class="dv">65</span>, <span class="dv">62</span>, <span class="dv">45</span>, <span class="dv">34</span>, <span class="dv">43</span>),</span>
+<span id="cb51-5"><a href="factor-analysis.html#cb51-5"></a>                  <span class="dt">powder =</span> <span class="kw">c</span>(<span class="dv">67</span>, <span class="dv">65</span>, <span class="dv">43</span>, <span class="dv">35</span>, <span class="dv">40</span>))</span></code></pre></div>
 
 </div>
 </div>
