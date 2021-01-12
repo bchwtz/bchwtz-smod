@@ -232,7 +232,7 @@ factanal(x,        # Data
 
 While `x` and `factors` must be specified by the user the arguments `scores` and `rotation` use default values. Factor scores could be calculated either using Thompsons method (`scores = "regression"`), based on Bartlett's weighted least-squares approach (`scores = "Bartlett"`) or not calculated at all (defaul: `scores = "none"`). Applying factor rotation can either be done using the default Varimax option (`rotation = "varimax"`) for orthogonal transformation or using `rotation = "Bartlett"` for an oblique transformation. Alternatively results can be obtained without applying a transformation using `rotation = "none"`.
 
-Based on our prior investigation we are now applying factor analysis with 2 factors. To get started we do not apply any rotational techniques, but start interpreting the results we obtain from that simple algorithm. This allows us to discuss the impact and effect of applying rotational transformations to the loading matrix in a subsequent step. As method for calculating the factor scores we apply the regression method. The results are estimated using Maximum Likelihood.
+Based on our prior investigation we are now applying factor analysis with 2 factors. To get started we do not apply any rotational techniques, but start interpreting the results we obtain from that simple algorithm. This allows us to discuss the impact and effect of applying rotational transformations to the loading matrix in a subsequent step. As method for calculating the factor scores we apply the regression method. The results are estimated using Maximum Likelihood and stored in `fa_none`.
 
 ```{r}
 fa_none <- factanal(d_small , 
@@ -241,30 +241,55 @@ fa_none <- factanal(d_small ,
                     rotation = "none")
 fa_none
 ```
-The results for our initial factor analysis are stored in `fa_none`. The output above shows the following information:
 
-- *Call:*
+- **Call:** The model output starts with the call that we used to apply the `factanal()` function.
 
-- *Uniqueness:*
+- **Uniqueness:** The first numerical values in the output represent the estimates for the uniqueness $\hat\Psi$, which range from 0 to 1. The uniqueness can be interpreted as the proportion of variance of the variables that cannot be explained by a linear combination of the factors. Therefore a high value of the uniqueness indicates, that the factors do not account well for the variability of the respective variable.
 
-- *Loadings:*
-
-- *Explained Variance:*
     ```{r}
-    # Calculating Sum of Squares (SS) loadings
-    round(apply(fa_none$loadings^2,2,sum), digits=4)
-    
-    # Calculating Sum of Squares (SS) loadings by eigenvalue decomposition of squared loading matrix.
-    L <- fa_none$loadings
-    round(eigen( L %*% t(L))$values, digits=4)
+    fa_none$uniquenesses
     ```
-- *Likelihood Ratio Test:*
+
+- **Loadings:** The next section represents the factor loading estimates $\hat{L}$, which lie between -1 and 1. These loadings can be interpreted as the contribution of each variable from the dataset to the specific factor (below per column). While the output above suppresses values, which are smaller than 0.1 for easier visual group allocation, the full matrix can be easily extractes as shown below.
+
+    ```{r}
+    # Loadings
+    loadings <-unclass(fa_none$loadings)
+    loadings
+    ```
+Squaring the loadings and summing them up (by column) yields the fraction of total variance explained by factor, which is usally referred to as communality $\hat L \hat L^T$. *A good factor model yields in high values for the communality and low values for the uniqueness.
+
+    ```{r}
+    # Communalities
+    communalities <- apply(fa_none$loadings^2, 1, sum)
+    communalities
+    ```
 
 
 ```{r}
-L <- fa_none$loadings
-Psi <- diag(fa_none$uniquenesses)
-R_hat <- L %*% t(L) + Psi
+  # Recalculating Uniqueness
+  1 - communalities 
+```
+
+
+- **Explained Variance:**
+    ```{r, collapse=T}
+    # Calculating Sum of Squares (SS) loadings
+    round(apply(fa_none$loadings^2, 2, sum), digits=4)
+    
+    # Calculating Sum of Squares (SS) loadings by eigenvalue decomposition of squared loading matrix.
+    L_hat <- fa_none$loadings
+    round(eigen( L_hat %*% t(L_hat))$values, digits=4)
+    ```
+
+- **Likelihood Ratio Test:** 
+
+
+
+```{r}
+L_hat <- fa_none$loadings
+Psi_hat <- diag(fa_none$uniquenesses)
+R_hat <- L_hat %*% t(L_hat) + Psi_hat
 ```
     
     
@@ -272,6 +297,9 @@ R_hat <- L %*% t(L) + Psi
 # Residual Matrix
 round(R - R_hat, digits=4)
 ```
+
+
+Lets estimate two additional factor analyses to illustrate the effect of apply rotational transformations.
 
 ```{r}
 fa_varimax <- factanal(d_small , factors = 2, rotation = "varimax")
@@ -327,8 +355,6 @@ segments(0,0,x1=rotmat[2,2],y1=rotmat[1,2], col="red")
 ```
 
 ### Interpreting the Factors
-
-
 
 
 ```{r}
