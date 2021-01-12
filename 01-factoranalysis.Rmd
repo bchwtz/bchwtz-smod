@@ -51,17 +51,6 @@ Work in Progress ...
 
 ## Basic Factor Analysis in R
 
-In R there are multiple implementations of factor analysis available. Each model variant and each implementation comes with its own strengths and drawbacks. A good starting point is the `factanal()` function that comes with the preinstalled `stats` package. However, more elaborate and flexible approaches are available for download (e.g. in the `psych` package). In this part we are focusing on the the factor analysis procedure that is implemented in the `factanal()` function, which performs  maximum-likelihood factor analysis on a covariance, correlation or data matrix. For using `factanal()` four arguments are essential `x` to input the data, `factors` to specify the number of factors that should be used, `scores` to specify the method used to calculate the factor scores and `rotation` to specify the method for orthogonal or oblique rotation.
-
-```{r, eval=FALSE}
-factanal(x,        # Data
-         factors,  # Number of factors
-         scores,   # Method to calculate factor scores
-         rotation) # Method for rotation
-```
-
-While `x` and `factors` must be specified by the user the arguments `scores` and `rotation` use default values. Factor scores could be calculated either using Thompsons method (`scores = "regression"`), based on Bartlett's weighted least-squares approach (`scores = "Bartlett"`) or not calculated at all (defaul: `scores = "none"`). Applying factor rotation can either be done using the default Varimax option (`rotation = "varimax"`) for orthogonal transformation or using `rotation = "Bartlett"` for an oblique transformation. Alternatively results can be obtained without applying a transformation using `rotation = "none"`.
-
 ### Data Preparation and Description
 
 Lets get our hands dirty and apply what we learned. The following code loads some data that results from a questionnaire with 50 questions.
@@ -69,6 +58,9 @@ Lets get our hands dirty and apply what we learned. The following code loads som
 ```{r}
 q <- readRDS("data/fa_questions.rds")  # Questions asked
 d <- readRDS("data/fa_sample.rds")     # Response data
+
+#q <- readRDS(gzcon(url("https://bchwtz.de/lfs/fa_questions.rds")))
+#q <- readRDS(gzcon(url("https://bchwtz.de/lfs/fa_sample.rds")))
 ```
 
 The variable `q` contains the questions from the questionnaire (50 items) while `d` contains the actual responses. Respondents hat the option to answer each question using a 5-point Likert-Scale, that was labeled 1=Disagree, 3=Neutral, 5=Agree. However, the data is not pre-processed and needs to be thoroughly investigated and potentially cleaned up before it can be used for analytic procedures.
@@ -169,7 +161,7 @@ d_cleaned <- na.omit(d_cleaned)
 
 Cleaning up our data naturally leads to observations that we do not consider. The dataset beforehand hat `r nrow(d)` observations, while our cleaned up dataset that is nor ready for analysis has only `r nrow(d_cleaned)` responses. While deleting `r nrow(d) - nrow(d_cleaned)`observations seems a lot, this is necessary to have a clean and logically flawless foundation for our analysis
 
-```{r}
+```{r, collapse=T}
 dim(d)                    # Dimensions for the raw data
 dim(d_cleaned)            # Dimensions after cleaning up
 nrow(d) - nrow(d_cleaned) # Number of discarded observations
@@ -188,32 +180,99 @@ q[q$Q %in% items_selected, ]
 
 ### Selecting numbers of Factors
 
+Before applying a factor analysis routine we need to explicitly decide how many factors should be extracted from our cleaned and reduced dataset `d_small`. As factor analysis is essentially a elaborate decomposition of the variance-covariance-matrix of our variables, it is a good idea to look at the correlation matrix before proceeding.
+
+**NOTE:** For the remainder of this chapter we treat the likert-scale responses as metric and calculate measures that were invented for continuous data (well knowing that this is a drawback with potential downsides).
+
 ```{r}
-# Calculate Correlation Matrix, Eigenvalues & Proportion of Variance
+# Calculate Correlation Matrix, 
 R <- cor(d_small)
+round(R, digits=4)
+```
+As the correlation matrix is symmetric we can concentrate on the lower (or upper) triangle-matrix for our interpretation. 
+
+However, the correlation structure does not provide a clear picture of the underlying constructs and it is still difficult to decide on the number of factors used. Therefore we consult additional measures that help us to decide. All the following statistics, the Kaiser-Guttman-Criterion, the criterion of extracted variance and the screeplot are based on the Eigenvalues of the correlation matrix that we calculated beforehand. While there are multiple functions (especially in the `psych` package) that allow for producing the results below more or less automatically, we quickly calculate the results ourselves to foster our understanding.
+
+```{r}
+# Eigenvalues & Proportion of Variance
 eigval <- eigen(R)$values
-proptotvar <- eigval / sum(eigval)
+eigval
 ```
 
+First we need to calculate the Eigenvalue decomposition of the correlation matrix `R`, which can be done using the function `eigen()`. 
 
 ```{r}
-# Screeplot
-plot(eigval, type = "b", ylab = "Eigenvalue", xlab="Index", xaxt="n")
+# Scree plot
+plot(eigval, type = "b", ylab = "Eigenvalue", xlab="Index",
+     xaxt="n",ylim = c(0,max(eigval)),
+     main = "Scree plot")
+
 axis(1, at=1:length(eigval))
 abline(h=1, lty = "dotted", col="red")
 ```
 
 ```{r}
+proptotvar <- eigval / sum(eigval)
 df <- data.frame(Eigenvalue = eigval, 
                  Var=proptotvar, 
                  sumVar=cumsum(proptotvar))
-knitr::kable(df, digits=4, booktabs=T)
+round(df, digits=4)
 ```
 
 ### Applying Factor Analysis
 
+In R there are multiple implementations of factor analysis available. Each model variant and each implementation comes with its own strengths and drawbacks. A good starting point is the `factanal()` function that comes with the preinstalled `stats` package. However, more elaborate and flexible approaches are available for download (e.g. in the `psych` package). In this part we are focusing on the the factor analysis procedure that is implemented in the `factanal()` function, which performs  maximum-likelihood factor analysis on a covariance, correlation or data matrix. For using `factanal()` four arguments are essential `x` to input the data, `factors` to specify the number of factors that should be used, `scores` to specify the method used to calculate the factor scores and `rotation` to specify the method for orthogonal or oblique rotation.
+
+```{r, eval=FALSE}
+factanal(x,        # Data
+         factors,  # Number of factors
+         scores,   # Method to calculate factor scores
+         rotation) # Method for rotation
+```
+
+While `x` and `factors` must be specified by the user the arguments `scores` and `rotation` use default values. Factor scores could be calculated either using Thompsons method (`scores = "regression"`), based on Bartlett's weighted least-squares approach (`scores = "Bartlett"`) or not calculated at all (defaul: `scores = "none"`). Applying factor rotation can either be done using the default Varimax option (`rotation = "varimax"`) for orthogonal transformation or using `rotation = "Bartlett"` for an oblique transformation. Alternatively results can be obtained without applying a transformation using `rotation = "none"`.
+
+Based on our prior investigation we are now applying factor analysis with 2 factors. To get started we do not apply any rotational techniques, but start interpreting the results we obtain from that simple algorithm. This allows us to discuss the impact and effect of applying rotational transformations to the loading matrix in a subsequent step. As method for calculating the factor scores we apply the regression method. The results are estimated using Maximum Likelihood.
+
 ```{r}
-fa_none <- factanal(d_small , factors = 2, rotation = "none")
+fa_none <- factanal(d_small , 
+                    factors = 2,
+                    scores = "regression",
+                    rotation = "none")
+fa_none
+```
+The results for our initial factor analysis are stored in `fa_none`. The output above shows the following information:
+
+- *Call:*
+
+- *Uniqueness:*
+
+- *Loadings:*
+
+- *Explained Variance:*
+    ```{r}
+    # Calculating Sum of Squares (SS) loadings
+    round(apply(fa_none$loadings^2,2,sum), digits=4)
+    
+    # Calculating Sum of Squares (SS) loadings by eigenvalue decomposition of squared loading matrix.
+    round(eigen( L %*% t(L))$values, digits=4)
+    ```
+- *Likelihood Ratio Test:*
+
+
+```{r}
+L <- fa_none$loadings
+Psi <- diag(fa_none$uniquenesses)
+R_hat <- L %*% t(L) + Psi
+```
+    
+    
+```{r}
+# Residual Matrix
+round(R - R_hat, digits=4)
+```
+
+```{r}
 fa_varimax <- factanal(d_small , factors = 2, rotation = "varimax")
 fa_promax <- factanal(d_small, factors = 2, rotation = "promax")
 ```
@@ -221,6 +280,8 @@ fa_promax <- factanal(d_small, factors = 2, rotation = "promax")
 
 ```{r}
 par(mfrow = c(1,3))
+# par(mfrow = c(1,3), pty="s") # Force plots to be quadratic
+
 plot(fa_none$loadings[,1], 
      fa_none$loadings[,2],
      xlab = "Factor 1", 
@@ -244,6 +305,10 @@ text(fa_varimax$loadings[,1]-0.08,
      col="blue")
 abline(h = 0, v = 0, col="darkgrey")
 
+rotmat <- fa_varimax$rotmat
+segments(0,0,x1=rotmat[2,1],y1=rotmat[1,1], col="red")
+segments(0,0,x1=rotmat[2,2],y1=rotmat[1,2], col="red")
+
 plot(fa_promax$loadings[,1], 
      fa_promax$loadings[,2],
      xlab = "Factor 1", 
@@ -252,11 +317,22 @@ plot(fa_promax$loadings[,1],
      xlim = c(-1,1),
      main = "Promax rotation")
 abline(h = 0, v = 0, col="darkgrey")
+
+rotmat <- fa_promax$rotmat
+segments(0,0,x1=rotmat[2,1],y1=rotmat[1,1], col="red")
+segments(0,0,x1=rotmat[2,2],y1=rotmat[1,2], col="red")
+
+
 ```
 
 ### Interpreting the Factors
 
 
+
+
+```{r}
+
+```
 
 
 ## Exercises {-}
