@@ -255,6 +255,7 @@ The results for our initial factor analysis are stored in `fa_none`. The output 
     round(apply(fa_none$loadings^2,2,sum), digits=4)
     
     # Calculating Sum of Squares (SS) loadings by eigenvalue decomposition of squared loading matrix.
+    L <- fa_none$loadings
     round(eigen( L %*% t(L))$values, digits=4)
     ```
 - *Likelihood Ratio Test:*
