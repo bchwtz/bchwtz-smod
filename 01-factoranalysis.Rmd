@@ -78,7 +78,7 @@ head(q, n=6) # Show first 6 rows from the dataframe
 ```
 
 
-The object `q` contains three variables (columns), the question ID `Q`, an indication if the question is positively (`coding == "P"`) or negatively (`coding == "N"`)  formulated and the actual formulation of the item `question`. The responses are saved in object `d` and the following code snipped shows the first six observations (rows) for the rist five variables (columns).
+The object `q` contains three variables (columns), the question ID `Q`, an indication if the question is positively (`coding == "P"`) or negatively (`coding == "N"`)  formulated and the actual formulation of the item `question`. The responses are saved in object `d` and the following code snipped shows the first six observations (rows) for the rist five variables `Q01` to `Q05` (columns).
 
 ```{r}
 head(d[ ,1:5], n=6)
@@ -89,14 +89,16 @@ dim(d)         # Dimensions of the data matrix
   <summary>All 50 Items - Click to expand!</summary>
   
 ```{r}
+library(kableExtra)
 kable_paper(kbl(q), "hover", full_width = F)
 ```
 
 </details>
 
+
 In total we have `r nrow(d)` observations and `r ncol(d)` variables in the dataframe. The first 50 columns represent the responses to the items introduced above. The remaining three variables (`r tail(colnames(d),3)`) provide metadata and some technical information, which can be used to perform plausibility checks and cleanup the data.
 
-- `IPC`: Is an abbreviation for IP (Internet Protocol Adress) Count and lists the number of records from the user's IP address in the dataset. For max cleanliness is is recommended to only use records where this value is 1. It should, however, be noted that high values can have multiple causes and do no necessarily represent abusive usage of the survey service. They can be because of shared networks (e.g. entire universities) or multiple submissions.
+- `IPC`: Is an abbreviation for IP (Internet Protocol Address) Count and lists the number of records from the user's IP address in the dataset. For max cleanliness is is recommended to only use records where this value is 1. It should, however, be noted that high values can have multiple causes and do no necessarily represent abusive usage of the survey service. They can be because of shared networks (e.g. entire universities) or multiple submissions.
 - `testelapse`: Is the time in seconds spent on the page with the survey questions.
 - `country`: Indicates the country of the respondet, but is determined by technical information and was *not asked as a question*, thus may be inaccurate.
 
@@ -104,20 +106,24 @@ In total we have `r nrow(d)` observations and `r ncol(d)` variables in the dataf
 summary(d$testelapse)
 ```
 
+The descriptive statistics for the `testelapse` variable shows that on average respondents spent `r round(mean(d$testelapse, na.rm=T),2)` seconds for answering the questions. 50% of the responses took longer than `r median(d$testelapse, na.rm=T)` seconds. However the fastest respondent only used the questionnaire for 2 seconds, while the longest response took `r max(d$testelapse, na.rm=T)` seconds ( = `r round(max(d$testelapse, na.rm=T)/60/60,2)` hours). Additionally `r sum(is.na(d$testelapse))` observations contain not value (`NA`) for the `testelapse` variable.
 
 ```{r}
 table(d$IPC)
 barplot(table(d$IPC))
 ```
 
+When looking at the `IPC` variable using the raw numbers or the barplot above, we can see that most responses originated from a unique IP address, while there are fewer IPs that contributed multiple entries. However, there also seem to be some larger networks or abusive users that contribute multiple observations with the maximum being `r max(d$IPC, na.rm=T)` from a single IP.
 
+
+The following output shows the descriptive statistics for the first five variables (`Q01`-`Q05`). As the responses were collected using a 5-point Likert-Scale the minimum for each variable is 1 and the maximum 5. The remaining values variate nicely and are all within a reasonable range. However, it becomes quickly visible that some respondents have not answered all questions as, each variable contains `NA` values.
 
 ```{r}
 t(sapply(d[ , 1:5], summary))
 ```
 
 <details>
-  <summary>All 50 Descirptive Statistics - Click to expand!</summary>
+  <summary>All 50 Descriptive Statistics - Click to expand!</summary>
   
 ```{r}
 t(sapply(d[ , 1:50], summary))
@@ -126,15 +132,59 @@ t(sapply(d[ , 1:50], summary))
 </details>
 
 
-```{r}
-d_cleaned <- na.omit(d) # Remove rows with missing values.
-```
-
+Lets have a detailed look at `Q01`, which was formulated as shown below. Once again the scale meant the following: 1=Disagree, 3=Neutral, 5=Agree.
 
 ```{r}
-d_small <- d_cleaned[ ,1:6]
+q[q$Q == "Q01", ]
+```
+Deep diving into the descriptive statistics and actual responses for the variable `Q01` shows, that the value of the first quartile is 2, meaning that 25% or more of the respondents answered with either value 1 or 2 (the code below shows the frequencies and exact proportions). In total 32.62% disagree (at least lightly) with the item and do not feel comfortable around people. On the other side 39.27% somehow agree to the statement and have no worse feelings when being in a group of people. However, 28% of the respondents say that they feel neutral (no agreement or disagreement with the item) when in groups. Additionally 74 people have not answered `Q01`.
+ 
+```{r}
+tab <- as.vector(table(d[,1]))
+q01_details <- data.frame(value = 1:5,
+                          freq = tab,
+                          prop = tab/sum(tab))
+q01_details$cumprop <- cumsum(q01_details$prop)
+round(q01_details, digits=4)
 ```
 
+Before we start the analysis we are going to clean up the dataset based on the insights we gained in our descriptive analysis so far. The draw reliable conclusions we want the dataset as clean as possible, which is the rationale behind the following guidelines:
+
+1) We want to ensure that respondents spent a reasonable amount of time when answering the questionnaire. We expect fast impulsive respondents to spent at least 2 seconds for every questions (thus 100 seconds in total) and not more than one hour for all questions (thus 3600 seconds).
+
+2) We want to be sure that every natural person only contributes one observation to the dataset, which we will ensure by only considering lines where the `IPC` variable has the value `1`.
+
+3) We do not want missing observations in the sense of unanswered questions (`NA` values) in the dataset, but only consider responses that answered all questions from the questionnaire.
+
+```{r}
+# 1) Remove rows with unreasonable response times
+d_cleaned <- d[d$testelapse >= 100 & d$testelapse <= 3600, ]
+
+# 2) Remove responses from non unique IPs
+d_cleaned <- d[d$IPC == 1, ]
+
+# 3) Remove rows with missing (NA) values.
+d_cleaned <- na.omit(d_cleaned) 
+```
+
+Cleaning up our data naturally leads to observations that we do not consider. The dataset beforehand hat `r nrow(d)` observations, while our cleaned up dataset that is nor ready for analysis has only `r nrow(d_cleaned)` responses. While deleting `r nrow(d) - nrow(d_cleaned)`observations seems a lot, this is necessary to have a clean and logically flawless foundation for our analysis
+
+```{r}
+dim(d)                    # Dimensions for the raw data
+dim(d_cleaned)            # Dimensions after cleaning up
+nrow(d) - nrow(d_cleaned) # Number of discarded observations
+```
+
+While we could use the whole dataset for our analysis, 50 questions is a fairly long questionnaire and may be confusing for a first factor analysis. We therefore select only a subset of variables for further investigation. Specifically we revert to the following items and variables in the dataset. For the further analysis we also rely only on the responses. The metadata and technical information of the variables `IPC`, `testelapse` and `country` has been extensively for the descriptive statistics.
+
+```{r}
+items_selected <- c("Q01", "Q04", "Q11", "Q17", "Q28", "Q33")
+d_small <- d_cleaned[ ,items_selected]
+```
+
+```{r}
+q[q$Q %in% items_selected, ]
+```
 
 ### Selecting numbers of Factors
 
