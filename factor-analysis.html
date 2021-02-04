@@ -24,7 +24,7 @@
 <meta name="author" content="Benjamin Buchwitz" />
 
 
-<meta name="date" content="2021-01-12" />
+<meta name="date" content="2021-02-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -156,7 +156,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#exercises"><i class="fa fa-check"></i>Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="3" data-path="system-info.html"><a href="system-info.html"><i class="fa fa-check"></i><b>3</b> System Info</a></li>
+<li class="chapter" data-level="" data-path="system-info.html"><a href="system-info.html"><i class="fa fa-check"></i>System Info</a></li>
 <li class="divider"></li>
 <li><a href="http://www.bchwtz.de" target="blank"><center>www.<b>BCHWTZ</b>.de</center></a></li>
 
@@ -232,8 +232,9 @@ Although the equations above seem to be related to multiple regression equations
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="factor-analysis.html#cb1-1"></a>q &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;data/fa_questions.rds&quot;</span>)  <span class="co"># Questions asked</span></span>
 <span id="cb1-2"><a href="factor-analysis.html#cb1-2"></a>d &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;data/fa_sample.rds&quot;</span>)     <span class="co"># Response data</span></span>
 <span id="cb1-3"><a href="factor-analysis.html#cb1-3"></a></span>
-<span id="cb1-4"><a href="factor-analysis.html#cb1-4"></a><span class="co">#q &lt;- readRDS(gzcon(url(&quot;https://bchwtz.de/lfs/fa_questions.rds&quot;)))</span></span>
-<span id="cb1-5"><a href="factor-analysis.html#cb1-5"></a><span class="co">#q &lt;- readRDS(gzcon(url(&quot;https://bchwtz.de/lfs/fa_sample.rds&quot;)))</span></span></code></pre></div>
+<span id="cb1-4"><a href="factor-analysis.html#cb1-4"></a><span class="co"># Alternatively data can be downloaded</span></span>
+<span id="cb1-5"><a href="factor-analysis.html#cb1-5"></a><span class="co">#q &lt;- readRDS(gzcon(url(&quot;https://bchwtz.de/lfs/fa_questions.rds&quot;)))</span></span>
+<span id="cb1-6"><a href="factor-analysis.html#cb1-6"></a><span class="co">#d &lt;- readRDS(gzcon(url(&quot;https://bchwtz.de/lfs/fa_sample.rds&quot;)))</span></span></code></pre></div>
 <p>The variable <code>q</code> contains the questions from the questionnaire (50 items) while <code>d</code> contains the actual responses. Respondents hat the option to answer each question using a 5-point Likert-Scale, that was labeled 1=Disagree, 3=Neutral, 5=Agree. However, the data is not pre-processed and needs to be thoroughly investigated and potentially cleaned up before it can be used for analytic procedures.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="factor-analysis.html#cb2-1"></a><span class="kw">head</span>(q, <span class="dt">n=</span><span class="dv">6</span>) <span class="co"># Show first 6 rows from the dataframe</span></span></code></pre></div>
 <pre><code>##     Q coding                            question
@@ -935,17 +936,17 @@ I use difficult words.
 <span id="cb22-2"><a href="factor-analysis.html#cb22-2"></a>d_cleaned &lt;-<span class="st"> </span>d[d<span class="op">$</span>testelapse <span class="op">&gt;=</span><span class="st"> </span><span class="dv">100</span> <span class="op">&amp;</span><span class="st"> </span>d<span class="op">$</span>testelapse <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3600</span>, ]</span>
 <span id="cb22-3"><a href="factor-analysis.html#cb22-3"></a></span>
 <span id="cb22-4"><a href="factor-analysis.html#cb22-4"></a><span class="co"># 2) Remove responses from non unique IPs</span></span>
-<span id="cb22-5"><a href="factor-analysis.html#cb22-5"></a>d_cleaned &lt;-<span class="st"> </span>d[d<span class="op">$</span>IPC <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, ]</span>
+<span id="cb22-5"><a href="factor-analysis.html#cb22-5"></a>d_cleaned &lt;-<span class="st"> </span>d_cleaned[d_cleaned<span class="op">$</span>IPC <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, ]</span>
 <span id="cb22-6"><a href="factor-analysis.html#cb22-6"></a></span>
 <span id="cb22-7"><a href="factor-analysis.html#cb22-7"></a><span class="co"># 3) Remove rows with missing (NA) values.</span></span>
 <span id="cb22-8"><a href="factor-analysis.html#cb22-8"></a>d_cleaned &lt;-<span class="st"> </span><span class="kw">na.omit</span>(d_cleaned) </span></code></pre></div>
-<p>Cleaning up our data naturally leads to observations that we do not consider. The dataset beforehand hat 14095 observations, while our cleaned up dataset that is nor ready for analysis has only 10898 responses. While deleting 3197observations seems a lot, this is necessary to have a clean and logically flawless foundation for our analysis</p>
+<p>Cleaning up our data naturally leads to observations that we do not consider. The dataset beforehand hat 14095 observations, while our cleaned up dataset that is nor ready for analysis has only 10760 responses. While deleting 3335observations seems a lot, this is necessary to have a clean and logically flawless foundation for our analysis</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="factor-analysis.html#cb23-1"></a><span class="kw">dim</span>(d)                    <span class="co"># Dimensions for the raw data</span></span>
 <span id="cb23-2"><a href="factor-analysis.html#cb23-2"></a><span class="co">## [1] 14095    53</span></span>
 <span id="cb23-3"><a href="factor-analysis.html#cb23-3"></a><span class="kw">dim</span>(d_cleaned)            <span class="co"># Dimensions after cleaning up</span></span>
-<span id="cb23-4"><a href="factor-analysis.html#cb23-4"></a><span class="co">## [1] 10898    53</span></span>
+<span id="cb23-4"><a href="factor-analysis.html#cb23-4"></a><span class="co">## [1] 10760    53</span></span>
 <span id="cb23-5"><a href="factor-analysis.html#cb23-5"></a><span class="kw">nrow</span>(d) <span class="op">-</span><span class="st"> </span><span class="kw">nrow</span>(d_cleaned) <span class="co"># Number of discarded observations</span></span>
-<span id="cb23-6"><a href="factor-analysis.html#cb23-6"></a><span class="co">## [1] 3197</span></span></code></pre></div>
+<span id="cb23-6"><a href="factor-analysis.html#cb23-6"></a><span class="co">## [1] 3335</span></span></code></pre></div>
 <p>While we could use the whole dataset for our analysis, 50 questions is a fairly long questionnaire and may be confusing for a first factor analysis. We therefore select only a subset of variables for further investigation. Specifically we revert to the following items and variables in the dataset. For the further analysis we also rely only on the responses. The metadata and technical information of the variables <code>IPC</code>, <code>testelapse</code> and <code>country</code> has been extensively for the descriptive statistics.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="factor-analysis.html#cb24-1"></a>items_selected &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Q01&quot;</span>, <span class="st">&quot;Q04&quot;</span>, <span class="st">&quot;Q11&quot;</span>, <span class="st">&quot;Q17&quot;</span>, <span class="st">&quot;Q28&quot;</span>, <span class="st">&quot;Q33&quot;</span>)</span>
 <span id="cb24-2"><a href="factor-analysis.html#cb24-2"></a>d_small &lt;-<span class="st"> </span>d_cleaned[ ,items_selected]</span></code></pre></div>
@@ -966,18 +967,18 @@ I use difficult words.
 <span id="cb27-2"><a href="factor-analysis.html#cb27-2"></a>R &lt;-<span class="st"> </span><span class="kw">cor</span>(d_small)</span>
 <span id="cb27-3"><a href="factor-analysis.html#cb27-3"></a><span class="kw">round</span>(R, <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##         Q01     Q04    Q11     Q17    Q28     Q33
-## Q01  1.0000  0.5024 0.1180 -0.0392 0.0765  0.4672
-## Q04  0.5024  1.0000 0.0935 -0.0331 0.0968  0.4855
-## Q11  0.1180  0.0935 1.0000  0.0945 0.3234  0.1620
-## Q17 -0.0392 -0.0331 0.0945  1.0000 0.1587 -0.0133
-## Q28  0.0765  0.0968 0.3234  0.1587 1.0000  0.1526
-## Q33  0.4672  0.4855 0.1620 -0.0133 0.1526  1.0000</code></pre>
+## Q01  1.0000  0.5031 0.1168 -0.0394 0.0785  0.4665
+## Q04  0.5031  1.0000 0.0944 -0.0333 0.0967  0.4866
+## Q11  0.1168  0.0944 1.0000  0.0919 0.3229  0.1609
+## Q17 -0.0394 -0.0333 0.0919  1.0000 0.1577 -0.0155
+## Q28  0.0785  0.0967 0.3229  0.1577 1.0000  0.1535
+## Q33  0.4665  0.4866 0.1609 -0.0155 0.1535  1.0000</code></pre>
 <p>As the correlation matrix is symmetric we can concentrate on the lower (or upper) triangle-matrix for our interpretation.</p>
 <p>However, the correlation structure does not provide a clear picture of the underlying constructs and it is still difficult to decide on the number of factors used. Therefore we consult additional measures that help us to decide. All the following statistics, the Kaiser-Guttman-Criterion, the criterion of extracted variance and the screeplot are based on the Eigenvalues of the correlation matrix that we calculated beforehand. While there are multiple functions (especially in the <code>psych</code> package) that allow for producing the results below more or less automatically, we quickly calculate the results ourselves to foster our understanding.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="factor-analysis.html#cb29-1"></a><span class="co"># Eigenvalues &amp; Proportion of Variance</span></span>
 <span id="cb29-2"><a href="factor-analysis.html#cb29-2"></a>eigval &lt;-<span class="st"> </span><span class="kw">eigen</span>(R)<span class="op">$</span>values</span>
 <span id="cb29-3"><a href="factor-analysis.html#cb29-3"></a>eigval</span></code></pre></div>
-<pre><code>## [1] 2.0787164 1.3291128 0.9004093 0.6722414 0.5278961 0.4916240</code></pre>
+<pre><code>## [1] 2.0795498 1.3267681 0.9023841 0.6719476 0.5285274 0.4908229</code></pre>
 <p>First we need to calculate the Eigenvalue decomposition of the correlation matrix <code>R</code>, which can be done using the function <code>eigen()</code>.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="factor-analysis.html#cb31-1"></a><span class="co"># Scree plot</span></span>
 <span id="cb31-2"><a href="factor-analysis.html#cb31-2"></a><span class="kw">plot</span>(eigval, <span class="dt">type =</span> <span class="st">&quot;b&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Eigenvalue&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Index&quot;</span>,</span>
@@ -993,12 +994,12 @@ I use difficult words.
 <span id="cb32-4"><a href="factor-analysis.html#cb32-4"></a>                 <span class="dt">sumVar=</span><span class="kw">cumsum</span>(proptotvar))</span>
 <span id="cb32-5"><a href="factor-analysis.html#cb32-5"></a><span class="kw">round</span>(df, <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##   Eigenvalue    Var sumVar
-## 1     2.0787 0.3465 0.3465
-## 2     1.3291 0.2215 0.5680
-## 3     0.9004 0.1501 0.7180
-## 4     0.6722 0.1120 0.8301
-## 5     0.5279 0.0880 0.9181
-## 6     0.4916 0.0819 1.0000</code></pre>
+## 1     2.0795 0.3466 0.3466
+## 2     1.3268 0.2211 0.5677
+## 3     0.9024 0.1504 0.7181
+## 4     0.6719 0.1120 0.8301
+## 5     0.5285 0.0881 0.9182
+## 6     0.4908 0.0818 1.0000</code></pre>
 </div>
 <div id="applying-factor-analysis" class="section level3">
 <h3><span class="header-section-number">2.4.3</span> Applying Factor Analysis</h3>
@@ -1020,64 +1021,62 @@ I use difficult words.
 ## 
 ## Uniquenesses:
 ##   Q01   Q04   Q11   Q17   Q28   Q33 
-## 0.513 0.483 0.774 0.940 0.526 0.535 
+## 0.515 0.480 0.778 0.941 0.518 0.535 
 ## 
 ## Loadings:
 ##     Factor1 Factor2
-## Q01  0.682  -0.146 
-## Q04  0.705  -0.142 
-## Q11  0.242   0.409 
-## Q17          0.245 
-## Q28  0.256   0.639 
-## Q33  0.682         
+## Q01  0.681  -0.146 
+## Q04  0.706  -0.145 
+## Q11  0.242   0.404 
+## Q17          0.242 
+## Q28  0.260   0.644 
+## Q33  0.681         
 ## 
 ##                Factor1 Factor2
-## SS loadings      1.551   0.679
-## Proportion Var   0.258   0.113
-## Cumulative Var   0.258   0.372
+## SS loadings      1.553   0.680
+## Proportion Var   0.259   0.113
+## Cumulative Var   0.259   0.372
 ## 
 ## Test of the hypothesis that 2 factors are sufficient.
-## The chi square statistic is 22.04 on 4 degrees of freedom.
-## The p-value is 0.000197</code></pre>
+## The chi square statistic is 19.48 on 4 degrees of freedom.
+## The p-value is 0.000632</code></pre>
 <ul>
 <li><p><strong>Call:</strong> The model output starts with the call that we used to apply the <code>factanal()</code> function.</p></li>
 <li><p><strong>Uniqueness:</strong> The first numerical values in the output represent the estimates for the uniqueness <span class="math inline">\(\hat\Psi\)</span>, which range from 0 to 1. The uniqueness can be interpreted as the proportion of variance of the variables that cannot be explained by a linear combination of the factors. Therefore a high value of the uniqueness indicates, that the factors do not account well for the variability of the respective variable.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="factor-analysis.html#cb37-1"></a>fa_none<span class="op">$</span>uniquenesses</span></code></pre></div>
 <pre><code>##       Q01       Q04       Q11       Q17       Q28       Q33 
-## 0.5132742 0.4828866 0.7739827 0.9398312 0.5255999 0.5347008</code></pre></li>
+## 0.5149702 0.4799127 0.7780746 0.9413099 0.5177331 0.5350869</code></pre></li>
 <li><p><strong>Loadings:</strong> The next section represents the factor loading estimates <span class="math inline">\(\hat{L}\)</span>, which lie between -1 and 1. These loadings can be interpreted as the contribution of each variable from the dataset to the specific factor (below per column). While the output above suppresses values, which are smaller than 0.1 for easier visual group allocation, the full matrix can be easily extractes as shown below.</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="factor-analysis.html#cb39-1"></a><span class="co"># Loadings</span></span>
 <span id="cb39-2"><a href="factor-analysis.html#cb39-2"></a>loadings &lt;-<span class="kw">unclass</span>(fa_none<span class="op">$</span>loadings)</span>
 <span id="cb39-3"><a href="factor-analysis.html#cb39-3"></a>loadings</span></code></pre></div>
 <pre><code>##          Factor1     Factor2
-## Q01  0.682308422 -0.14554047
-## Q04  0.704855799 -0.14244505
-## Q11  0.242092933  0.40915548
-## Q17 -0.003552154  0.24526805
-## Q28  0.255876655  0.63947448
-## Q33  0.681511127 -0.02900794</code></pre>
+## Q01  0.680914360 -0.14623783
+## Q04  0.706371879 -0.14534125
+## Q11  0.241926942  0.40422711
+## Q17 -0.004447845  0.24222382
+## Q28  0.259993358  0.64394987
+## Q33  0.681098523 -0.03192189</code></pre>
 <p>Squaring the loadings and summing them up (by column) yields the fraction of total variance explained by factor, which is usally referred to as communality <span class="math inline">\(\hat L \hat L^T\)</span>. *A good factor model yields in high values for the communality and low values for the uniqueness.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="factor-analysis.html#cb41-1"></a><span class="co"># Communalities</span></span>
 <span id="cb41-2"><a href="factor-analysis.html#cb41-2"></a>communalities &lt;-<span class="st"> </span><span class="kw">apply</span>(fa_none<span class="op">$</span>loadings<span class="op">^</span><span class="dv">2</span>, <span class="dv">1</span>, sum)</span>
 <span id="cb41-3"><a href="factor-analysis.html#cb41-3"></a>communalities</span></code></pre></div>
 <pre><code>##        Q01        Q04        Q11        Q17        Q28        Q33 
-## 0.48672681 0.51711229 0.22601720 0.06016903 0.47440047 0.46529888</code></pre></li>
-</ul>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="factor-analysis.html#cb43-1"></a>  <span class="co"># Recalculating Uniqueness</span></span>
-<span id="cb43-2"><a href="factor-analysis.html#cb43-2"></a>  <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>communalities </span></code></pre></div>
+## 0.48502987 0.52008531 0.22192820 0.05869216 0.48226798 0.46491421</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="factor-analysis.html#cb43-1"></a><span class="co"># Recalculating Uniqueness</span></span>
+<span id="cb43-2"><a href="factor-analysis.html#cb43-2"></a><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>communalities </span></code></pre></div>
 <pre><code>##       Q01       Q04       Q11       Q17       Q28       Q33 
-## 0.5132732 0.4828877 0.7739828 0.9398310 0.5255995 0.5347011</code></pre>
-<ul>
+## 0.5149701 0.4799147 0.7780718 0.9413078 0.5177320 0.5350858</code></pre></li>
 <li><p><strong>Explained Variance:</strong></p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="factor-analysis.html#cb45-1"></a><span class="co"># Calculating Sum of Squares (SS) loadings</span></span>
 <span id="cb45-2"><a href="factor-analysis.html#cb45-2"></a><span class="kw">round</span>(<span class="kw">apply</span>(fa_none<span class="op">$</span>loadings<span class="op">^</span><span class="dv">2</span>, <span class="dv">2</span>, sum), <span class="dt">digits=</span><span class="dv">4</span>)</span>
 <span id="cb45-3"><a href="factor-analysis.html#cb45-3"></a><span class="co">## Factor1 Factor2 </span></span>
-<span id="cb45-4"><a href="factor-analysis.html#cb45-4"></a><span class="co">##  1.5509  0.6788</span></span>
+<span id="cb45-4"><a href="factor-analysis.html#cb45-4"></a><span class="co">##  1.5526  0.6803</span></span>
 <span id="cb45-5"><a href="factor-analysis.html#cb45-5"></a></span>
 <span id="cb45-6"><a href="factor-analysis.html#cb45-6"></a><span class="co"># Calculating Sum of Squares (SS) loadings by eigenvalue decomposition of squared loading matrix.</span></span>
 <span id="cb45-7"><a href="factor-analysis.html#cb45-7"></a>L_hat &lt;-<span class="st"> </span>fa_none<span class="op">$</span>loadings</span>
 <span id="cb45-8"><a href="factor-analysis.html#cb45-8"></a><span class="kw">round</span>(<span class="kw">eigen</span>( L_hat <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(L_hat))<span class="op">$</span>values, <span class="dt">digits=</span><span class="dv">4</span>)</span>
-<span id="cb45-9"><a href="factor-analysis.html#cb45-9"></a><span class="co">## [1] 1.5530 0.6768 0.0000 0.0000 0.0000 0.0000</span></span></code></pre></div></li>
+<span id="cb45-9"><a href="factor-analysis.html#cb45-9"></a><span class="co">## [1] 1.5545 0.6784 0.0000 0.0000 0.0000 0.0000</span></span></code></pre></div></li>
 <li><p><strong>Likelihood Ratio Test:</strong></p></li>
 </ul>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="factor-analysis.html#cb46-1"></a>L_hat &lt;-<span class="st"> </span>fa_none<span class="op">$</span>loadings</span>
@@ -1086,12 +1085,12 @@ I use difficult words.
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="factor-analysis.html#cb47-1"></a><span class="co"># Residual Matrix</span></span>
 <span id="cb47-2"><a href="factor-analysis.html#cb47-2"></a><span class="kw">round</span>(R <span class="op">-</span><span class="st"> </span>R_hat, <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##         Q01     Q04     Q11     Q17     Q28     Q33
-## Q01  0.0000  0.0008  0.0123 -0.0011 -0.0050 -0.0020
-## Q04  0.0008  0.0000 -0.0189  0.0044  0.0075  0.0010
-## Q11  0.0123 -0.0189  0.0000 -0.0050 -0.0002  0.0088
-## Q17 -0.0011  0.0044 -0.0050  0.0000  0.0028 -0.0037
-## Q28 -0.0050  0.0075 -0.0002  0.0028  0.0000 -0.0033
-## Q33 -0.0020  0.0010  0.0088 -0.0037 -0.0033  0.0000</code></pre>
+## Q01  0.0000  0.0008  0.0112 -0.0010 -0.0044 -0.0020
+## Q04  0.0008  0.0000 -0.0178  0.0051  0.0066  0.0009
+## Q11  0.0112 -0.0178  0.0000 -0.0050 -0.0003  0.0090
+## Q17 -0.0010  0.0051 -0.0050  0.0000  0.0029 -0.0048
+## Q28 -0.0044  0.0066 -0.0003  0.0029  0.0000 -0.0030
+## Q33 -0.0020  0.0009  0.0090 -0.0048 -0.0030  0.0000</code></pre>
 <p>Lets estimate two additional factor analyses to illustrate the effect of apply rotational transformations.</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="factor-analysis.html#cb49-1"></a>fa_varimax &lt;-<span class="st"> </span><span class="kw">factanal</span>(d_small , <span class="dt">factors =</span> <span class="dv">2</span>, <span class="dt">rotation =</span> <span class="st">&quot;varimax&quot;</span>)</span>
 <span id="cb49-2"><a href="factor-analysis.html#cb49-2"></a>fa_promax &lt;-<span class="st"> </span><span class="kw">factanal</span>(d_small, <span class="dt">factors =</span> <span class="dv">2</span>, <span class="dt">rotation =</span> <span class="st">&quot;promax&quot;</span>)</span></code></pre></div>
