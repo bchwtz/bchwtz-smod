@@ -4,7 +4,7 @@ Statistically speaking the main goal of factor analysis is to describe the covar
 
 While EFA and CFA serve different purposes when doing research, their foundation, especially the model formulation, the estimation and the derivation of quantities of interest is highly comparable and  will be presented below. 
 
-## Foundations
+## Foundations 
 
 $$
 X_1 - \mu_1 = l_{11} F_1 + l_{12} F_2 + \ldots + l_{1m} F_m + \epsilon_1 \\
@@ -59,8 +59,9 @@ Lets get our hands dirty and apply what we learned. The following code loads som
 q <- readRDS("data/fa_questions.rds")  # Questions asked
 d <- readRDS("data/fa_sample.rds")     # Response data
 
+# Alternatively data can be downloaded
 #q <- readRDS(gzcon(url("https://bchwtz.de/lfs/fa_questions.rds")))
-#q <- readRDS(gzcon(url("https://bchwtz.de/lfs/fa_sample.rds")))
+#d <- readRDS(gzcon(url("https://bchwtz.de/lfs/fa_sample.rds")))
 ```
 
 The variable `q` contains the questions from the questionnaire (50 items) while `d` contains the actual responses. Respondents hat the option to answer each question using a 5-point Likert-Scale, that was labeled 1=Disagree, 3=Neutral, 5=Agree. However, the data is not pre-processed and needs to be thoroughly investigated and potentially cleaned up before it can be used for analytic procedures.
@@ -153,7 +154,7 @@ Before we start the analysis we are going to clean up the dataset based on the i
 d_cleaned <- d[d$testelapse >= 100 & d$testelapse <= 3600, ]
 
 # 2) Remove responses from non unique IPs
-d_cleaned <- d[d$IPC == 1, ]
+d_cleaned <- d_cleaned[d_cleaned$IPC == 1, ]
 
 # 3) Remove rows with missing (NA) values.
 d_cleaned <- na.omit(d_cleaned) 
@@ -266,10 +267,10 @@ Squaring the loadings and summing them up (by column) yields the fraction of tot
     ```
 
 
-```{r}
-  # Recalculating Uniqueness
-  1 - communalities 
-```
+    ```{r}
+    # Recalculating Uniqueness
+    1 - communalities 
+    ```
 
 
 - **Explained Variance:**

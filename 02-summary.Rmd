@@ -1,6 +1,6 @@
 # (PART\*) Appendix {-} 
 
-# System Info
+# System Info {-}
 ```{r}
 Sys.time()
 sessionInfo()
