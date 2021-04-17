@@ -1,0 +1,694 @@
+---
+title: "Statistical Modeling"
+author: "CH.1 - Simple Linear Regression"
+date: "SS 2021 || Prof. Dr. Buchwitz"
+output:
+  beamer_presentation:
+    fig_width: 8
+    fig_height: 5
+    highlight: tango
+    theme: metropolis
+    includes:
+      in_header: header.tex
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE, size="scriptsize", 
+                      fig.align = "center")
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+
+## Load Data
+load("~/sciebo/courses/bchwtz-smod/nongit/RABE5.RData")
+```
+
+
+# Organizational Information
+
+## Contact details
+
+### Lecturer
+
+**Professor Benjamin Buchwitz**
+
+  - Room 2.3.14, Lindenstr. 53, Meschede
+  - Email: Buchwitz.Benjamin@fh-swf.de
+
+## Unit objectives
+
+  1. To obtain an understanding of common statistical methods used in statistical modeling.
+  2. To develop the computer skills required to model relationships found in business, economic and social sciences contexts;
+  3. To gain insights into the problems of implementing and conducting  analyses for professional use.
+
+## Course Contents
+
+| Session   | Topic                   |
+| --------- |:------------------------|
+|  1        | Simple Linear Regression     | 
+|  2        | Multiple Linear Regression   |
+|  3        | Regression Diagnostics       |
+|  4        | Qualitative Variables as Predictors |
+|  5        | Transformation of Variables |
+|  6        | Weighted Least Squares |
+|  7        | Correlated Errors |
+|  8        | Analysis of Collinear Data |
+|  9        | Working with Collinear Data  |
+| 10        | Variable Selection Procedures |
+| 11        | Logistic Regression |
+| 12        | Further Topics |
+
+
+## Evidence
+
+```{r, echo=F}
+knitr::include_graphics("figs/EvidenceBasedScience.jpeg")
+```
+
+## R and RStudio
+
+### Install R 
+https://cloud.r-project.org/
+
+### Install RStudio
+https://www.rstudio.com/products/rstudio/download/#download
+
+## Examination Modalities
+
+Grading is based on a portfolio examination with three parts:
+
+1. One Lecture Recap Presentation (20%)
+2. Hand-in Excercises (40%)
+3. Final Case Study (40%)
+
+# Introduction
+
+## What is Regression Analysis?
+
+- Regression analysis is a conceptually simple method for investigating funcitnoal relationships among variables.
+- The relationship is expressen in the form of an equation or a model connecting the **response** or **dependent variable** with one ore more **explanatory** or **predictor** variabes.
+- We denote the response variable by $Y$ and the set of predictor variables by $X_1, X_2, \ldots, X_p$, where $p$ denotes the number of predictor variables.
+- The **true** relationship between the response and its predictors can be approximated by the regression model, where $\epsilon$ represents the random discrepancy in the relation.
+
+$$Y = f(X_1,X_2,\ldots,X_p) + \epsilon$$
+
+## The Regression Formula
+
+- The function $f(X_1,X_2,\ldots,X_p)$ describes the relationship between Y and $X_1,X_2,\ldots,X_p$ and can take any functional form.
+- One example of a function is the linear regression model:
+$$ Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \ldots \beta_p X_p + \epsilon $$ 
+- Here $\beta_0, \beta_1, \ldots, \beta_p$ are called the regression parameters or coefficients, which are unknown constants and need to be estimated from data.
+
+## Data Example: River Data
+\small
+- `Nitrogen`: Mean nitrogen concentration ($mg/l$) based on samples taken at regular intervals during the spring, summer and fall months
+- `Agr`: Percentage of land area currently in agricultural use
+- `Forest`: Percentage of forest land
+- `Rsdntial`: Percentage of land area in residential use
+- `ConIndl`: Percentage of land area in either commercial or industrial use
+
+```{r}
+head(P010)
+```
+
+## Data Example: Motor Trend US Car Magazine
+
+```{r}
+# see help(mtcars) for variable description
+mtcars
+```
+
+## Steps in Regression Analysis
+
+1. Statement of the problem
+2. Selection of potentially relevant variables
+3. Data collection
+4. Model specification
+5. Choice of fitting method
+6. Model fitting
+7. Model validation and criticism
+8. Using the chosen model(s) for the solution of the proposed problem
+
+## Statement of the problem
+
+- Every analysis starts with the definition of the problem, which includes formulation of questions adressed by the analysis.
+- Ill-defined problems or misformulated questions can lead to wasted effort or the selection of a wrong model.
+- Finding and formulating suitable questions is probably the hardest part in an analysis.
+
+## **Example:** Problem Statement Definition
+
+- Assume we want to research whether or not an employer is discriminating against a group of employees, e.g. women and data on `salary`, `gender` and `qualification` is available.
+- There are mulitple definitions of discriminations available in the literate (a) women are paid less than equally qualified men, or (b) women are more qualified than equally paid men.
+
+\pause 
+
+### Your turn
+What is the modeling implication of the definition?
+
+\pause
+
+a) $salary = f(qualification, gender) + \epsilon$
+b) $qualification =  f(salary, gender) + \epsilon$
+
+<!-- ## Selection of Variables -->
+<!-- ## Data Collection -->
+<!-- ## Model Specification -->
+<!-- ## Choice of fitting Method -->
+<!-- ## Model Fitting -->
+<!-- ## Model Criticism and Selection -->
+<!-- ## Fulfilling the Objective -->
+
+## Flowchart
+
+# Simple Linear Regression
+
+## Introduction
+
+\Large 
+$$ Y = f(X) + \epsilon$$
+\bigskip
+\normalsize
+
+- We start with the simple case to study the relationship between the response $Y$ and a single predicotr $X$.
+- As we only have one regressor variable we drop the subscript to simplify the notation ($X_1 = X$).
+- We derive and formulate the regression model and focus on the key results but favor numerical examples over mathematical derivations.
+
+## Covariance 
+
+```{r, echo=F}
+set.seed(1)
+n <- 70
+x <- runif(n,0,10)
+b1 <- 1
+y <- b1 * x + rnorm(n)
+
+plot(x,y, yaxt='n', xaxt= 'n')
+abline(h = mean(y), col="red")
+abline(v = mean(x), col="red")
+axis(1,at=mean(x), labels=expression(bar(x)), col="red", col.axis="red")
+axis(2,at=mean(y), labels=expression(bar(y)), col="red", col.axis="red")
+```
+
+## Covariance
+
+**Determine the sign:**
+
+- $y_i - \bar{y}$ the deviation of each observation $y_i$ from the mean of the response variable,
+- $x_i - \bar{x}$ the deviation of each observation $x_i$ from the mean of the predictor variable, and
+- the product of the above quantities, $(y_i - \bar{y})(x_i - \bar{x})$
+
+```{r, echo=F}
+quandrant <- c("1 (top right)","2 (top left)","3 (bottom left", "4 (bottom right)")
+df <- data.frame(quandrant, x="", y="", z="")
+cnames <- c("Quadrant","$y_i - \\bar{y}$","$x_i - \\bar{x}$","$(y_i - \\bar{y})(x_i - \\bar{x})$")
+knitr::kable(df, booktabs=T, col.names = cnames, align = c("l","c","c","c"))
+```
+
+## Covariance
+
+### Positive Relationship
+- If the linear realtionship between $Y$ and $X$ is **positive** (when $X$ increases, $Y$ also increases), then there are more points in the first and third quadrants than in the second and fourth.
+- The sum over the elements in the last column is likely to be positive, that is $Cov(Y,X) > 0$.
+
+\pause
+
+### Negative Relationship
+- If the linear relationship between $Y$ and $X$ is **negative** (as $X$ increases $Y$ decreases), then there are more points in the second and fourth quadrants than in the first and third.
+- The sum over the elements in the last column is likely to be negative, that is $Cov(Y,X) < 0$.
+
+
+## Covariance
+
+$$ Cov(X,Y) = \frac{1}{n-1} \sum_{i=1}^{n} (y_i - \bar{y})(x_i - \bar{x})$$
+
+- The quantity calculated using the above formula is called the covariance.
+- The sign of the covariance indicates the relationship between $Y$ and $X$.
+- The covariance can **only indicate the direction** of a relationship, and does not tell much about the strength of the relationship.
+- the covariance is unit sensitive, changing the unit of a measurement (e.g. from Euro to kEuro) changes the value of the covariance.
+
+### Your turn
+What happens if we calculate $Cov(X,Y)$ instead of $Cov(Y,X)$?
+
+## Correlation Coefficient
+
+- To avoid the obvious disadvantages of the covariance we can standardize (z-transform) each variable before computing the covariance.
+- Standardizing $Y$ means subtracting the mean $\bar{y}$ and dividing by the associated sample standard deviation $s_y$.
+- The resulting variable $z_i$ has mean zero and unit standard deviation. 
+
+$$z_i = \frac{y_i - \bar{y}}{s_y} \quad\text{with}\quad s_y = \sqrt{\frac{\sum_{i=1}^{n} (y_i - \bar{y})^2}{n-1}}$$
+
+## Correlation Coefficient
+
+$$ Cor(Y,X) = \frac{1}{n-1}\sum_{i=1}^{n} (\frac{y_i - \bar{y}}{s_y})(\frac{x_i - \bar{x}}{s_x}) = \frac{Cov(Y,X)}{s_ys_x}$$
+
+- Calculating the covariance of the standardized values yields the correlation coefficient.
+- $Cov(Y,X)$ can be interpreted in two ways, either as
+  + the covariance between two standardized variables or as
+  + ratio betwee of the covariance to the standard deviations of the two variables
+- Opposed to the covariance, $Cor(Y,X)$ is scale invariant so that it is not affected by unit changes. It also satisfies $-1 \geq Cor(Y,X) \leq 1$ and therefore indicates **direction** and **strength**.
+
+## Correlation Coefficient
+
+$Cor(Y,X) = 0$ does not necessarily mean that the variables are not related!
+
+```{r, fig.height=4}
+x <- seq(from=-5, to=5,by=.1)
+y <- 50 - x^2
+cor_yx = cor(y,x)
+round(cor_yx, digits=4)
+plot(x,y)
+```
+
+## Example: Anscombe Quartet
+
+```{r}
+knitr::kable(anscombe[,c("y1","x1","y2","x2","y3","x3","y4","x4")], booktabs=T)
+```
+
+### Your turn
+Choose one of the datasets (e.g. $i=3$) and calculate $\bar{y_i}$, $\bar{x_i}$, $Cov(y_i,x_i)$ and $Cor(y_i,x_i)$ using R (**Hint:** `mean`, `cov`, `cor`).
+
+## Results: Anscombe Quartet
+
+```{r, echo=F}
+par(mfrow=c(2,2))
+# a
+plot(x=anscombe[,"x1"], y=anscombe[,"y1"], ylab = expression(Y[1]), 
+     xlab=expression(X[1]), main = "(a)")
+abline(lm(anscombe[,"y1"] ~ anscombe[,"x1"]))
+# b
+plot(x=anscombe[,"x2"], y=anscombe[,"y2"], ylab = expression(Y[2]), 
+     xlab=expression(X[2]), main = "(b)")
+abline(lm(anscombe[,"y2"] ~ anscombe[,"x2"]))
+# c
+plot(x=anscombe[,"x3"], y=anscombe[,"y3"], ylab = expression(Y[3]), 
+     xlab=expression(X[3]), main = "(c)")
+abline(lm(anscombe[,"y2"] ~ anscombe[,"x2"]))
+# 4
+plot(x=anscombe[,"x4"], y=anscombe[,"y4"], ylab = expression(Y[4]), 
+     xlab=expression(X[4]), main = "(d)")
+abline(lm(anscombe[,"y4"] ~ anscombe[,"x4"]))
+```
+
+## Learning: Anscombe Quartet
+
+- Like many other summary statistics the corelation coefficient can be substantially influencey by one ofr a few outlier in the data.
+- All four datasets in the Anscombe quartet have almost the **same summary** statistics, despite being inherently different.
+- A purely descriptive analysis can not reveal the different patterns **we need to plot the data before before starting an analysis**.
+- Findings:
+  a) can be adequately described by a linear model
+  b) is nonlinear and would be better fitted by a quadratic function
+  c) one outlier distores the slope and intercept of the lines
+  d) is unsuitable for linear fitting as the line is determined by a single extreme observation
+
+## Example: Computer Repair Data
+
+```{r}
+# Minutes = Duration of the serive operation
+# Units = Number of computers repaired during service operation
+head(P031)
+```
+
+### Your turn
+Calculate $Cov(Y,X)$ and $Cor(Y,X)$ manually (step-by-step) using R by avoiding the internal functions `cov` and `cor`.
+
+## The Simple Linear Regression Model
+
+- The correlation coefficient is useful to mesure the strength of a pairwise relationship, it **cannot be used for precidion purposes**.
+- That means that we cannot use $Cor(Y,X)$ to predict one variable, when the other one is given.
+- Regression is an extension to correlation analysis and can not only measure direction, but allows for **numerically describing** that relationship. 
+
+## The Simple Linear Regression Model
+
+\Large
+$$Y = \beta_0 + \beta_1 X + \epsilon$$
+\bigskip
+\normalsize
+
+- $\beta_0$ and $\beta_1$ are constants called the regression coefficients, and $\epsilon$ is the error term.
+  + $\beta_0$ is called the intercept. It is the prediction value, when $X=0$. 
+  + $\beta_1$ is called the slope. It can be interpreted as the change in $Y$, when $X$ changes by one unit.
+- Each observation in the data can therefore be written as:
+  $$y_i = \beta_0 + \beta_1 x_i + \epsilon_i \quad\text{with}\quad i = 1,2,\ldots,n$$
+
+## The Simple Linear Regression Model
+
+- We assume that (in the range of our observations studied), the linear equation provides an **acceptable approximation** to the real relationship: $Y$ is approximately a linear function of $X$.
+- The error term $\epsilon$ measures the discrepancy of the approximation.
+- That simple linear regression model is linear in two ways:
+  + the relationship between $X$ and $Y$ is linear
+  + more generally the word linear describes that the regression parameters $\beta_0$ and $\beta_1$ enter the euquation in a linear fashion
+  + $Y=\beta_0+\beta_1 X^2 +\epsilon$ is still a linear model but with a quadratic term!
+- In correlation $X$ and $Y$ are of equal "importance" which is reflected in ithe symmetry $Cor(Y,X)=Cor(X,Y)$). 
+- In regression we want to explain $Y$, hence the importance of the predictor $X$ lies on its ability to account for the variability of the response.
+
+## Example: Computer Repair Data
+
+Reconsidering the computer repair data and assuming we want to predict the numbers of support enginerrs that will be required for a taks, we can now formulate an equation in form of a linear model that is assumed to represent the relationship between the lenght of service calls and the number of electronic components in the computer that must be repaired.
+
+$$\text{Minutes} = \beta_0 + \beta_1 \text{ Units} + \epsilon $$
+\medskip
+
+### Your turn
+Consult the scatter plot (`plot`) of the data (`P031`) and check whether the straight linear relationship is a resonable assumption.
+
+## Parameter Estimation
+
+\center \Huge How do we \linebreak
+determine $\beta_0$ and $\beta_1$?
+
+## Parameter Estimation
+
+```{r}
+plot(P031$Minutes,P031$Units,xlab="Minutes",ylab="Units", pch=19)
+```
+
+
+## Parameter Estimation
+
+- We want values for $\beta_0$ and $\beta_1$ that give the *best fit* or the *best representation* for the points in the graph. 
+- This can be achieved using the **least squares method** that minimizes the sum of squares of **vertical distances**.
+- Those vertical distances from each point to the line represent the errors $\epsilon_i$ and can be obtained by:
+
+$$ \epsilon_i = y_i - \beta_0 - \beta_1 x_1 \quad\text{for}\quad i=1,2,\ldots,n$$
+
+## Parameter Estimation
+
+- As $\beta_0$ and $\beta_1$ are unknown, but required to calculate the errors and therefore the sum of squared errors, we can devise a function for that:
+
+$$S(\beta_0,\beta_1) = \sum_{i=1}^{n} \epsilon_i^2 = \sum_{i=1}^{n}(y_i-\beta_0-\beta_1 x_1)^2$$
+
+\medskip
+- This is a quadratic function that can be minimized. The analytical solution for the values $\hat\beta_0$ and $\hat\beta_1$ that minimize the function $S(\;)$ are
+
+$$\hat\beta_1 = \frac{\sum(y_i - \bar y)(y_i - \bar x)}{\sum (x_i - \bar x)} \quad\text{and}\quad \hat\beta_0 = \bar y - \hat\beta_1 \bar x$$
+
+\medskip
+- Both, $\hat\beta_0$ and $\hat\beta_1$ are called the **least squares estimates** and give the line with the smallest possible sum of squares of vertical distances.
+
+## Parameter Estimation
+
+- The **least squares regression line** can always be found (does always exist) and is given by $$\hat Y = \hat\beta_0 + \hat\beta_1 X $$
+
+- For each observation we can compute a **fitted value**, which is given by
+$$\hat y_i = \hat\beta_0 + \hat\beta_1 x_i \quad\text{for}\quad i=1,2\ldots,n$$
+
+- Each point $(x_i,\hat y_i)$ is a point **on the regression line**
+
+- The corresponding vertical distances are called **ordinary least squares residuals** an can be computed like 
+$$\hat\epsilon_i = y_i - \hat y_i  \quad\text{for}\quad i=1,2\ldots,n$$
+
+## Parameter Estimation
+
+### Your turn
+Add a sketch of the least squares regression line to the plot above and nlcude, mark and annotage the the fitted values and the ordinary least squares residuals.
+
+\vspace{-3cm}
+```{r}
+plot(head(P031$Minutes),head(P031$Units),xlab="Minutes",ylab="Units", pch=19)
+```
+
+## Parameter Estimation
+```{r, echo=F}
+x <- head(P031$Minutes)
+y <- head(P031$Units)
+plot(x, y, pch=19, xlab = "Minutes", ylab="Units")
+m <- lm(y ~ x)
+abline(m, col="red")
+ypred <- predict(m, newdata=data.frame(x=x))
+segments(x, ypred, x, y, col="blue")
+```
+
+## Parameter Estimation
+
+### Your turn
+- Calculate $\hat\beta_0$ and $\hat\beta_1$ twice using R.
+  1) Manually (abstain from `cor` and `cov`) using R
+  2) Using the functions mentioned above
+- Plot the data and add your calculated regression line to that plot (**Hint:** `abline`)  
+  
+## Tests of Hypotheses
+
+- So far we only made one assumption or hypothesis about the relationship between the response and predictor variables, which is called the **linearity assumption**.
+- An early step in an analysis should always be the validation of this assumption: *We wish to determine if the data at hand supports the assumtion that $Y$ and $X$ are linearly related.*
+- An **informal** way to check this assumption is to check the scatter plot.
+- A more **formal** way to check the assumption and to measure the usefulness of $X$ as a predictor for $Y$ is to conduct a hypothesis test about the regression parameter $\beta_1$.
+
+## Tests of Hypotheses
+
+- Testing for the postulated relationship can be done by checking the hypothesis that $\beta_1 = 0$, which means that there is **no linear relationship** between $X$ and $Y$.
+- Finding that $\beta_1 > 0$ or $\beta_1 < 0$ is equivalent to $\beta_1 \neq 0$ and would provide **evidence (not proof!) for an existing linear relationship**.
+- Testing of this hypothesis requires the assumption that the errors $\epsilon_i$ are independent random quantitites originating from a normal distribution with mean zero and common variance $\sigma^2$.
+  + $\epsilon \sim N(0,\sigma^2)$
+  + $\epsilon_i$ are idenpendent 
+
+## Tests of Hypotheses
+
+- Given that the assumptions for the error term $\epsilon$ hold, $\hat\beta_0$ and $\hat\beta_1$ are unbiased estimates of $\beta_0$ and $\beta_1$.
+- This means that $\hat\beta_0$ and $\hat\beta_1$ allow to draw conclusions about the unobserved and unknow paramteters $\beta_0$ and $\beta_1$ in the population, hence $E(\hat\beta) = \beta$.
+- Under the mentioned circumstances the variances of the regression coefficients are
+
+$$Var(\hat\beta_0) = \sigma^2[\frac{1}{n} + \frac{\bar x^2}{\sum(x_i - \bar x)^2}] \quad\text{and}\quad Var(\hat\beta_1) = \frac{\sigma^2}{\sum(x_i - \bar x)^2}$$
+
+- The variances of $\hat\beta_0$ and $\hat\beta_1$ depend on the unknow and unobservable parameter $\sigma^2$, which needs to be estimated from the data before we can proceed.
+
+## Tests of Hypotheses
+
+- An unbiased estimate of $\sigma^2$ is given by
+
+$$ \hat\sigma^2 = \frac{\sum \epsilon_i^2}{n-2} = \frac{\sum (y_i - \hat y_i)^2}{n-2} = \frac{SSE}{n-2}$$
+
+\medskip
+- Here $SSE$ is an abbreviation for Sum of Squares Error (Residuals).
+- The number $n-2$ is called *degrees of freedom (df)* and is equal to the number of observations $n$ minus the number of esimated regression coefficients.
+
+## Tests of Hypotheses
+
+- Plugging $\hat\sigma^2$ into $Var(\hat\beta_0)$ and $Var(\hat\beta_1)$ yields unbiased estimates of the respective variances.
+- The estimate of the standard deviation is called the **standard error (s.e.)**
+
+$$s.e.(\hat\beta_0) = \hat\sigma^2 \sqrt{\frac{1}{n} + \frac{\bar x^2}{\sum(x_i - \bar x)^2}} \quad\text{and}\quad s.e.(\hat\beta_1) = \frac{\hat\sigma^2}{\sqrt{\sum(x_i - \bar x)^2}}$$
+
+\medskip
+- The standard error of $\hat\beta_1$ is a measure of how precisely the slope hast been estimated. The smaller $s.e.(\hat\beta_1)$, the more precise is the estimator.
+
+
+## Tests of Hypotheses
+We are now in the position to perform statistical analysis concerning the usefulness of $X$ as a predictor of $Y$. Under the assumption of normality, an appropriate test for testing the hypothesis is the t-test.
+
+$$H_0: \beta_1 = 0 \quad\text{versus}\quad H_1: \beta_1 \neq 0$$
+
+The test statistic follows a Student t distribution with $n-2$ degress of freedom and we need a specified significance value (e.g. $\alpha = 0.05$) to perform the test.
+
+$$t_1 = \frac{\hat\beta_1}{s.e.(\hat\beta_1)}$$
+
+## Tests of Hypotheses
+
+Carrying out the test is done by comparing the value $t_1$ against the appropriate critical value obtrained from the t-table, which is $t_{(n-2, \alpha/2)}$ (Note that we devide $\alpha$ by 2 as we have a two-sided test). 
+
+
+**Reject $H_0$ at the given significance level if:**
+
+$$t_1 \geq t_{(n-2, \alpha/2)} \quad\text{or}\quad t_1 \leq -t_{(n-2, \alpha/2)}$$
+
+One condition is fulfilled if $|t_1| \leq t_{(n-2, \alpha/2)}$. A criterion equivalent to that is to compare the pvalue (implicit probability value) for the t-test with $\alpha$ and reject $H_0$ if $p(|t_1|) \leq \alpha$, where  $p(|t_1|)$, called the p-value, is the sum of the two shaded areas under the following curve. This value is also provided by R.
+
+## Tests of Hypotheses
+
+```{r, echo=F}
+x <- seq(-3, 3, len = 1000)
+y <- dt(x, 100)
+plot(x, y, type="l", xlab="t-value", ylab="Density",xaxt='n')
+axis(1,at=c(-2,0,2),labels=c("-t",0,"+t"))
+polygon(c(x[x>=2], max(x), 2), c(y[x>=2], 0, 0), col="red")
+polygon(c(-2,min(x),x[x<=-2]), c(0, 0, y[x<=-2]), col="red")
+```
+
+## Tests of Hypotheses
+
+The t-test can be generalized to test the more general hypothesis $H_0: \beta_1 = \beta_1^0$, where $\beta_1^0$ is a constant chosen by the data analyst.
+
+$$t_1 = \frac{\hat\beta_1 - \beta_1^0}{s.e.(\hat\beta_1)}$$
+
+\bigskip
+The t-test can also be used for the testing the intercept $\beta_0$ in the same fashion.
+
+## Tests of Hypotheses
+
+```{r}
+summary(lm(Minutes ~ 1 + Units, data=P031))
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+Identify all quantities in the showed regression output.
+\end{alertblock}
+\end{textblock}
+
+## Confidence Intervals
+
+Based on the assumption that the errors $\epsilon$ are normally distributed $\epsilon \sim N(0,\sigma^2)$, we concluded that the sampling distribution of  $\beta_0$ and  $\beta_1$ is also normal.
+
+- The $(1-\alpha)\cdot 100\%$ confidence intervals for $\beta_0$ and $\beta_1$ are given by
+$$\hat\beta_0 \pm t_{(n-2, \alpha/2)} \cdot s.e.(\hat\beta_0) \quad\text{and}\quad \hat\beta_1 \pm t_{(n-2, \alpha/2)} \cdot s.e.(\hat\beta_1)$$
+
+  + with $t_{(n-2, \alpha/2)}$ being the $(1-\alpha/2)$ percentile of a $t$ distribution with $n-2$ degrees of freedom
+  + **Interpretation:** If we were to take repeated sample of the same size ($n$) at the same values of $X$ and construct e.g. the 95% conficden intervals for the slope parameter (based on $\hat\beta_1$) for each sample, then 95% of these intervals would be expected to contain the true but unknown value $\beta_1$ of the slope.
+
+## Confidence Intervals
+
+```{r}
+summary(lm(Minutes ~ 1 + Units, data=P031))
+```
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+Construct the $95\%$ confidence intervals for the regression parameters and interpret their values.
+\end{alertblock}
+\end{textblock}
+
+## Predictions
+
+In addition to describing and explaining observed relationships, the fitted regression equation can be used for prediction. We distinguish two types of predictions:
+
+1) The prediction of the **value** of the response Variable $Y$ which corresponds to any chosen value $x_0$ of the predictor variable.
+2) The estimation of the **mean** response $\mu_0$, when $X=x_0$.
+
+## Predictions
+
+\small
+
+### Value of Response & Prediction Limits
+
+The predicted value $\hat y_0$ is given by $\hat y_0 = \hat\beta_0 + \hat\beta_1 x_0$. Its confidence interval can be constructed by $\hat y_0 \pm t_{(n-2, \alpha/2)} \cdot s.e.(\hat y_0)$. The standard error of the prediction is 
+$$s.e.(\hat y_0) = \hat\sigma \sqrt{1 + \frac{1}{n}+\frac{((x_0-\bar x)^2}{\sum (x_i-\bar x)^2}}$$
+
+### Mean Response & Confidence Limits
+
+The predicted value $\hat\mu_0$ is given by $\hat\mu_0 = \hat\beta_0 + \hat\beta_1 x_0$. Its confidence interval is given by $\hat\mu_0 \pm t_{(n-2, \alpha/2)} \cdot s.e.(\hat\mu_0)$. The standard error of the prediction is 
+$$s.e.(\hat \mu_0) = \hat\sigma \sqrt{\frac{1}{n}+\frac{((x_0-\bar x)^2}{\sum (x_i-\bar x)^2}}$$
+
+## Predictions
+
+>- How do those two predictions differ from each other? 
+>- What do the have in common?
+>- Why is the uncertainty smaller when predicting the mean response $\hat\mu_0$ instead of the single value $\hat y_0$?
+
+## Predictions
+
+:::{.block}
+### Your turn
+Use the computer repair data (`P031`) to do the following with:
+
+- Predict the length of a service call and the associated standard deviation in which four components hat to be repaired
+- Estimate the expected mean service time for calls that needed four components to be  repaired.
+:::
+
+\pause
+
+**There are two dangers in such calculations:**
+
+- Notice the substantial uncertainty / the large standard error
+- The linear relationship may only hold in the range of the observed data. In case of the computer repair data we would for example not use this procedure to predict service times for services which require that e.g. 25 components to be repaired
+
+## Goodness of Fit
+
+Which line has a higher quality of fit and therefore resembles the underlying relationship better?
+
+```{r, echo=F}
+set.seed(1)
+b0 <- 10
+b1 <- 1
+n <- 100
+x <- 1:n
+y1 <- b0 + x * b1 +  rnorm(n, sd=5)
+y2 <- b0 + x * b1 +  rnorm(n, sd=15)
+mod1 <- lm(y1~1+x)
+mod2 <- lm(y2~1+x)
+ylim <- range(c(y1,y2))
+par(mfrow=c(1,2))
+plot(x,y1, ylim=ylim, main="(a)")
+abline(mod1, col="red")
+plot(x,y2,ylim=ylim, main="(b)")
+abline(mod2, col="red")
+```
+
+## Goodness of Fit
+
+The quality of the fit can be assessed by one of the following (highly related) ways:
+
+1. The discussed tests (if $H_0$ is rejected), the magnitude of the values gices us information abouth the strength (not only existence) of the linear relationship between $Y$ and $X$. The larger $|t|$ (or the smaller the $p$-value), the stronger the linear relationship. The tests are objective but require the stated assumption of normality of $\epsilon$.
+
+2. One can also revert to $Cor(Y,X)$ and the scatter plot of the data. The **closer** the set of points to a straignt line, the closer is $|Cor(Y,X)|$ to 1 and the stronger is the linear relationship between $Y$ and $X$. This approach is informal and subjective, but requires only the linearity assumption.
+
+## Goodness of Fit
+
+3. Examine the scatter plot of the response $Y$ versus the fitted values $\hat Y$. The closer the points to a straight line, the stronger is the linear relationship. This can be measure using the correlation $Cor(\hat Y,Y)$. In simple linear regression this is redundant, as $Cor(\hat Y,Y) = |Cor(Y,X)|$. However when multiple regressors are available this is an informative plot.
+
+4. Decomposition of the variance $Var(Y)$, which is in fact closely related to the previous approach of using $Cor(\hat Y,Y)$, but useful for simple and multivariate linear regression.
+
+## Goodness of Fit
+
+After computing the least squares estimates let us compute these quantities.
+\bigskip
+$$ SST = \sum(y_i - \bar y)^2$$
+$$ SSR = \sum(\hat y_i - \bar y)^2$$
+$$ SSE = \sum(y_i - \hat y_i)^2$$
+
+\bigskip
+- Sum of Squares Total (SST) is the total deviation of $Y$ from its mean $\hat y$.
+- Sum of Squares Regression (SSR) is the explained deviation, that is modeled by the regression line.
+- Sum of Squares Error (SSE) is the total deviation of the residuals.
+
+## Goodness of Fit (Graphical Illustration)
+
+
+
+## Goodness of Fit
+
+\Large $$ SST = SSR + SSE$$
+
+\pause
+\normalsize
+
+$$
+\begin{aligned}
+y_i \quad &= \quad   \hat y_i \;\; + \quad (y_i -  \hat y_i) \\
+\text{Observed} \quad  &= \quad  \text{Fit} + \quad\text{Deviation from Fit}
+\end{aligned}
+$$
+
+\pause
+
+Subtracting $\bar y$ yields:
+
+$$
+\begin{aligned}
+y_i - \bar y\quad &= \quad   (\hat y_i - \bar y) \;\; + \quad (y_i -  \hat y_i) \\
+\text{Deviation from mean} \quad  &= \quad  \text{Deviation due to Fit} + \quad\text{Residual}
+\end{aligned}
+$$
+
+**The sum of squared deviations in $Y$ can be decomposed accordingly!**
+
+## Goodness of Fit
+
+- The first, SSR, measures the quality of $X$ as a predictor of $Y$
+- the second, SSE, measures the error in this prediciton.
+- Therefore the ratio $R^2 = SSR/SST$ is the proportion of the total variation in $Y$ that is accounted for by the predicotr $X$. It follows that:
+
+$$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$
+
+## Goodness of Fit
+
+### Your turn
+Calculate the $R^2$ for the Computer repair data and show that $R^2 = [Cor(Y,X)]^2 = [Cor(Y,\hat Y)]^2$ holds in the case of simple linear regression.
+
+
+## Additional Chapters
+
+- Regression Line throuth the Origin
+- Trivial Models
+

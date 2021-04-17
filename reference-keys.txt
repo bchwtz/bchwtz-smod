@@ -1,4 +1,6 @@
+fig:unnamed-chunk-3
 prerequisites
+simple-linear-regression
 factor-analysis
 foundations
 estimation
