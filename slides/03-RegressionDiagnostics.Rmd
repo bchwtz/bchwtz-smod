@@ -1,0 +1,507 @@
+---
+title: "Statistical Modeling"
+author: "CH.3 - Regression Diagnostics"
+date: "SS 2021 || Prof. Dr. Buchwitz"
+output:
+  beamer_presentation:
+    fig_width: 8
+    fig_height: 5
+    highlight: tango
+    theme: metropolis
+    includes:
+      in_header: header.tex
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE, size="scriptsize", 
+                      fig.align = "center")
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+
+## Load Data
+load("~/sciebo/courses/bchwtz-smod/nongit/RABE5.RData")
+library(equatiomatic)
+library(car)
+```
+
+
+# Organizational Information
+
+## Course Contents
+
+| Session   | Topic                   |
+| --------- |:------------------------|
+|  1        | Simple Linear Regression     | 
+|  2        | Multiple Linear Regression   |
+|  3        | Regression Diagnostics       |
+|  4        | Qualitative Variables as Predictors |
+|  5        | Transformation of Variables |
+|  6        | Weighted Least Squares |
+|  7        | Correlated Errors |
+|  8        | Analysis of Collinear Data |
+|  9        | Working with Collinear Data  |
+| 10        | Variable Selection Procedures |
+| 11        | Logistic Regression |
+| 12        | Further Topics |
+
+## Examination Modalities
+
+Grading is based on a portfolio examination with three parts:
+
+1. One Lecture Recap Presentation (20%)
+2. Hand-in Excercises (40%)
+3. Final Case Study (40%)
+
+# Multiple Linear Regression
+
+## Introduction
+
+\Large 
+$$ Y = f(X_1,X_2,\ldots,X_p) + \epsilon$$
+\bigskip
+\normalsize
+
+- We now generalize the simple linear regression model so that the relation between the response $Y$ and $p$ predictor variables $X_1,X_2,\ldots,X_p$ can be studied.
+- We still assume that **within the range** of the data the true relation between $Y$ and the predictors can be approximated using a linear function.
+- The previously discussed simple linear regression model can be seen as a special case of the general linear regression model where $p=1$. 
+
+## Model
+
+\Large
+$$ Y = \beta_0 + \beta_1X_1 + \beta_2 X_2 + \ldots + \beta_p X_p + \epsilon$$
+\bigskip
+\normalsize
+
+- Each regressor needs its own constant $\beta$ so that the regression coefficients are now $\beta_0, \beta_1, \ldots, \beta_p$.
+- The random disturbance is noted using $\epsilon$. This term measures the discrepancy in the approximation and $\epsilon$ contains **no systematic information for determing $Y$** that is not already captured by the $X$'s.
+
+## Model 
+
+\Large
+$$ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} + \epsilon_i$$
+\normalsize
+\smallskip
+$$ i=1,2,\ldots,p$$
+
+\bigskip
+
+- Following from the model quation, each observation can be written as above, where $y_i$ respresents the $i$-th value of the response variable $Y$.
+- $x_{i1},x_{i2},\ldots,x_{ip}$ are the values of the regressors that are associated with the $i$-thunit in the smaple (usually $i$-th row of data).
+- $\epsilon_i$ represents the individual error in the linear approximation for the $i$-th data unit.
+
+## Example: Supervisor Performance
+
+Variable   Description
+--------   -----------
+$Y$        Overall rating of job being done by supervisor
+$X_1$      Handles employee complaints
+$X_2$      Does not allow special privileges
+$X_3$      Opportunity to learn new things
+$X_4$      Raises based on performance
+$X_5$      Too critical of poor performance
+$X_6$      Rate of advancing to better jobs
+--------   -----------
+
+- $X_1$, $X_2$ and $X_5$ relate to direct inerpersonal relationships between employee and supervisor
+- $X_3$ and $X_4$ relate to the job as a whole
+- $X_6$ is and indicator of the perceived progress of the employee
+
+## Example: Supervisor Performance
+```{r}
+# Supervisor Performance Data
+P060 
+```
+
+## Example: Supervisor Performance
+```{r}
+# Descriptive Statistics for all variables
+dim(P060)
+t(sapply(P060, summary))
+```
+
+## Example: Supervisor Performance
+
+We now **assume** that Y is linearly realted to the six explanatory variables:
+
+$$ Y = \beta_0 + \beta_1X_1 + \beta_2 X_2 + \beta_3X_3 + \beta_4X_4 + \beta_5X_5 + \beta_6X_6 + \epsilon$$
+
+\bigskip
+Note that this assumption needs to be verified, which we ignore for now! It may however e.g. be possible that one or more variables have no relation with $Y$ or that the model is incomplete and important variables are missing.
+\medskip
+
+\begin{alertblock}{}\Large
+How do we estimate the parameters $\beta_0, \beta_1, \ldots, \beta_p$ for the multiple linear regression?
+\end{alertblock}
+
+## Parameter Estimation
+
+How do we estimate the regression parameters $\beta_0, \beta_1, \ldots, \beta_p$?
+
+\medskip
+
+\kariert[4mm]{17}
+
+## Parameter Estimation
+
+- **Solution:** Minimizing the sum of squares.
+
+- The individual errors can be written as
+$$\epsilon_i = y_i - \beta_0 - \beta_1 x_{i1} - \beta_2 x_{i2} - \ldots - \beta_p x_{ip}$$
+- The sum of squares therefore is
+$$S(\beta_0, \beta_1, \ldots, \beta_p) = \sum_{i=1}^n \epsilon_i^2 = \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_{i1} - \beta_2 x_{i2} - \ldots - \beta_p x_{ip})^2$$
+
+- $\hat\beta_0, \hat\beta_1, \ldots, \hat\beta_p$ are the constants that minimize $S(\beta_0, \beta_1, \ldots, \beta_p)$. Formulating the minimization problem leads to a system of equations, which are called the *normal equations*.  The solution is usually derived using matrix notation.
+
+\pause
+\medskip
+\begin{alertblock}{}\small
+We do not cover the solution in matrix notation in this course. If you are interested, please ask me about it or see the Appendix to Chapter 3 in RABE5.
+\end{alertblock}
+
+## Parameter Estimation
+
+- Using the fitted regression parameters, the **fitted least squares regression equation** can be noted
+$$ \hat Y = \hat\beta_0 + \hat\beta_1X_1 + \hat\beta_2 X_2 + \ldots + \hat\beta_p X_p$$
+
+- The fitted values follow analogously
+$$ \hat y_i = \hat\beta_0 + \hat\beta_1 x_{i1} + \hat\beta_2 x_{i2} + \ldots + \hat\beta_p x_{ip} \quad\text{for}\quad i = 1,2,\ldots,n$$
+
+- The residuals are 
+$$e_i = y_i - \hat y_i \quad\text{for}\quad i = 1,2,\ldots,n$$
+- An unbiased estimate of the variance $\sigma^2$ is
+$$\hat\sigma^2=\frac{SSE}{n-p-1} \quad\text{with}\quad SSE = \sum_{i=1}^n(y_i-\hat y_i)^2 = \sum_{i=1}^n e_i^2$$
+- $n-p-1$ is called the degrees of freedom and is equal to the number of observations minus the number of estimated regression coefficients.
+
+## Interpretation
+- The simple regression equaiton (only $X_1$) represents a line.
+- The multiple regression equation represents a plane ($X_1$ and $X_2$) or a hyperplane (more than two predictors).
+```{r, eval=F}
+library(car) # 3d Visualization of regression plane for two X variables
+car::scatter3d(P060$Y,P060$X1, P060$X2)
+```
+
+- $\beta_0$ is the *constant coefficient* or *intercept* and results in the value of $Y$, when $X_1 = X_2 = \ldots = X_p = 0$. 
+- The regression coefficient $\beta_j$ has several interpretations:
+  + $\beta_j$ is the change in $Y$ corresponding to a unit change in $X_j$, when all other predictors are held constant (ceteris paribus).
+  + $\beta_j$ is also called teh partial regression coefficient as it represents the contribution of $X_j$ to the response variable, after it has been adjusted for the other predictor variables.
+  
+## Example: Supervisor Performance
+
+```{r, size="tiny"}
+mod <- lm(Y ~ 1 + X1 + X2, data=P060)
+summary(mod)
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+Write down the parameterized regression equation.
+\end{alertblock}
+\end{textblock}
+
+## Interpretation 
+Plugging in the estimated regression coefficients from the output yields:
+```{r, echo=F, size="Large"}
+equatiomatic::extract_eq(mod, use_coefs=T, coef_digits=4)
+```
+
+\bigskip
+
+- Lets explore the question what **ajdusted for** actually means:
+  + The coefficient for $X_1$ suggests that each unit of $X_1$ adds `r round(coef(mod)[2],4)` to $Y$, when the value of $X_2$ is held fix.
+  + The effect of $X_2$ after adjusting for $X_1$ is `r round(coef(mod)[3],4)`, which means that for each unit increase of $X_2$ the response variable $Y$ decreases `r round(coef(mod)[3],4)` units and the value of $X_1$ is held fix.
+- These results can also be obtained iteratively by applying a series of simple regression models.
+
+## Interpretation
+\small
+1. Relating $Y$ and $X_1$ to obtain the residuals $e_{Y\cdot X_1}$.
+
+```{r, size="tiny"}
+mod1 <- lm(Y ~ 1 + X1, data=P060)
+round(coef(mod1),4)
+```
+
+2. Relating $X_2$ (temporary response) and $X_1$ to obtain residuals $e_{X_2\cdot X_1}$.
+```{r, size="tiny"}
+mod2 <- lm(X2 ~ 1 + X1, data=P060)
+round(coef(mod2),4)
+```
+
+3. Relating the residuals $e_{Y\cdot X_1}$ with $e_{X_2\cdot X_1}$.
+
+```{r, size="tiny"}
+e_y_x1 <- residuals(mod1)
+e_x2_x1 <- residuals(mod2)
+mod3 <- lm(e_y_x1 ~ 1 + e_x2_x1, data=P060)
+round(coef(mod3),4)
+```
+
+\begin{textblock}{4.6}(7.5,6.5)
+\begin{alertblock}{}
+\small
+$e_{Y\cdot X_1}$ can be understood as $Y$ with the linear influence from $X_1$ removed.
+Analogously $e_{X_2\cdot X_1}$ is the regressor $X_2$ with the partial effect of $X_1$ removed.
+\end{alertblock}
+\end{textblock}
+
+## Interpretation
+
+- A Series of simple linear regressions can reproduce the coefficients (and standard errors) from a multivariate regression.
+- The results from simple and multiple linear regression would only be equal if the regressors (the $X$'s) are not correlated, which is almost never the case in practice.
+- Each regression coefficient $\beta_j$ can be seen as **partial regression coefficient** because it represents the contribution of $X_j$ to the presonse variable $Y$ after both variables have been **adjusted for the linear dependence** of the other regressors.
+
+## Centering and Scaling
+- The value of the regression coefficient is dependent on the unit of measurement of the variables.
+- To obtain unitless regression coefficients, we can center and scale (e.g. z-transform) our variables
+- **Centering** can be achieved by subtracting the mean of the response $Y - \bar y$ or predictor variables $X- \bar x$.
+- **Scaling** can be done by *unit-length* scaling or standardizing
+
+## Centering and Scaling
+
+- **Unit LengthScaling** for $Y$
+$$\quad Z_y = \frac{Y -\bar y}{L_y} \quad\text{with}\quad L_y=\sqrt{\sum_{i=1}^n (y_i - \bar y)^2}$$
+- **Standardizing** for $Y$
+$$\quad Z_y = \frac{Y -\bar y}{s_y} \quad\text{with}\quad s_y=\sqrt{\frac{\sum_{i=1}^n (y_i - \bar y)^2}{n-1}}$$
+- Correlations are unaffected by these kind of transformations
+- $\beta$'s change as well as their interpretation, e.g. beta coefficients obtained after standardizing the variables represent marginal effects of the predicotr variables in *standard deviation units*
+
+## Centering and Scaling
+```{r}
+y <- P060$Y
+L_y <- sqrt(sum((y-mean(y))^2))
+z_y <- (y - mean(y))/L_y          # Unit-length Scaling
+y_scaled <- scale(y)              # Standardizing by default
+```
+
+```{r, echo=F, fig.height=3}
+par(mfrow=c(1,3))
+hist(y, breaks=seq(min(y),max(y),l=6))
+hist(z_y, breaks=seq(min(z_y),max(z_y),l=6))
+hist(y_scaled, breaks=seq(min(y_scaled),max(y_scaled),l=6))
+```
+
+## Properties of the Least Squares Estimator
+\center
+\fontsize{90}{110}\selectfont
+BLUE
+
+\pause
+\Huge
+Best Linear Unbiased Estimator
+
+## Properties of the Least Squares Estimator
+
+1. For all unbiased estimates that are linear in the observations the least squares estimators have the smalles variance. 
+2. The estimator $\hat\beta_j$ is normally distributed with mean $\beta_j$ and variance $\sigma^2c_{jj}$, where $c_{jj}$ is the $j$-th diagonal element of the inverse of a matrix known as the *corrected sums of squares and products* matrix.
+3. $W=SSE/\sigma^2$ has a $\mathcal{X}^2$ distribution with $n-p-1$ degress of freedoma and $\hat\beta_j$'s and $\hat\sigma^2$ are distrbuted independently of each other. 
+4. The vector $\hat{\boldsymbol\beta}=(\hat\beta_0,\hat\beta_1,\ldots,\hat\beta_p)$ has a $p+1$ dimensional normal distribution and with mean vector $\boldsymbol\beta=(\beta_0,\beta_1,\ldots,\beta_p)$ and a variance-covariance matrix with elements $\sigma^2c_{ij}$.
+
+**It is due to these properties that we are able to test hypotheses about individual regression parameters and construct confidence intervals!**
+
+## Multiple Correlation Coefficient
+
+- The content discussed for testing the **goodness of fit** for the simple linear regression model can easily be extended for the larger regression models and the following hols also for the multiple regression model:
+
+$$R^2 = [Cor(Y,\hat Y)]^2 = \frac{SSR}{SST} =  1- \frac{SSE}{SST}=1-\frac{\sum(y_i - \hat y_i)^2}{\sum(y_i - \bar y)^2}$$
+
+\bigskip
+- Sometimes $R=\sqrt{R^2}$ is referred to as the multiple correlation coefficient as it measures the correlation between the response and a set of predictors.
+  + When the model provides a doog fit for the data $R^2$ is close to unity (and $\sum (y_i-\hat y_i)$ will be small).
+  + When the variables $X_1, X_2, \ldots, X_p$ do not have a linear relationship with the response, the best predicted value for each $y_i$ is the mean $\bar y$ (because it minimizes the sum of squares) and $R^2$ will be near zero.
+
+## Multiple Correlation Coefficient
+
+```{r, size="tiny"}
+mod <- lm(Y ~ 1 + X1 + X2 + X3 + X4 +X5 + X6, data=P060)
+summary(mod)
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+What happens with $R^2$ when we add one or many artificially generated variables $z_j \sim N(0,1)$ that are pure white noise to the model?
+\end{alertblock}
+\end{textblock}
+
+## Multiple Correlation Coefficient 
+
+```{r}
+mod <- lm(Y ~ 1 + X1 + X2 + X3 + X4 +X5 + X6, data=P060)
+mod_summary <- summary(mod)
+c(mod_summary$r.square, mod_summary$adj.r.squared)
+```
+
+```{r}
+set.seed(1)
+z1 <- rnorm(nrow(P060))
+z2 <- rnorm(nrow(P060))
+z3 <- rnorm(nrow(P060))
+z4 <- rnorm(nrow(P060))
+z5 <- rnorm(nrow(P060))
+
+mod_large <- lm(Y ~ 1 + X1 + X2 + X3 + X4 +X5 + X6 
+                + z1 + z2 + z3 + z4 + z5, data=P060)
+mod_large_summary <- summary(mod_large)
+c(mod_large_summary$r.square, mod_large_summary$adj.r.squared)
+```
+
+## Multiple Correlation Coefficient 
+
+$$R_a^2 = 1 - \frac{SSE/(n-p-1)}{SST/(n-1)} = 1 - \frac{n-1}{n-p-1}(1 - R^2)$$
+
+\bigskip
+- The adjusted $R^2$ tries to solve the observed issue by "adjusting" for the difference in the numbers of variables when judging the *goodness of fit*.
+- The $R^2_a$ cannot be interpreted as the proportion of total variation in $Y$ accounted for by the predictors. 
+
+## Inference for Regression Coefficients
+
+- Testing the **individual** regression coefficients for $H_0: \beta_j = \beta_j^0$ versus $H_1: \beta_j \neq \beta_j^0$ can be done using the t-testby comapring the observed value $t_j$ with the appropriate critical value $t_{n-p-1,\alpha/2}$.
+- For the two-sided test, $H_0$ is rejected at the significance level $\alpha$ if
+$$|t_j|\geq t_{n-p-1,\alpha/2} \quad\text{with}\quad t_j = \frac{\hat\beta_j - \beta_j^0}{s.e.(\hat\beta_j)}$$
+
+- An equivalent decision can be made using the p-value and reject $H_0$ if $p(|t_j|) \leq \alpha$. The p-value is the probabillity that a random variable hacinf a Student t-distribution with n-p-1 degrees of freadoms is greated than $|t_j|$ (the observed value of the t-test).
+
+## Inference for Regression Coefficients
+
+```{r, size="tiny"}
+mod <- lm(Y ~ 1 + X1 + X2 + X3 + X4 +X5 + X6, data=P060)
+summary(mod)
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+\small
+Interpret the regression coefficients (assume $\alpha=0.05$).\\
+\medskip
+\tiny
+$Y$        Overall rating of job being done by supervisor\\
+$X_1$      Handles employee complaints\\
+$X_2$      Does not allow special privileges\\
+$X_3$      Opportunity to learn new things\\
+$X_4$      Raises based on performance\\
+$X_5$      Too critical of poor performance\\
+$X_6$      Rate of advancing to better jobs\\
+\end{alertblock}
+\end{textblock}
+
+## Hpothesis Testing
+
+1. All the regression coefficients associated with the preditor variables are zero.
+2. Some of the regression coefficients are zero.
+3. Some of the regression coefficients are equal to each other.
+4. The regression parametrs satisfy certain specified constraints.
+
+\bigskip
+\begin{alertblock}{}
+\bf We discuss a general approach for testing all stated hypotheses and illustrate that for testing if all regression coefficients are zero (option 1). Please see the recommended literature for the other options.
+\end{alertblock}
+
+## Hpothesis Testing
+
+- The model that contains all $p+1$ parameters will be referred to as the **full model** (FM).
+$$ \text{Full Model:}\quad Y = \beta_0 + \beta_1X_1 + \beta_2 X_2 + \ldots + \beta_p X_p + \epsilon$$
+
+- We are formulating a hypothesis for some coefficients $\beta_0,\beta_1,\ldots,\beta_p$ in the model. This incorporating the hypotesized values in the model we reveice the so called **reduced model** (RM).
+- The number of distinct paramters to estimate in the RM is smaller than the numbers of parameters to estimate in the FM.
+- Subsequently we are going to test
+$$H_0:\text{Reduced model is adequate.} \quad\text{vs.}\quad H_1: \text{Full model is adequate.}$$
+
+## Hpothesis Testing
+
+- The main idea of the described approach is testing for **differences in goodness of fit** between the FM and RM. 
+- If the reduced model gives as good fit as the full model, the null hypothesis ($H_0:$ Reduced model is adequate) is not rejected.
+- The **lack of fit** can be measured by the sum of squared residuals (SSE), which we note using the predicted values for $y_i$ of the full model $\hat y_i$ and the reduced model $\hat y_i^*$ respectively.  
+
+$$SSE(FM) = \sum(y_i - \hat y_i)^2 \quad\quad SSE(RM) = \sum(y_i - \hat y_i^*)^2$$
+
+## Hpothesis Testing
+
+- In the full model there are $p+1$ regression parameters ($\beta_0,\beta_1,\ldots,\beta_p$) that need to be estimated. Lets suppose that the reduced model contains $k$ distinct parameters.
+- $SSE(RM) \geq SSE(FM)$ must hold, as the additional variables cannot increase the residual sum of sqaures.
+- The difference $SSE(RM) - SSE(FM)$ represents the increase in residual sum of squares due to fitting the reduced model. **If this difference is large, the RM is inadequate!**
+
+## Hpothesis Testing
+
+$$ F = \frac{[SSE(RM) - SSE(FM)]/(p+1-k)}{SSE(FM)/(n-p-1)}$$
+
+\medskip
+
+- The ratio above is called the statistic for the **F-Test**.
+- We divide  SSE(FM) and the discussed difference by their respective degrees of freedom to compensate for differences in number of parameters and ensure that the ratio follows a standard statistical distribution (F-distribution).
+  + FM has $p$ parameters, hence $SSE(FM)$ has $n-p-1$ degrees of freedom
+  + RM has $k$ parameters, hence $SSE(RM)$ has $n-k$ degrees of freedom
+  + $SSE(RM)-SSE(FM)$ has $(n-k)-(n-p-1)=p+1-k$ degrees of freedom
+  + Required F-distribution has $(n+k-1)$ and $(n-p-1)$ degrees of freedom
+
+## Hpothesis Testing
+
+- If the observed F-value is large in comparison to the tabulated value of F with the respective degrees of freedom, the result is significant at level $\alpha$.
+- This means that the reduced model is unsatisfactory and the null hypothesis (with the suggested values for the $\beta$'s) is rejected.
+- $H_0$ is rejected if
+$$F \geq F_{(p+1-k, \; n-p-1 \;;\alpha)} \quad\text{or}\quad p(F)\leq\alpha$$
+
+  + Here $F$ is the observed value of the F-test, $F_{(p+1-k, \; n-p-1 \;;\alpha)}$ is the appropriate critical value obtained from the F table and $p(F)$ is the p-value for the F-Test (probability that a random variable having an F-distribution and the stated DoF is greater than the observed F).
+
+## Hpothesis Testing: All Regression Coefficients equal to Zero
+$$
+\begin{array}{ccc}
+RM:\quad H_0: Y=\beta_0 & & +\epsilon \\
+FM:\quad H_1: Y=\beta_0 & + \beta_1X_1+\beta_2X_2+\ldots+\beta_pX_p & +\epsilon
+\end{array}
+$$
+
+- The residual sum of sqaures resulting from the full model is $SSE(FM)=SSE$. 
+- Because the estimate for $\beta_0$ in the reduced model is $\hat \beta_0 = \bar y$, the residuals sum of squares from the reduced model is $SSE(RM)=\sum (y_i- \bar y)^2=SST$. Additionally, $SST=SSR+SSE$ holds so that the F-test reduces to
+
+$$F=\frac{[SST-SSE]/p}{SSE/(n-p-1)}=\frac{SSR/p}{SSE/(n-p-1)} = \frac{MSR}{MSE}$$
+
+## Hpothesis Testing: All Regression Coefficients equal to Zero
+
+- That F-test essentially tests $H_0$ if the regression coefficients (excluding $\beta_0$) contribute to the explanation of the response variable.
+
+$$H_0: \beta_1 = \beta_2 =\ldots = \beta_p = 0$$
+
+- The hypothesis is equal to the multiple correlation coefficient $R$ being zero. So the same hypothesis can be checked using the following where $R_p$ denotes the multiple correlation coefficient, which is obtained from fitting a model to $n$ observations with $p$ predictor variables (+ intercept)
+
+$$F=\frac{R_p^2/p}{(1-R_p^2)/(n-p-1)}$$
+
+\pause
+\begin{alertblock}{Your turn}
+What is $H_1$?
+\end{alertblock}
+
+## Example
+
+```{r, size="tiny"}
+mod <- lm(Y ~ 1 + X1 + X2 + X3 + X4 +X5 + X6, data=P060)
+summary(mod)
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+\small
+Calculate $F$ and perform the F-test to test if all regression coefficients $\beta_1,\ldots,\beta_6$ are equal to zero. Use $\alpha=0.05$. \\
+\medskip
+\kariert[4mm]{12}
+\end{alertblock}
+\end{textblock}
+
+## Predictions
+
+\small
+
+As with simple linear regression multiple linear regression can be used to either predict the value of a responsen or the value of the mean response. The value $x_0$ to be inserted for the predcitor variables now consists of $p$ values so that $x_0=(x_{01},x_{02},\ldots,x_{0p})$.
+
+:::{.block}
+### Value of Response & Prediction Limits
+The predicted value $\hat y_0$ is given by $\hat y_0 = \hat\beta_0 + \hat\beta_1 x_{01}+ \hat\beta_2 x_{02}+\ldots+ \hat\beta_p x_{0p}$. Its confidence interval can be constructed by $\hat y_0 \pm t_{(n-p-1, \alpha/2)} \cdot s.e.(\hat y_0)$. 
+:::
+
+:::{.block}
+### Mean Response & Confidence Limits
+The predicted value $\hat\mu_0$ is given by $\hat\mu_0 = \hat\beta_0 + \hat\beta_1 x_{01}+ \hat\beta_2 x_{02}+\ldots+ \hat\beta_p x_{0p}$. The confidence interval for that prediction is given by $\hat\mu_0 \pm t_{(n-p-1, \alpha/2)} \cdot s.e.(\hat\mu_0)$.
+:::
+
+**Note:** The standard errors require matrix notation so that their derivation is not shown here. They can, however, be found in the recommended literature.
