@@ -1,6 +1,10 @@
 fig:unnamed-chunk-3
+fig:unnamed-chunk-4
+fig:unnamed-chunk-5
 prerequisites
 simple-linear-regression
+multiple-linear-regression
+regression-diagnostics
 factor-analysis
 foundations
 estimation
