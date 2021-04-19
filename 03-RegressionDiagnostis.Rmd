@@ -1,0 +1,6 @@
+# Regression Diagnostics
+ 
+```{r, echo = F, out.width="80%", fig.cap="[Download Slides](slides/03-Regressiondiagnostics.pdf)"}
+knitr::include_graphics("slides/gifs/03-RegressionDiagnostics.gif")
+```
+
