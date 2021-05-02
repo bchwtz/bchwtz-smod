@@ -245,7 +245,7 @@ $$z_i = \frac{y_i - \bar{y}}{s_y} \quad\text{with}\quad s_y = \sqrt{\frac{\sum_{
 $$ Cor(Y,X) = \frac{1}{n-1}\sum_{i=1}^{n} (\frac{y_i - \bar{y}}{s_y})(\frac{x_i - \bar{x}}{s_x}) = \frac{Cov(Y,X)}{s_ys_x}$$
 
 - Calculating the covariance of the standardized values yields the correlation coefficient.
-- $Cov(Y,X)$ can be interpreted in two ways, either as
+- $Cor(Y,X)$ can be interpreted in two ways, either as
   + the covariance between two standardized variables or as
   + ratio betwee of the covariance to the standard deviations of the two variables
 - Opposed to the covariance, $Cor(Y,X)$ is scale invariant so that it is not affected by unit changes. It also satisfies $-1 \geq Cor(Y,X) \leq 1$ and therefore indicates **direction** and **strength**.
