@@ -61,7 +61,7 @@
 % Buchwitz addition
 % https://texwelt.de/fragen/2639/wie-kann-ich-kastchenpapier-zeichnen
 
-\newcommand\kariert[2][0.5cm]{%
+\newcommand\kariert[2][0.4cm]{%
    \begin{tikzpicture}[gray,step=#1]
      \pgfmathtruncatemacro\anzahl{(\linewidth-\pgflinewidth)/#1} % maximale Anzahl Kästchen pro Zeile
      \draw (0,0) rectangle (\anzahl*#1,#2*#1) (0,0) grid (\anzahl*#1,#2*#1);
