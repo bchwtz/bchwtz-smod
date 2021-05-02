@@ -386,7 +386,7 @@ $X_6$      Rate of advancing to better jobs\\
 \end{alertblock}
 \end{textblock}
 
-## Hpothesis Testing
+## Hypothesis Testing
 
 1. All the regression coefficients associated with the preditor variables are zero.
 2. Some of the regression coefficients are zero.
@@ -398,7 +398,7 @@ $X_6$      Rate of advancing to better jobs\\
 \bf We discuss a general approach for testing all stated hypotheses and illustrate that for testing if all regression coefficients are zero (option 1). Please see the recommended literature for the other options.
 \end{alertblock}
 
-## Hpothesis Testing
+## Hypothesis Testing
 
 - The model that contains all $p+1$ parameters will be referred to as the **full model** (FM).
 $$ \text{Full Model:}\quad Y = \beta_0 + \beta_1X_1 + \beta_2 X_2 + \ldots + \beta_p X_p + \epsilon$$
@@ -408,7 +408,7 @@ $$ \text{Full Model:}\quad Y = \beta_0 + \beta_1X_1 + \beta_2 X_2 + \ldots + \be
 - Subsequently we are going to test
 $$H_0:\text{Reduced model is adequate.} \quad\text{vs.}\quad H_1: \text{Full model is adequate.}$$
 
-## Hpothesis Testing
+## Hypothesis Testing
 
 - The main idea of the described approach is testing for **differences in goodness of fit** between the FM and RM. 
 - If the reduced model gives as good fit as the full model, the null hypothesis ($H_0:$ Reduced model is adequate) is not rejected.
@@ -416,13 +416,13 @@ $$H_0:\text{Reduced model is adequate.} \quad\text{vs.}\quad H_1: \text{Full mod
 
 $$SSE(FM) = \sum(y_i - \hat y_i)^2 \quad\quad SSE(RM) = \sum(y_i - \hat y_i^*)^2$$
 
-## Hpothesis Testing
+## Hypothesis Testing
 
 - In the full model there are $p+1$ regression parameters ($\beta_0,\beta_1,\ldots,\beta_p$) that need to be estimated. Lets suppose that the reduced model contains $k$ distinct parameters.
 - $SSE(RM) \geq SSE(FM)$ must hold, as the additional variables cannot increase the residual sum of sqaures.
 - The difference $SSE(RM) - SSE(FM)$ represents the increase in residual sum of squares due to fitting the reduced model. **If this difference is large, the RM is inadequate!**
 
-## Hpothesis Testing
+## Hypothesis Testing
 
 $$ F = \frac{[SSE(RM) - SSE(FM)]/(p+1-k)}{SSE(FM)/(n-p-1)}$$
 
@@ -435,7 +435,7 @@ $$ F = \frac{[SSE(RM) - SSE(FM)]/(p+1-k)}{SSE(FM)/(n-p-1)}$$
   + $SSE(RM)-SSE(FM)$ has $(n-k)-(n-p-1)=p+1-k$ degrees of freedom
   + Required F-distribution has $(n+k-1)$ and $(n-p-1)$ degrees of freedom
 
-## Hpothesis Testing
+## Hypothesis Testing
 
 - If the observed F-value is large in comparison to the tabulated value of F with the respective degrees of freedom, the result is significant at level $\alpha$.
 - This means that the reduced model is unsatisfactory and the null hypothesis (with the suggested values for the $\beta$'s) is rejected.
@@ -444,7 +444,7 @@ $$F \geq F_{(p+1-k, \; n-p-1 \;;\alpha)} \quad\text{or}\quad p(F)\leq\alpha$$
 
   + Here $F$ is the observed value of the F-test, $F_{(p+1-k, \; n-p-1 \;;\alpha)}$ is the appropriate critical value obtained from the F table and $p(F)$ is the p-value for the F-Test (probability that a random variable having an F-distribution and the stated DoF is greater than the observed F).
 
-## Hpothesis Testing: All Regression Coefficients equal to Zero
+## Hypothesis Testing: All Regression Coefficients equal to Zero
 $$
 \begin{array}{ccc}
 RM:\quad H_0: Y=\beta_0 & & +\epsilon \\
@@ -457,7 +457,7 @@ $$
 
 $$F=\frac{[SST-SSE]/p}{SSE/(n-p-1)}=\frac{SSR/p}{SSE/(n-p-1)} = \frac{MSR}{MSE}$$
 
-## Hpothesis Testing: All Regression Coefficients equal to Zero
+## Hypothesis Testing: All Regression Coefficients equal to Zero
 
 - That F-test essentially tests $H_0$ if the regression coefficients (excluding $\beta_0$) contribute to the explanation of the response variable.
 
