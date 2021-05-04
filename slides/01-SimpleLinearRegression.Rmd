@@ -108,7 +108,7 @@ $$ Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \ldots \beta_p X_p + \epsilon $$
 - `Agr`: Percentage of land area currently in agricultural use
 - `Forest`: Percentage of forest land
 - `Rsdntial`: Percentage of land area in residential use
-- `ConIndl`: Percentage of land area in either commercial or industrial use
+- `ComIndl`: Percentage of land area in either commercial or industrial use
 
 ```{r}
 head(P010)
