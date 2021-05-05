@@ -279,7 +279,7 @@ mod
 
 ```{r, results='asis'}
 mod <- lm(Y ~ 1 + X1 + X2, data=P103)
-stargazer::stargazer(mod, header=FALSE, single.row = T)
+stargazer::stargazer(mod, header=F, single.row = T)
 ```
 
 ## Model Presentation: Texreg

@@ -1,0 +1,214 @@
+---
+title: "Statistical Modeling"
+author: "CH.4 - Qualitative Variables"
+date: "SS 2021 || Prof. Dr. Buchwitz"
+output:
+  beamer_presentation:
+    fig_width: 8
+    fig_height: 5
+    highlight: tango
+    theme: metropolis
+    includes:
+      in_header: header.tex
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE, size="scriptsize", 
+                      fig.align = "center")
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+
+## Load Data
+load("~/sciebo/courses/bchwtz-smod/nongit/RABE5.RData")
+library(equatiomatic)
+library(car)
+library(olsrr)
+library(GGally)
+library(stargazer)
+library(texreg)
+```
+
+
+# Organizational Information
+
+## Course Contents
+
+| Session   | Topic                   |
+| --------- |:------------------------|
+|  1        | Simple Linear Regression     | 
+|  2        | Multiple Linear Regression   |
+|  3        | Regression Diagnostics       |
+|  4        | Qualitative Variables as Predictors |
+|  5        | Transformation of Variables |
+|  6        | Weighted Least Squares |
+|  7        | Correlated Errors |
+|  8        | Analysis of Collinear Data |
+|  9        | Working with Collinear Data  |
+| 10        | Variable Selection Procedures |
+| 11        | Logistic Regression |
+| 12        | Further Topics |
+
+# Qualitative Variables as Predictors
+
+## Introduction
+
+- Qualitative or categorical variables (such as gender, marital status, etc) are useful predictors and are usually called **indicator** or **dummy variables**.
+- Those variables usually only take two values, 0 and 1, which signify that the observation belongs to one of two possible categories.
+- The numerical values of indicator variables**do not reflect quantitative ordering**.
+- **Example Variable:** Gender, coded as 1 for *female* and 0 for *male*.
+- Indicator variables can also be used in a regression equation to distinguish between three or more groups.
+- The response variable is stil a quantiative continuous in all discussed cases.
+
+## Example: Salary Survey Data
+
+```{r, size="tiny"}
+P130
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+\small
+Salary survey of computer professionals with objective to identify and quantify variables that determine salary differentials.\\
+$S$      Salary (Response) \\
+$X$      Experience, measured in years\\
+$E$      Education, 1 (High School/HS), 2 (Bachelor/BS), 3 (Advanced Degree/AD)\\
+$M$      Management 1 (is Manager), 0 (no Management Responsibility)
+\end{alertblock}
+\end{textblock}
+
+## Example: Salary Survey Data
+
+- **Experience:** We assume linearity, which means that each additional year is worth a fixed salary increment. 
+- **Education:** Can be used in a linear or categorial form.
+  + Using the the variable in its raw form would assume that each step up in education is worth a fixed increment in salary. This may be too restrictive.
+  + Using education as categorical variable can be done by defining **two indicator variables**. This allows to pick up the effect of education wether it is linear or not.
+- **Management:** Is also an indicator variable, that allows to distinguish between management (1) an regular staff positions (0).
+
+## Indicator Variables
+
+When using indicator variables to represent a set of categroies, the number of these variables required is **one less than the number of categories**. For *education* we can create two indicators variables:
+
+$$
+E_{i1}=
+\begin{cases}
+1, \text{if the i-th person is in the HS category}\\
+0, \text{otherwise}.
+\end{cases}
+$$
+\smallskip
+
+$$
+E_{i2}=
+\begin{cases}
+1, \quad \text{if the i-th person is in the BS category}\\
+0, \quad \text{otherwise}.
+\end{cases}
+$$
+\bigskip
+
+These two variables allow representing the three groups (HS, BS, AD).
+\center
+HS: $E_1=1, E_2=0$, BS: $E_1=0,E_2=1$, AD: $E_1=0,E_2=0$
+
+## Indicator Variables
+
+- The regression equation from the Salary Survey Data is:
+
+$$ S = \beta_0 + \beta_1 X + \gamma_1E_1 + \gamma_2E_2 + \delta_1M + \epsilon$$
+
+\pause \bigskip
+
+- There is a different valid regression equation for each of the six (three education and two managmeent) categories.
+
+Category | $E$ | $M$ | Regression Equation
+--- | --- | --- | ---
+1 | 1 | 0 | $S=(\beta_0 + \gamma_1) \quad + \beta_1 X + \epsilon$
+2 | 1 | 1 | $S=(\beta_0 + \gamma_1 + \delta_1) + \beta_1 X + \epsilon$
+3 | 2 | 0 | $S=(\beta_0 + \gamma_2) \qquad + \beta_1 X + \epsilon$
+4 | 2 | 1 | $S=(\beta_0 + \gamma_2 + \delta_1) + \beta_1 X + \epsilon$
+5 | 3 | 0 | $S= \beta_0 \qquad\quad + \beta_1 X + \epsilon$
+6 | 3 | 1 | $S=(\beta_0 + \delta_1) \quad + \beta_1 X + \epsilon$
+
+## Indicator Variables
+
+```{r, size="tiny"}
+d <- P130
+d$E1 <- as.numeric(d$E == 1)
+d$E2 <- as.numeric(d$E == 2)
+mod <- lm(S ~ 1 + X + E1 + E2 + M, data=d)
+summary(mod)
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+Interpret the regression coefficients. Assume that the residual patterns are satisfactory. 
+\end{alertblock}
+\end{textblock}
+
+## Model Comparison
+
+```{r, results='asis', echo=F}
+mod1 <- lm(S ~ 1 + X + E1 + E2 + M, data=d)
+mod2 <- lm(S ~ 1 + X + E       + M, data=d)
+stargazer::stargazer(mod1, mod2, header=F, single.row = T)
+```
+
+
+## Regression Diagnostics
+
+**Before we continue we check the residuals**
+
+1) Residuals vs. Years of Experience
+2) Residuals vs. Categories from Dummys
+
+## Regression Diagnostics
+
+```{r, fig.height=4}
+plot(x = d$X, y = rstandard(mod), pch=19,
+     ylab="Residuals", xlab = "X",
+     main = "Standardized Residuals vs. Years of Experience (X)")
+```
+
+## Regression Diagnostics
+
+```{r, fig.height=4}
+d$cat <- factor((paste0("E=",d$E,"&M=",d$M)))
+plot(x = as.numeric(d$cat), y = rstandard(mod), pch=19, xaxt="n",
+     ylab="Residuals", xlab = "Category",
+     main = "Standardized Residuals vs. Education-Management Category")
+axis(1,at=1:6,labels=levels(d$cat))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
