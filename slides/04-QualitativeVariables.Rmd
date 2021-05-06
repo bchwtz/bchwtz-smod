@@ -350,7 +350,7 @@ $$
 \begin{array}{lcl}
 \text{Model 1 (Pooled):} & \quad & y_{ij}=\beta_0+\beta_1x_{ij}+\epsilon_{ij}  \\
 \text{Model 2 (Minority):} & \quad & y_{i1}=\beta_{01}+\beta_{11}x_{i1}+\epsilon_{i1} \\
-\text{Model 2 (non Minority):} & \quad & y_{i2}=\beta_{02}+\beta_1x_{12}+\epsilon_{i2}
+\text{Model 2 (non Minority):} & \quad & y_{i2}=\beta_{02}+\beta_{12}x_{i2}+\epsilon_{i2}
 \end{array}
 $$
 
@@ -385,7 +385,8 @@ points(race$TEST,race$JPERF, pch=19)
 mod1  <- lm(JPERF ~ 1 + TEST, data=P140)
 mod2r <- lm(JPERF ~ 1 + TEST, data=race)
 mod2w <- lm(JPERF ~ 1 + TEST, data=white)
-
+mod3  <- lm(JPERF ~ 1 + TEST + RACE*TEST, data=P140)
+  
 abline(mod1, col="red")
 abline(mod2r, col="black")
 abline(mod2w, col="lightgrey")
@@ -418,8 +419,69 @@ segments(mod2w_x,0,mod2w_x,y,col="blue",lty="dashed")
 \begin{textblock}{4.6}(7.5,1)
 \begin{alertblock}{}
 \tiny
-When different models are required for the groups, this would imply that the required score in the preemployment test that is needed to result in (minimum) job performance needs to distinguished by group (vertical dashed lines).
+When different models are required for the groups, this would imply that the required score in the preemployment test that is needed to result in (minimum) job performance (horizontal dashed line) needs to distinguished by group (vertical dashed lines).
 \end{alertblock}
 \end{textblock}
+
+## Models with different Slopes and different Intercepts
+
+- What we want to test for the Preemployment Test data is for differences in intercept and slope using the following Null.
+
+$$H_0:\beta_{11}=\beta_{12},\beta_{01}=\beta_{02}$$
+
+\medskip
+- This test can be performed using an **interaction term** by using a variable $z_{ij}$ that takes the value 1 if an individual is part of a minority group and 0 otherwise. This leads to two relevant models:
+
+
+$$
+\begin{array}{lcl}
+\text{Model 1 (Pooled):} & \quad & y_{ij}=\beta_0+\beta_1x_{ij}+\epsilon_{ij}  \\
+\text{Model 3 (Interaction):} & \quad & y_{ij}=\beta_{0}+\beta_{1}x_{ij}+\gamma z_{ij}+\delta (z_{ij}\cdot x_{ij})+\epsilon_{ij} \\
+\end{array}
+$$
+
+\medskip
+- This model is **equivalent** to the previously discussed Model 2. 
+
+## Models with different Slopes and different Intercepts
+
+```{r, echo=F, results="asis"}
+texreg::texreg(list(mod1,mod2r,mod2w,mod3),
+               custom.model.names = c("Pooled","Minority","White","Interaction" ),
+               custom.header=list("Model 1"=1,"Model 2"=2,"Model 2"=3,"Model 3"=4),
+               table = T, caption = "")
+```
+
+- Model 1 can be seen as a restriced verison (RM) of model 3,  the full model (FM), with $\gamma=\delta=0$.
+
+
+## Models with different Slopes and different Intercepts
+
+- The framework using the models as FM and RM allows us to use the $F$-Test for comparison.
+
+$$F=\frac{[SSE(RM)-SSE(FM)]/2}{SSE(FM)/16}$$
+
+
+```{r}
+(SSE_RM <- sum(residuals(mod1)^2))
+(SSE_FM <- sum(residuals(mod3)^2))
+(F_stat <- ((SSE_RM - SSE_FM)/2)/(SSE_FM/16))
+pf(F_stat, df1=2, df2=16, lower.tail=FALSE)
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+\small
+Interpret the F-Test.
+\end{alertblock}
+\end{textblock}
+
+
+
+
+
+
+
+
 
 
