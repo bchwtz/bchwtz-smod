@@ -323,7 +323,7 @@ A dataset may consists of **two or more distinct subsets**, which may require in
   3. the models have the same slope but different intercepts.
 
 - Time Series Data
-  1. Seasonality
+  1. Calendar Effects, e.g. Seasonality
   2. Stability of regression parameters over time
 
 ## Example: Preemployment Test
@@ -452,8 +452,16 @@ texreg::texreg(list(mod1,mod2r,mod2w,mod3),
                table = T, caption = "")
 ```
 
-- Model 1 can be seen as a restriced verison (RM) of model 3,  the full model (FM), with $\gamma=\delta=0$.
+- Model 1 can be seen as a restriced version (RM) of model 3,  the full model (FM), with $\gamma=\delta=0$.
 
+## Models with different Slopes and different Intercepts
+
+```{r, fig.height=4}
+df <- cbind(P140,res = rstandard(mod3))
+plot(x=df$TEST, y=df$res,
+     ylab="Residuals", xlab="Preemployment Test Score")
+points(df$TEST[df$RACE == T], df$res[df$RACE == T],pch=19)
+```
 
 ## Models with different Slopes and different Intercepts
 
@@ -473,15 +481,78 @@ pf(F_stat, df1=2, df2=16, lower.tail=FALSE)
 \begin{alertblock}{Your turn}
 \small
 Interpret the F-Test.
+
+Can you conclude that the relationship is different for the two groups, so that two different equations (intercept + slope) are required?
 \end{alertblock}
 \end{textblock}
 
+## Models with same Slope and different Intercepts
 
+- Assuming we have a reason to believe that only the intercepts for the two groups are different can be achieved using the indicator variable (and omitting the interaction term).
 
+$$
+\begin{array}{lcl}
+\text{Model 1 (Pooled):} & \quad & y_{ij}=\beta_0+\beta_1x_{ij}+\epsilon_{ij}  \\
+\text{Model 4 (Indicator only):} & \quad & y_{ij}=\beta_{0}+\beta_{1}x_{ij}+\gamma z_{ij}+ \cancel{\delta (z_{ij}\cdot x_{ij})}+\epsilon_{ij} \\
+\end{array}
+$$
 
+- In the case where $z_{ij}=1$ (which indicates the non-minority group) the coefficient $\gamma$ can be added to the intercept $\beta_0$ to obtain the effective intercept for that respecitve group.
 
+- The resulting models represent **two parallel lines** (same slopes) with intercepts $\beta_0$ and $\beta_0 + \gamma$.
 
+## Models with same Slope and different Intercepts
 
+```{r}
+mod4  <- lm(JPERF ~ 1 + TEST + RACE, data=P140)
+```
 
+- Significance can be tested using the $F$-Test. As the FM and RM differ by one parameter, results are eqauivalent to the $t$-Test.
 
+```{r, echo=F, results="asis"}
+texreg::texreg(list(mod1,mod2r,mod2w,mod3,mod4),
+               custom.model.names = c("Pooled","Minority","White","Interaction","Indicator" ),
+               custom.header=list("Model 1"=1,"Model 2"=2,"Model 2"=3,"Model 3"=4,"Model 4"=5),
+               table = T, caption = "")
+```
 
+## Models with different Slopes and same Intercept
+
+- Finally we can hypothesize that the two groups have the same intercept $\beta_0$ but different slopes, which can be done by including only the interaction.
+
+$$
+\begin{array}{lcl}
+\text{Model 1 (Pooled):} & \quad & y_{ij}=\beta_0+\beta_1x_{ij}+\epsilon_{ij}  \\
+\text{Model 5 (Interaction only):} & \quad & y_{ij}=\beta_{0}+\beta_{1}x_{ij}+ \cancel{\gamma z_{ij}}+ \delta (z_{ij}\cdot x_{ij})+\epsilon_{ij} \\
+\end{array}
+$$
+
+```{r}
+mod5  <- lm(JPERF ~ 1 + TEST + RACE:TEST, data=P140)
+```
+
+- Inference for the $\delta$ can be carrioud out using the $F$-Test or the $t$-Test. The FM and RM again only differ by one parameter.
+
+## Systems of Regeression Equations
+
+- The final results for all discussed cases for the preemployment test data look like follows.
+
+\bigskip 
+
+```{r, echo=F, results="asis"}
+texreg::texreg(list(mod1,mod2r,mod2w,mod3,mod4,mod5),
+               custom.model.names = c("Pooled","Minority","White","Full Interaction","Indicator","Interaction"),
+               custom.header=list("Model 1"=1,"Model 2"=2,"Model 2"=3,"Model 3"=4,"Model 4"=5,"Model 5"=6),
+               table = T, caption = "")
+```
+
+## Time Series Data
+
+- Another interesting field of study is temporal structure in the data, which could fill a whole course by itself. Therefore we only briefly look at two ideas.
+
+1) **Calendar Effects, e.g. Seasonality**
+  + Can be modeled by including time as regressor, e.g. in the form of (mulitple) indicators for e.g. Week/Month/Quarter/Year
+  + The number of indicator variables is $m-1$ where $m$ is the frequency of the time effects (e.g. $m=4$ for Quarters).
+
+2) **Stability of Parameters over Time**
+  + By combining inidcator and interaction terms one can model intertemporal and interspatial relationships. Insignifcance of the interactions with all indicators then provices evidence stability over time.
