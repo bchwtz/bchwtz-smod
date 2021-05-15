@@ -1,0 +1,60 @@
+---
+title: "Statistical Modeling"
+author: "CH.6 - Weighted Least Squares"
+date: "SS 2021 || Prof. Dr. Buchwitz"
+output:
+  beamer_presentation:
+    fig_width: 8
+    fig_height: 5
+    highlight: tango
+    theme: metropolis
+    includes:
+      in_header: header.tex
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE, size="scriptsize", 
+                      fig.align = "center")
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+
+## Load Data
+load("~/sciebo/courses/bchwtz-smod/nongit/RABE5.RData")
+library(equatiomatic)
+library(car)
+library(olsrr)
+library(GGally)
+library(stargazer)
+library(texreg)
+```
+
+
+# Organizational Information
+
+## Course Contents
+
+| Session   | Topic                   |
+| --------- |:------------------------|
+|  1        | Simple Linear Regression     | 
+|  2        | Multiple Linear Regression   |
+|  3        | Regression Diagnostics       |
+|  4        | Qualitative Variables as Predictors |
+|  5        | Transformation of Variables |
+|  6        | Weighted Least Squares |
+|  7        | Correlated Errors |
+|  8        | Analysis of Collinear Data |
+|  9        | Working with Collinear Data  |
+| 10        | Variable Selection Procedures |
+| 11        | Logistic Regression |
+| 12        | Further Topics |
+
+# Weighted Least Squares
+
+## Introduction
+
+- Data 
+

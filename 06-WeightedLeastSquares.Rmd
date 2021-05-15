@@ -1,0 +1,6 @@
+# Weighted Least Squares
+ 
+```{r, echo = F, out.width="80%", fig.cap="[Download Slides](slides/06-WeightedLeastSquares.pdf)"}
+knitr::include_graphics("slides/gifs/06-WeightedLeastSquares.gif")
+```
+
