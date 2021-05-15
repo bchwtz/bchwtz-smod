@@ -1,0 +1,503 @@
+---
+title: "Statistical Modeling"
+author: "CH.5 - Transformations"
+date: "SS 2021 || Prof. Dr. Buchwitz"
+output:
+  beamer_presentation:
+    fig_width: 8
+    fig_height: 5
+    highlight: tango
+    theme: metropolis
+    includes:
+      in_header: header.tex
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE, size="scriptsize", 
+                      fig.align = "center")
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+
+## Load Data
+load("~/sciebo/courses/bchwtz-smod/nongit/RABE5.RData")
+library(equatiomatic)
+library(car)
+library(olsrr)
+library(GGally)
+library(stargazer)
+library(texreg)
+```
+
+
+# Organizational Information
+
+## Course Contents
+
+| Session   | Topic                   |
+| --------- |:------------------------|
+|  1        | Simple Linear Regression     | 
+|  2        | Multiple Linear Regression   |
+|  3        | Regression Diagnostics       |
+|  4        | Qualitative Variables as Predictors |
+|  5        | Transformation of Variables |
+|  6        | Weighted Least Squares |
+|  7        | Correlated Errors |
+|  8        | Analysis of Collinear Data |
+|  9        | Working with Collinear Data  |
+| 10        | Variable Selection Procedures |
+| 11        | Logistic Regression |
+| 12        | Further Topics |
+
+# Transformations
+
+## Introduction
+
+- Data do not always come in suitable form so that they can be analysed right away and often need to be transformed before carrying out an analysis.
+- Transformations are necessary because the original variables of the model using these variables, violates one or more of the standard regression assumptions. 
+- Transformations are usually applied to accomplish objectives such as to **ensure linearity**, to **achieve normality** or to **stabilize the variance**. 
+- It is common practice to to fit a linear regression model to the transformed rather than the original variables.
+
+## Linearity and Non-Linearity
+
+- As mentioned before we consider a model to be linear when the parameters in the model enter in a linear fashion, even if the predictors occur nonlinearily. **All following models are linear.**
+
+$$
+\begin{array}{cl}
+Y = & \beta_0 + \beta_1 X + \epsilon\\
+Y = & \beta_0 + \beta_1 X + \beta_2 X^2 + \epsilon\\
+Y = & \beta_0 + \beta_1 log(X) + \epsilon\\
+Y = & \beta_0 + \beta_1 \sqrt{X} + \epsilon\\
+\end{array}
+$$
+
+\medskip
+- The following model is **non-linear** as the regression parameter $\beta_1$ does not enter linearily.
+
+$$
+Y=\beta_1 + e^{\beta_1 X} + \epsilon
+$$
+
+## Transformations
+
+**Transformations may be necessary for a variety of reasons:**
+
+1. Theoretical considerations may specify that the relationship between two variables is nonlinear. 
+2. The response variable $Y$ may have a probability distribution whose variance is related to the mean. When relating $Y$ and $X$, then the variance of $Y$ will change with $X$. The distribution of $Y$ is often non-normal. This invalidates the standard tests of significance. The unqueal variance also leads to inefficient (not smallest variance) estimates of the error term. Transformations that stabilize variances are coincidentically also good normalizing transforms. 
+3. When there is no reason to suspect that a transformation is required, the evicence to apply a transformation comes from inspecting the residuals from a fit with the original variables.
+
+## Transformations to achieve Linearity
+
+- One of the standard assumptions in regression analysis is the linearity of the formed model. 
+- When analyzing the scatter plot of $Y$ against $X_j$ data may appear to be nonlinear. 
+- The following transformations can be chosen based on the pattern of the Y-X-Scatterplot to linearize the realtionship so that linear regression can be applied.
+
+## Transformations to achieve Linearity
+
+```{r, echo=F}
+par(mfrow=c(2,4),pty="s")
+a <- 1
+x <- seq(0, 4, length.out = 10000)
+
+## Figure 6.1 a
+
+y1 <- a*x^2
+y2 <- a*x^1
+y3 <- a*x^0.5
+
+plot(NA, xlim=c(0,4), ylim=c(0,4), type="l", ylab="Y", xlab="X")
+mtext("(a)", line = 0.5)
+z <- sapply(list(y1,y2,y3), function(y,x){lines(x=x,y=y)},x=x)
+title("Type 1", line = 2)
+
+## Figure 6.2 a
+
+y1 <- a*exp(1*x)
+plot(x, y1, xlim=c(0,4), ylim=c(0,50), type="l", ylab="Y", xlab="X")
+mtext("(a)", line = 0.5)
+title("Type 2", line = 2)
+
+## Figure 6.3 a
+
+y1 <- a + 3*log(x)
+plot(x, y1, xlim=c(0,4), ylim=c(-20,5), type="l", ylab="Y", xlab="X")
+mtext("(a)", line = 0.5)
+title("Type 3", line = 2)
+
+## Figure 6.4 a
+
+plot(NA, xlim=c(1,3), ylim=c(-30,30), type="l", ylab="Y", xlab="X")
+a <- -1; b <- -2; x <- seq(0,2,length.out = 1000); y <- x / (a*x-b); lines(x,y)
+a <-  1; b <-  2; x <- seq(0,2,length.out = 1000); y <- x / (a*x-b); lines(x,y)
+a <-  1; b <-  2; x <- seq(2,4,length.out = 1000); y <- x / (a*x-b); lines(x,y)
+a <- -1; b <- -2; x <- seq(2,4,length.out = 1000); y <- x / (a*x-b); lines(x,y)
+mtext("(a)", line = 0.5)
+title("Type 4", line = 2)
+
+# Restore Vars
+a <- 1; x <- seq(0, 4, length.out = 10000)
+
+## Figure 6.1 b
+
+y1 <- a*x^-2
+y2 <- a*x^-1
+y3 <- a*x^-0.5
+
+plot(NA, xlim=c(0,4), ylim=c(0,4), type="l", ylab="Y", xlab="X")
+mtext("(b)", line = 0.5)
+z <- sapply(list(y1,y2,y3), function(y,x){lines(x=x,y=y)},x=x)
+
+## Figure 6.2 b
+
+y1 <- a*exp(-1*x)
+plot(x, y1, xlim=c(0,4), ylim=c(0,1), type="l", ylab="Y", xlab="X")
+mtext("(b)", line = 0.5)
+
+## Figure 6.3 b
+
+y1 <- a + -3*log(x)
+plot(x, y1, xlim=c(0,4), ylim=c(-5,20), type="l", ylab="Y", xlab="X")
+mtext("(b)", line = 0.5)
+
+## Figure 6.3 b
+
+a <- 0.1; b <- 4
+x <- seq(-1,1,length.out = 1000)
+y <- exp(a+b*x)/(1+exp(a+b*x))
+plot(x,y, xlim=c(-1,1), ylim=c(0,1), type="l", ylab="Y", xlab="X")
+mtext("(b)", line = 0.5)
+```
+
+## Transformations to achieve Linearity
+
+| Function | Transformation | Linear Form | Type |
+|-----|--------|------|---|
+|$Y=\alpha X^\beta$| $Y'=log(Y),\; X'=log(X)$ | $Y'=log(\alpha) + \beta X'$ | Type 1 | 
+|$y=\alpha e^{\beta X}$ | $Y'=ln(Y)$ | $Y'=ln(\alpha + \beta X)$ | Type 2 |
+|$Y=\alpha + \beta log(X)$ | $X'= log(X)$ | $Y =\alpha + \beta X'$ | Type 3  |
+|$Y=\frac{X}{\alpha X-\beta}$ | $Y'=\frac{1}{Y},\; X'=\frac{1}{X}$ | $Y'=\alpha - \beta X'$ | Type 4 a |
+|$Y=\frac{e^{\alpha + \beta X}}{1+e^{\alpha + \beta X}}$ | $Y'=ln(\frac{Y}{1-Y})$ | $Y'=\alpha + \beta X$ | Type 4 b |
+
+\bigskip
+\begin{alertblock}{}\large
+Not every curvature is linearizable! Depending on the observed patterns it may be necessary to choose a different estimation method, which we do not discuss here.
+\end{alertblock}
+
+## Example: Bacteria Data
+
+```{r}
+P168
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+\small
+\texttt{Nt}\;      Number of surviving bacteria after X-ray exposure of time t.\\
+\texttt{t}\;       Exposure time to X-rays in minutes.
+\end{alertblock}
+\end{textblock}
+
+## Example: Bacteria Data
+
+- The bacteria data was collected to test the "Single-Hit" Hypothesis. The underlying theory (not discussed) states that there is a single vital center in each bacteria that nets to be hit by a X-Ray to inactivate the organism.
+- If the theory is applicable the number of surviving bacteria $\eta_t$ should relate to the exposure time to X-ray $t$ by
+
+$$\eta_t = \eta_0 e^{\beta_1\cdot t}$$
+
+\bigskip
+- The parameters are $\eta_0$ and $\beta_1$ relate to pyhsical quantities. $\eta_0$ is the number of bacteria at the start of tehe experiment and $\beta_1$ is the desctruction (decay) rate.
+
+## Example: Bacteria Data
+
+- The relation between $\eta_t$ and $t$ cannot be estimated using OLS directly. Therefore we need to apply a transformation by taking logarithms of both sides
+
+$$ln(\eta_t)=ln(\eta_0 e^{\beta_1\cdot t})=ln(\eta_0)+\beta_1t=\beta_0 +\beta_1 t$$
+
+\bigskip
+- The presented equation is deterministic as it contains no error. Introducing the error in the linearized eqaution in an *additive* way, the (transfromed) error must occur in multiplicative form in the original equation ($\epsilon_t=ln(\epsilon_t')$).
+
+$$ln(\eta_t) = \beta_0 +\beta_1 t + \epsilon_t \quad\rightarrow\quad \eta_t = \eta_0 e^{\beta_1\cdot t}\epsilon_t'$$
+
+## Example: Bacteria Data
+
+```{r}
+mod1 <- lm(N_t ~ 1 + t, data = P168)      # Inadequate Model
+mod2 <- lm(log(N_t) ~ 1 + t, data = P168) # Adequate Model
+```
+
+```{r, results='asis'}
+texreg::texreg(list(mod1,mod2), custom.model.names = c("Nt","log(Nt)"))
+```
+
+## Example: Bacteria Data
+
+- The estimate of the intercept in the equation is the best linear unbiased estimate of $ln(\eta_0)$. Given we are interested in $\hat\beta_0$, the backtransformation $e^{\hat\beta_0}$ **is not an unbiased estimate of $\eta_0$!** 
+
+```{r}
+exp(coef(mod2)[1]) # Not an unbiased estimate!
+```
+
+- To obtain a (nearly) unbiased estimate the correction $\hat\eta_0 = exp(\hat\beta_0-\frac{1}{2}Var(\hat\beta_0))$ can be applied.
+
+```{r}
+exp(coef(mod2)[1] - 0.5 * coef(summary(mod2))[,"Std. Error"][1]^2)
+```
+
+## Example: Bacteria Data
+
+```{r, echo=F}
+par(mfrow=c(1,2))
+plot(P168$t, rstandard(mod1), xlab="Time (t)", main = "Residuals without \n Transformation")
+plot(P168$t, rstandard(mod2), xlab="Time (t)", main = "Residuals after \n Transformation")
+```
+
+## Transformations to stabilize Variance
+
+\center
+\Huge
+Heterescedasticity
+
+\bigskip
+\pause
+\normalsize
+
+###
+Constancy of error variance is one of the assumptions of least squares theory. If the error variance is not constant the error is said to be **heteroscedastic**. It is detected by graphs of the residuals against **all** predictors, which usually show a funnel (increase or decrease with $X$).
+
+## Heteroscedasticity
+
+```{r, echo=F, fig.height=6}
+set.seed(10)
+x <- seq(0.1,5,length.out = 100)
+y <- sapply(x, function(sd){rnorm(1,0,sd)})
+plot(x,y,ylim=c(-10,10), ylab="Residuals")
+```
+
+## Heteroscedasticity
+
+- Heteroscedasticity causes parameter estimates which lack precision in a theoretical sense. The estimated standard errors of the coefficients are often understated, giving a false sense of accuracy.
+- The assumed normal distribution has the property that its mean and variance independent in the sense that one is not a function of the other. This is not the case for e.g. the Binomial or Poisson distributions.
+- Heteroscedasticity can easily be removed by means of suitable transformations, given that the probability distribution of the response is known.
+- The discussed transformations **stabilize the variance** and make the distribution of the transformed variable **closer to the normal distribution**.
+
+## Example: Detection of heteroscedastic Errors
+
+```{r, size="tiny"}
+P176
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+\small
+\texttt{X}\;      Number of supervised workers.\\
+\texttt{Y}\;      Number of Supvervisors.
+\end{alertblock}
+\end{textblock}
+
+## Example: Detection of heteroscedastic Errors
+
+```{r, results='asis'}
+mod <- lm(Y ~ 1 + X, data=P176)
+texreg::texreg(mod)
+```
+
+## Example: Detection of heteroscedastic Errors
+
+```{r, echo=FALSE}
+par(mfrow=c(1,2))
+plot(P176$X, P176$Y, xlab="X", ylab="Y")
+abline(mod, col="red")
+
+plot(P176$X,rstandard(mod), xlab="X", ylab="Standardized Residuals")
+```
+
+## Removal of heteroscedastic Errors
+
+- In many applications unequal error variance is observed in a for where the variance increses when the predictor variable increases. 
+- Based on this empirical observation, we can hypothesize that the standard deviation of the residuals is **proportional** to $X$.
+
+$$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$$
+
+$$\text{with}\quad Var(\epsilon_i) = k^2 x_i^2 \quad\text{and}\quad k > 0$$
+
+## Removal of heteroscedastic Errors
+
+- Given a proportional relationship between the standard deviation and the predictor indicates that it is beneficial to divide both sides of the regression equation by $x_i$:
+
+$$\frac{y_i}{x_i} = \frac{\beta_0}{x_i} + \beta_1 + \frac{\epsilon_i}{x_i}$$
+
+\bigskip
+
+- Defining a new set of variables and coefficients
+$$ Y'=\frac{Y}{X},\quad X'=\frac{1}{X},\quad \beta_0'=\beta_1,\quad \epsilon'=\frac{\epsilon}{X}$$
+
+  yields the new following form:
+$$y_i' = \beta_0'+\beta_1'x_i'+\epsilon_i'$$
+
+## Removal of heteroscedastic Errors
+
+- For the transformde model the $Var(\epsilon_i') = k^2$. If our assumption about the error term fits the model properly, we must work with the transformed variables $Y/X$ (response) and $1/X$ (predictor).
+
+$$\text{Transformed:}\quad \frac{\hat Y}{X}=\hat\beta_0' + \frac{\hat\beta_1'}{X} \qquad\text{Original:}\quad \hat Y = \hat \beta_1'+\hat\beta_0'X$$
+
+## Removal of heteroscedastic Errors
+
+```{r, echo=FALSE}
+par(mfrow=c(1,2))
+
+mod1 <- lm(Y ~ 1 + X, data=P176)
+mod2 <- lm(I(Y/X) ~ 1 + I(1/X), data=P176)
+plot(P176$X,rstandard(mod1), xlab="X", ylab="Standardized Residuals", 
+     main="Before Transformation", ylim=c(-2,2))
+plot(1/P176$X,rstandard(mod2), xlab="1/X", ylab="Standardized Residuals", 
+     main="After Transformation", ylim=c(-2,2))
+```
+
+## Removal of heteroscedastic Errors
+
+```{r, size="tiny"}
+mod2 <- lm(I(Y/X) ~ 1 + I(1/X), data=P176)
+summary(mod2)
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Note}
+The results here are expressed in terms of the transfromed variables () so measures except the coefficient estimates (their SD, t-values, ...) like $R^2$ cannot simply be interpreted. 
+\end{alertblock}
+\end{textblock}
+
+## Weighted Least Squares
+
+- Linear regression models with heteroscedastic erros can also be fitted by a method called teh *weighted least squares* (WLS), ehtere parameter estimates are obtained by minimizing *wighted sum of squares** of residuals.
+- The weights in that case are chosen to be inversely proportional to the variance of the errors. In the discussed example, this means
+
+$$\text{WLS:}\quad \sum \frac{1}{x_i^2}(y_i-\beta_0-\beta_1 x_i)^2 \qquad\text{OLS:}\quad \sum (y_i-\beta_0-\beta_1 x_i)^2$$
+
+## Weighted Least Squares
+
+```{r, size="tiny"}
+mod.wls <- lm(Y ~ 1 + X, weights = 1/X^2, data=P176)
+summary(mod.wls)
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Note}
+Performing OLS on the transformed variables $Y/X$ and $1/X$ is equivalent to the shown WLS Model.
+\end{alertblock}
+\end{textblock}
+
+## Logarithmic Transformation 
+
+- The most widely used transformation is the logarithmic transformation, where $ln(Y)$ is used as response instead of $Y$.
+
+$$ln(y_i) = \beta_0 + \beta_1 x_i + \epsilon_i$$
+
+\bigskip
+- This transformation is particularly useful for variables, where the standard deviation is large compared to the mean.
+- Working on a **log scale** has the effect of dampening variability and reducing asymmetry and also reduces heteroskedasticity.
+- Results obtained on a log scale are sometimes **harder to interpret** than on the original scale and original variables.
+
+## Logarithmic Transformation 
+
+```{r, results="asis"}
+mod1 <- lm(log(Y) ~ 1 + X, data=P176)
+texreg::texreg(mod1, digits = 8, 
+               custom.model.names = "log(Y)")
+```
+
+## Logarithmic Transformation 
+
+```{r}
+plot(P176$X, rstandard(mod1), xlab="X")
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+What could you do to improve the residuals and get rid of the non-linearity that is clearly visible?
+\end{alertblock}
+\end{textblock}
+
+## Logarithmic Transformation 
+
+```{r, results="asis"}
+mod1 <- lm(log(Y) ~ 1 + X, data=P176)
+mod2 <- lm(log(Y) ~ 1 + X + I(X^2), data=P176)
+texreg::texreg(list(mod1,mod2), digits = 8, 
+               custom.model.names = c("log(Y)","log(Y)"))
+```
+
+## Logarithmic Transformation 
+
+```{r, echo=F}
+par(mfrow=c(1,2))
+plot(P176$X, rstandard(mod1), xlab="X", main="Without quadratic Term")
+plot(P176$X, rstandard(mod2), xlab="X", main="With quadratic Term")
+```
+
+## Logarithmic Transformation 
+
+- Residuals for the model $ln(y_i) = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \epsilon_i$ appear satisfactory. There is no appreance of heteroscedasticity or non-linearity in the residuals. 
+
+```{r, echo=F, fig.height=3}
+par(mfrow=c(1,3))
+plot(fitted(mod2), rstandard(mod2), xlab="Fitted")
+plot(P176$X, rstandard(mod2), xlab="X")
+plot(P176$X^2, rstandard(mod2), xlab=expression(X^2))
+title("Diagnostic Plots for Model with quadratic Term",outer=T, line = -1)
+```
+
+\begin{alertblock}{}
+Applying different transformation may yield mulitple acceptable candidates, which all may be used as final models.
+\end{alertblock}
+
+## Power Transformation
+
+- The common transformations $ln(Y)$, $1/Y$ and $\sqrt{Y}$ can be seen as special cases of the so called **power transformation**. 
+
+$$ Y^\lambda$$
+
+- It is also common to use the Box-Cox-Transformation $(Y^\lambda-1)/\lambda$ which approaches $log(Y)$ as $\lambda$ approaches 0.
+- Reciprocal ($\lambda=-1$), square root ($\lambda=0.5$) and logarithmic transformation ($\lambda=0$) can all be modeled within this framework.
+- Choosing transformations based on empirical evidence to achieve normality and/or to stabilize the error variance may require **experimentation** with different power transforms. 
+- Typical values for $\lambda$ are between -2 and 2 and should be sufficient for most practical use cases.
+
+## Example: Brain Data
+
+```{r, size = "tiny"}
+P184
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Your turn}
+\small
+\texttt{BrainWeight}\;     Brain Weight of the animal in grams.\\
+\texttt{BodyWeight}\;      Body Weight of the respective animal in kilograms.
+\end{alertblock}
+\end{textblock}
+
+## Example: Brain Data
+
+```{r, echo = F}
+plot(P184$BodyWeight, P184$BrainWeight, xlab="Body Weight (X)", ylab="Brain Weight (Y)",
+     main =  "Brain Weight (in grams) as function of Body Weight (in kilograms)")
+```
+
+## Power Transformation
+
+```{r, echo=F}
+par(mfrow=c(2,2))
+plot(P184$BodyWeight^0.5, P184$BrainWeight^0.5, xlab=expression(X^0.5), ylab=expression(Y^0.5))
+plot(log(P184$BodyWeight), log(P184$BrainWeight), xlab=expression(ln(X)), ylab=expression(ln(Y)))
+plot(P184$BodyWeight^-0.5, P184$BrainWeight^-0.5, xlab=expression(X^-0.5), ylab=expression(Y^-0.5))
+plot(P184$BodyWeight^-1, P184$BrainWeight^-1, xlab=expression(X^-1), ylab=expression(Y^-1))
+```
+
+## Power Transformation
+
+- The logarithmic transformation ($\lambda=0$) is the most appropriate one for the data. 
+- In the case of $\lambda=0$ the relationship looks linear, but three data points (dinosaurs) deviate from the other observations.
+- In the example the power tranformation has been applied to $X$ and $Y$ simultaneously and with the same value of $\lambda$. In practice i ma ybe more appropriate to raise each value to a different power, choose tha values **independelty** or transform only a single variable.
+- Heterescedasticity and non-linearity can be diagnsoed by checking the residuals of the model. The final model (with applied transformations) should not show evidence of heteroscedasticity or deterministic patterns.
