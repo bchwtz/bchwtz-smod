@@ -258,7 +258,7 @@ plot(P168$t, rstandard(mod2), xlab="Time (t)", main = "Residuals after \n Transf
 
 \center
 \Huge
-Heterescedasticity
+Heteroscedasticity
 
 \bigskip
 \pause
@@ -371,7 +371,7 @@ The results here are expressed in terms of the transfromed variables () so measu
 
 ## Weighted Least Squares
 
-- Linear regression models with heteroscedastic erros can also be fitted by a method called teh *weighted least squares* (WLS), ehtere parameter estimates are obtained by minimizing *wighted sum of squares** of residuals.
+- Linear regression models with heteroscedastic erros can also be fitted by a method called teh *weighted least squares* (WLS), ehtere parameter estimates are obtained by minimizing **weighted sum of squares** of residuals.
 - The weights in that case are chosen to be inversely proportional to the variance of the errors. In the discussed example, this means
 
 $$\text{WLS:}\quad \sum \frac{1}{x_i^2}(y_i-\beta_0-\beta_1 x_i)^2 \qquad\text{OLS:}\quad \sum (y_i-\beta_0-\beta_1 x_i)^2$$
@@ -499,5 +499,5 @@ plot(P184$BodyWeight^-1, P184$BrainWeight^-1, xlab=expression(X^-1), ylab=expres
 
 - The logarithmic transformation ($\lambda=0$) is the most appropriate one for the data. 
 - In the case of $\lambda=0$ the relationship looks linear, but three data points (dinosaurs) deviate from the other observations.
-- In the example the power tranformation has been applied to $X$ and $Y$ simultaneously and with the same value of $\lambda$. In practice i ma ybe more appropriate to raise each value to a different power, choose tha values **independelty** or transform only a single variable.
-- Heterescedasticity and non-linearity can be diagnsoed by checking the residuals of the model. The final model (with applied transformations) should not show evidence of heteroscedasticity or deterministic patterns.
+- In the example the power tranformation has been applied to $X$ and $Y$ simultaneously and with the same value of $\lambda$. In practice it may be more appropriate to raise each value to a different power, choose tha values **independelty** or transform only a single variable.
+- Heteroscedasticity and non-linearity can be diagnsoed by checking the residuals of the model. The final model (with applied transformations) should not show evidence of heteroscedasticity or deterministic patterns.

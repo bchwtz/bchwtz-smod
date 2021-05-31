@@ -30,6 +30,7 @@ library(olsrr)
 library(GGally)
 library(stargazer)
 library(texreg)
+library(gridExtra)
 ```
 
 
@@ -56,5 +57,361 @@ library(texreg)
 
 ## Introduction
 
-- Data 
+- Estimation using *weighted least squares* is equivalent to perfroming OLS on the transformed variables.
+- We discuss **WLS** as a method of dealing with heteroscedasticity of errors as well as an estimation method in its own (WLS performs better for e.g. fitiing *logistic models* or *dose-response-curves*).
+- WLS allows relaxing the assumption of equal error variance, so that the $\epsilon_i$'s are assumed to be **independently distributed with zero mean and $Var(\epsilon_i)=\sigma^2_i$** instead of $Var(\epsilon_i) = \sigma^2$.
+
+## Weighted Least Squares
+
+- Obtaining the **WLS estimates** of $\beta_0,\beta_1,\ldots,\beta_p$ requires minimizing
+
+$$\sum_{i=1}^n \omega_i (y_i - \beta_0 - \beta_1 x_{i1} - \ldots - \beta_p x_{ip})^2$$
+
+\bigskip
+- Usually the $\omega_i$ are weights that are inversely proportional to the variance of the residuals, like $\omega_i=1/\sigma_i^2$.
+- Any observation with a small weight will be severly discounted by WLS in determining the estimates of $\beta_0,\beta_1,\ldots,\beta_p$.
+- In the extreme case where $\omega_i=0$ the $i$-th observation will be excluded from the estimation process.
+
+## Two Step Estimation Approach
+
+- The approach we take here when estimating WLS is a **two step estimation** approach, which assumes that the weights $\omega$ are unknown.
+  1) We collect knowledge about the process that generates the data (DGP) and evidence from an **OLS** fit to detect the heteroscedastic problem. 
+  2) The **OLS** fit itself or the gathered evidence serves as basis for determining the weights $\omega$. Those weights are used in the **WLS** fit. 
+
+## Types of heteroscedastic models
+
+1) Variance proportional to a regressor
+2) Heterogeneity of variance as consequence of data collection
+3) Unknown source of heteroscedasticity and empirical identification of the structure
+
+## Heteroscedastic Models
+
+```{r}
+mod.ols <- lm(Y ~ 1 + X, data=P176)
+plot(P176$X,rstandard(mod.ols), xlab = "X")
+```
+
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Data Description}
+\small
+\texttt{X}\;      Number of supervised workers.\\
+\texttt{Y}\;      Number of Supvervisors.
+\end{alertblock}
+\end{textblock}
+
+## Type 1: Heteroscedastic Models
+
+```{r}
+mod.wls <- lm(Y ~ 1 + X, weights = 1/X^2, data=P176)
+plot(P176$X,rstandard(mod.wls), xlab = "X")
+```
+
+## Type 1: Heteroscedastic Models
+
+- In the given example we argued that the variance of $\epsilon_i$ is proportional to the size of the establishment measured by $x_i^2$, so that $Var(\epsilon_i)=\sigma^2_i=k^2 x_i^2$, with $k>0$.
+
+- The same approach also works in multiple regression, given that the variance of the residuals is only affected by one of the predictors (e.g. $X_2$), the estimtes of the parameters are determined by minimizing:
+
+$$
+\sum_{i=1}^n \frac{1}{x^2_{i2}} (y_i-\beta_0-\beta_1 x_{i1} - \ldots -\beta_px_{ip})^2
+$$
+\medskip
+\begin{alertblock}{}\small
+All modern statistical packages provide WLS procedures. The transformation approach to WLS discussed int he previous chapter is to foster your understanding and (usually) not used when estimating models.
+\end{alertblock}
+
+
+## Type 2: Heteroscedastic Models
+
+- Another type of heterescedasticity often occurs in surveys, where the observations are **averages of individual sampling units** taken over distinct groups or clusters.
+- Due to the properties of the mean (which is a random variable) the variance is proportional to the square root of the sample size, on which the average is based, that is $\sigma_{\bar y_i}=\sigma/\sqrt{n_i}$. Here $\sigma$ is the standard deviation of $Y$ in the population.
+- This leads to $\omega_i=1/\sigma_i^2$ as weights for the WLS approach. 
+
+## Type 2: Heteroscedastic Models
+
+- The precision of measurement is the justification for weightig the observations in this fashion. Averages that are based on few observations (high variance) should play a smaller role in estimating the overall effect. 
+
+Estimation is then carried out by minimizing:
+
+$$
+\begin{array}{rc}
+S = & \sum_{i=1}^n \omega_i (y_i-\beta_0-\beta_1 x_{i1} - \ldots -\beta_px_{ip})^2\\
+  = & \sum_{i=1}^n \frac{1}{\sigma_i^2} (y_i-\beta_0-\beta_1 x_{i1} - \ldots -\beta_px_{ip})^2
+\end{array}
+$$
+
+As $\sigma^2_i = \sigma^2 / n_i$:
+
+$$
+\begin{array}{rc}
+  = & \sum_{i=1}^n n_i (y_i-\beta_0-\beta_1 x_{i1} - \ldots -\beta_px_{ip})^2\\
+\end{array}
+$$
+
+### Remember
+
+The value $x_{ij}$ is an average calculated based on $n_j$ observations!
+
+## Type 3: Heteroscedastic Models
+
+- We deal with heteroscedasticity by transformation of variables, where the transformations are constructed from information in the raw data. 
+- In the following only the indication for heteroscedasticity is drawn from the raw data and the strucutre is determined empirically. Therefore the estimation requires **two stages**.
+
+## Type 3: Heteroscedastic Models
+
+```{r, echo=F}
+n <- c(15,8,10,3,10)
+x <- rep(1:5, times=n)
+m <- c(6,4,2,0,1)*5
+s <- c(7,4,3,1,4)
+
+set.seed(1)
+y <- unlist(mapply(rnorm,mean=m,sd=s,n=n,SIMPLIFY = T))
+plot(x,y,  xaxt='n', yaxt='n')
+y_mean <- sapply(split(y,x), mean)
+points(unique(x),y_mean,col="red",pch=19)
+axis(1,at=1:5,labels=expression(x[1],x[2],x[3],x[4],x[5]))
+axis(2,at=y_mean,las=2,
+     labels=expression(bar(y)[1], bar(y)[2], bar(y)[3], bar(y)[4], bar(y)[5]))
+```
+
+
+## Type 3: Heteroscedastic Models
+
+- The regression model for the shown sample data could be stated as follows, where $Var(\epsilon_{ij}) = \sigma^2_j$.
+
+$$
+y_{ij} = \beta_0 + \beta_1 x_j + \epsilon_{ij} \quad\text{with } i=1,2,\ldots, n_j \text{ and } j=1,2,3,4,5
+$$
+
+- The observed residual for the $i$-th observation in the $j$-th group is $e_{ij} = y_{ij}  - \hat{y}_{ij}$. 
+- Adding and subtracting the mean of the response $\bar{y}_j$ reveals that the residual has two parts which occure beacuse of **pure error** and **lack of fit** respectively.
+
+$$
+e_{ij} = \underbrace{(y_{ij} - \bar{y}_j)}_\text{pure error} + \underbrace{(\bar{y}_j - \hat{y}_{ij})}_\text{lack of fit}
+$$
+
+## Type 3: Heteroscedastic Models
+
+- The weights for fitting using **WLS** can be determined based on the pure error so that they are inversely proportional to the variance in the group $\omega_{ij} = 1/s_j^2$.
+
+$$
+s^2_j=\sum_{i=1}^{n_j} (y_{ij} - \bar{y}_j)^2/(n_j - 1)
+$$
+
+\bigskip
+- The question what constitutes a group can only be answered in a specific setting and a plausible way to explore heteroscedasticity is by clustering observations according to prior, natural and meaninful associations (that are often already available as variable or can also be constructed with modest effort).
+
+
+## Example: Education Expenditure
+
+```{r, size="tiny"}
+P198
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Data Description}
+\small
+\texttt{Y}\;     Per capita expenditure on education projected for 1975.\\
+\texttt{X1}\;      Per capita income in 1973.\\
+\texttt{X2}\;      Number of residents per thousand unter 18 years of age in 1974.\\
+\texttt{X3}\;      Number of residents per thousand living in urban areas in 1970. \\
+\texttt{Region}\;  Geographic Region: (1) Northeast, (2) North Central, (3) South and (4) West. \\
+\end{alertblock}
+\end{textblock}
+
+## Example: Education Expenditure
+
+- The objective is to get the best representation of the relationship between **expenditure on education** ($Y$) and the other variables for all 50 states in the dataset.
+- The data are grouped in a *natural way*, by geographic region. 
+- Our assumption is that, qlthough the relationship is structurally the same for each region, the coefficients and residual variances may differ from region to region. 
+- The different variances constitute a case of heteroscedasticity that can be **treated directly in the analysis**.
+
+## Example: Education Expenditure
+
+$$
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \epsilon
+$$
+
+\bigskip
+- The model above is the model for the estimation. It should be noted that the data could be analyzed using indicator variables fo look for effects association with the regions. 
+- However, our objective here is to develop one relationship that can serve as the best representation for all regions and all states.
+- The goal is accomplished by taking regional differences into account through the **WLS** estimation process.
+
+## Example: Education Expenditure
+
+- We assume that there is a unique residual variance associated with each of the four regions. The variances are denoted as $(c_1 \sigma)^2$, $(c_2 \sigma)^2$, $(c_3 \sigma)^2$ and $(c_4 \sigma)^2$, where $\sigma$ is the common part and the $c_j$'s are unique to the regions. The regression coefficients should be determined by minimizing 
+
+$$
+S_\omega = S_1 + S_2 + S_3 + S_4
+$$
+
+- The individual sum of squares for each region $j = 1,2,3,4$ is given below:
+
+$$
+S_j = \sum_{i=1}^{n_j} \frac{1}{c^2_j} (y_i-\beta_0 - \beta_1 x_{i1} - \beta_2 x_{i2} - \beta_3 x_{i3})^2
+$$
+
+## Example: Education Expenditure
+
+The factors $1/c^2_j$ are the weights that determine how much influence each observation has in estimating the regression coefficients. The weighting scheme can be justified in two ways:
+
+1) Arguing that observations that are most erratic (large error variance) should have little influence in determinin gthe coefficients.
+2) The **WLS** approach allows *transforming the data* so that the residual variance is constant. This can be achieved by dividing $Y$, $X_1$, $X_2$ and $X_3$ by the appropriate $c_j$ and yields an error term, that is (in concept) also divided by $c_j$. The resulting residuals have common variance and the desired least squares properties.
+
+## Example: Education Expenditure
+
+- The values of the $c_j$'s are unknown and must be estimated in the same sense that $\sigma^2$ and the $\beta$'s must be estimated.
+- Basis for the estimation are the residuals from an **OLS** fit to the raw data, that are grouped togehter by region.
+
+$$
+\hat c^2_j = \frac{\hat \sigma_j^2}{\frac{1}{n}\sum_{i=1}^n e_i^2}
+$$
+
+\bigskip
+### 
+Before estimating the $c_j$'s, we check the residuals for obvious misspecification of the model.
+
+## Example: Education Expenditure
+
+```{r,size="tiny"}
+mod <- lm(Y ~ 1 + X1 + X2 + X3, data=P198)
+summary(mod)
+```
+
+## Example: Education Expenditure
+
+```{r, fig.height=4}
+par(mfrow=c(1,3))
+plot(fitted(mod), rstandard(mod), main="Residuals vs. fitted Values")
+plot(P198$Region, rstandard(mod), main="Residuals grouped by Region")
+plot(hatvalues(mod), main="Leverage Values")
+```
+
+## Example: Education Expenditure
+
+```{r, fig.height=4}
+par(mfrow=c(1,3))
+plot(P198$X1, rstandard(mod), main="Residuals vs. Predictor X1")
+plot(P198$X2, rstandard(mod), main="Residuals vs. Predictor X2")
+plot(P198$X3, rstandard(mod), main="Residuals vs. Predictor X3")
+```
+
+## Example: Education Expenditure
+
+```{r}
+olsrr::ols_plot_cooksd_chart(mod)
+```
+
+## Example: Education Expenditure
+
+```{r}
+olsrr::ols_plot_dffits(mod)
+```
+
+## Example: Education Expenditure
+
+- Observation 44 (UT = Utah) and Observation 49 (AK = Alaska) are high-leverage points.
+
+```{r}
+head(sort(hatvalues(mod), decreasing = T))
+```
+
+- Only AK has high leverage and is influential (see DFITS and Cooks Distancs plots). UT is only a high-leverage point without being influential.
+
+- The data is from **1975**, Alaska has a very small population and an oil revenue boom. We judge that the respective education budget is not strictly comparable to the other states due to the unique situation. Therefore we exclude Alaksa from the analysis.
+
+```{r}
+d <- P198[-49,] # Remove Alaska (AK)
+```
+
+## Example: Education Expenditure
+
+- After removing the outlier from the data and refitting an **OLS** model, the residuals can be used to estimate possible weights for the **WLS** estiation $c_j$. 
+
+```{r}
+d <- P198[-49,] # Remove Outlier
+mod.ols <- lm(Y ~ 1 + X1 + X2 + X3, data=d)
+
+res <- split(residuals(mod.ols), d$Region)
+sigma_sq <- sapply(res, function(e){sum(e^2)/(length(e)-1)})
+c_sq <- sigma_sq/(1/nrow(d)*sum(residuals(mod.ols)^2))
+w <- 1/c_sq
+knitr::kable(cbind(Region=1:4,n=sapply(res,length),sigma_sq, c=sqrt(c_sq), w), 
+             digits = 4, booktabs=T)
+```
+
+
+## Example: Education Expenditure
+
+- Below the complete code for the analysis is shown (somewhat redundant but hopefully useful for clarification).
+
+```{r}
+mod <- lm(Y ~ 1 + X1 + X2 + X3, data=P198)
+
+d <- P198[-49,] # Remove Outlier
+mod.ols <- lm(Y ~ 1 + X1 + X2 + X3, data=d)
+
+res <- split(residuals(mod.ols), d$Region)
+sigma_sq <- sapply(res, function(e){sum(e^2)/(length(e)-1)})
+d$sigma_sq <- rep(sigma_sq, times=sapply(res, length))
+
+w <- 1/(sigma_sq/(1/nrow(d)*sum(residuals(mod.ols)^2)))
+d$w <- rep(w, times=sapply(res, length))
+mod.wls <- lm(Y ~ 1 + X1 + X2 + X3, weights=w, data=d)
+```
+
+## Example: Education Expenditure
+
+```{r, results='asis'}
+texreg(list(mod, mod.ols, mod.wls), digits=3,
+       custom.model.names = c("OLS + Outlier", "OLS","WLS"))
+```
+
+## Example: Education Expenditure
+
+- R computes the $R^2$ in a different way for **WLS** models and employs a weighted mean instead of simply $R^2=[Cor(Y,\hat Y)]^2$.
+
+```{r}
+# R^2 for OLS and WLS modelas we defined it
+c(R2.ols=cor(d$Y, fitted(mod.ols))^2, R2.wls = cor(d$Y, fitted(mod.wls))^2)
+```
+
+- Only the $R^2_{\text{OLS}}$ is the same as in the output table.
+- For Details on how R calculates $R^2$ in the case of **WLS** have a look at the links [here](https://stats.stackexchange.com/questions/439590/how-does-r-compute-r-squared-for-weighted-least-squares), [here](https://stats.stackexchange.com/questions/83826/is-a-weighted-r2-in-robust-linear-model-meaningful-for-goodness-of-fit-analys/375752#375752) and [here](https://www.tandfonline.com/doi/abs/10.1080/00031305.1988.10475573).
+
+## Example: Education Expenditure
+
+```{r, echo=F}
+r.wls <- rstandard(mod.wls); r.ols <- rstandard(mod.ols)
+f.wls <- fitted(mod.wls); f.ols <- fitted(mod.ols)
+
+plot(fitted(mod.ols),rstandard(mod.ols), pch=19, ylim=range(c(r.wls,r.ols)),
+     main="Residuals vs. fitted Values (WLS in red)",
+     ylab="Residuals", xlab="Fitted Values")
+points(fitted(mod.wls), rstandard(mod.wls), pch=19, col="red")
+```
+
+
+## Example: Education Expenditure
+
+```{r, echo=F}
+plot(d$Region-0.05, rstandard(mod.ols), pch=19, xlim=c(1,4), xaxt='n',
+      main="Residuals grouped by Region (WLS in red)", xlab="Region", ylab="Residuals")
+axis(1,at=unique(d$Region))
+points(d$Region+0.05, rstandard(mod.wls), pch=19, col="red")
+```
+
+## Example: Education Expenditure
+
+- The spread of the residuals has evened out for the **WLS** solution, which indicates that our treatment of heteroscedasticity was (at least partially) succesfull.
+- The hypotheses for the **WLS** estimation are not exact since that estimation is carrid out using **estimated** weights. The inherent uncertainty of the weights is not reflected in the hypotheses tests.
+- The comparable $R^2$ values show that $R^2_{\text{OLS}} > R^2_{\text{WLS}}$, which must be the case as **OLS** provides a solution with minimum $\hat \sigma$ (an thus maximum $R^2$).
+- The analysis is **far from perfect** as only roughly 50% of the variation in $Y$ can be explained, so the search for additional variables and/or a better model should continue.
+
+## Heteroscedastic Models
+
+- Heteroscedasticity cannot only be treated by **WLS** estimation. In general heteroscedastic patterns in the residuals often disappear when sufficient indicator variables are introduced.
+- In addition there are methods that are called **Sandwich Estimators** which adjust the standard errors of an OLS fit and produce **heteroscedasticity robust** standard errors. Those estimators are frequently used in econometrics, but not covered in this course.
 
