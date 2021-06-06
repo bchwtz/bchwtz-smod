@@ -4,6 +4,7 @@ fig:unnamed-chunk-5
 fig:unnamed-chunk-6
 fig:unnamed-chunk-7
 fig:unnamed-chunk-8
+fig:unnamed-chunk-9
 prerequisites
 simple-linear-regression
 multiple-linear-regression
@@ -11,6 +12,7 @@ regression-diagnostics
 qualitative-variables
 transformations
 weighted-least-squares
+correlated-errors
 factor-analysis
 foundations
 estimation
