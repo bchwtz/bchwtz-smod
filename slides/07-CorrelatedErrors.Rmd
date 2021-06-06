@@ -1,0 +1,446 @@
+---
+title: "Statistical Modeling"
+author: "CH.7 - Correlated Errors"
+date: "SS 2021 || Prof. Dr. Buchwitz"
+output:
+  beamer_presentation:
+    fig_width: 8
+    fig_height: 5
+    highlight: tango
+    theme: metropolis
+    includes:
+      in_header: header.tex
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE, size="scriptsize", 
+                      fig.align = "center")
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+
+## Load Data
+load("~/sciebo/courses/bchwtz-smod/nongit/RABE5.RData")
+library(equatiomatic)
+library(car)
+library(olsrr)
+library(GGally)
+library(stargazer)
+library(texreg)
+library(gridExtra)
+```
+
+
+# Organizational Information
+
+## Course Contents
+
+| Session   | Topic                   |
+| --------- |:------------------------|
+|  1        | Simple Linear Regression     | 
+|  2        | Multiple Linear Regression   |
+|  3        | Regression Diagnostics       |
+|  4        | Qualitative Variables as Predictors |
+|  5        | Transformation of Variables |
+|  6        | Weighted Least Squares |
+|  7        | Correlated Errors |
+|  8        | Analysis of Collinear Data |
+|  9        | Working with Collinear Data  |
+| 10        | Variable Selection Procedures |
+| 11        | Logistic Regression |
+| 12        | Further Topics |
+
+# Autocorrelation
+
+## Introduction
+
+- One of the **standard regression assumptions** is that the error terms $\epsilon_i$ and $\epsilon_j$ (of the $i$-th and $j$-th observation) are **uncorrelated**.
+- **Correlation in the error terms suggests that there is additional information in the data that has not been exploited in the model.** When observations have a *natural sequential order*, the correlation is referred to as **autocorrelation**.
+- Adjacent residuals tend to be similar (in temporal and spatial dimensions). Successive residuals in time series tend to be positively correlated. 
+- If the observations of an **omitted variable** are correlated, the errors from the estimated model will appear to be correlated.
+
+## Autocorrelation
+
+**Consequences of Autocorrelation:**
+
+1) Least squares estimates of the regression coefficients are unbiased but not efficient in the sense that they no longer have minimum variance.
+
+2) The estimate of $\sigma^2$ and the standard errors rof the regression coefficients may be seriously understated, giving a *spurious* impression of accuracy.
+
+3) The confidence intervals and tests of significance would no longer strictly valid.
+
+## Autocorrelation
+
+**We will cover two types of autocorrelation:**
+
+1. Autocorrelation due to **omission of a variable**. Once the missing variable his uncovered, the autocorrelation problem is resolved.
+
+2. **Pure autocorrelation**, that can be dealt with by applying transformations to the data.
+
+## Example: Consumer Expenditure and Money Stock
+
+```{r, size="tiny"}
+P211
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Data Description}
+\small
+\texttt{Expenditure}\;      Consumer expenditure (bn dollar)\\
+\texttt{Stock}\;      Stock of money (bn dollar)\\
+\texttt{Year}\;      Calendrical year of observation\\
+\texttt{Quarter}\;      Quarter of observation
+\end{alertblock}
+\end{textblock}
+
+## Example: Consumer Expenditure and Money Stock
+
+$$
+y_t = \beta_0 + \beta_1 x_t + \epsilon_t
+$$
+
+\bigskip
+
+- The regression model above can be seen as a **simplified** model of the quantity theory of money.
+- The coefficient $\beta_1$ is called the *multiplier* and of interest for economists and is an important measure in fiscal and monetary policy. 
+- Since the observations are ordered in time, it is reasonable to expect that autocorrelation may be present.
+
+## Example: Consumer Expenditure and Money Stock
+
+```{r}
+mod <- lm(Expenditure ~ 1 + Stock, data=P211)
+summary(mod)
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{}
+\small
+The analysis were complete if the basic regression assumptions were valid (which requires checking the residuals). If autocorrelation is present the model needs to be reestimated.
+\end{alertblock}
+\end{textblock}
+
+## Autocorrelation Function
+
+```{r, fig.height=4}
+par(mfrow=c(1,2))
+acf(P211$Expenditure, lag.max = 8)
+acf(P211$Stock, lag.max = 8)
+```
+
+## Residuals
+
+```{r, fig.height=4}
+par(mfrow=c(1,2))
+plot(rstandard(mod), type="b", main="Standardized Residuals")
+abline(h=0, col="darkgrey", lty="dashed")
+acf(rstandard(mod))
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{}
+\small
+The sequence run length of the sign of the residuals suggests departure from randomness.
+\end{alertblock}
+\end{textblock}
+
+## Durbin-Watson Test
+
+- The Durbin-Watson statistic is the basis of a popular test of autocorrelation in regression analysis. It is based on the assumption that successive errors are correlated:
+
+$$
+\epsilon_t = \rho \epsilon_{t-1} + \omega_t \quad\text{with}\quad \vert \rho \vert < 1
+$$
+
+- Here $\rho$ is the correlation coefficient between $\epsilon_t$ and $\epsilon_{t-1}$, and $\omega_t$ is normally independenlty distribution with zero mean and constant variance. 
+- Given that $\rho$ is significant, the errors are said to have **first-order autoregressive strucutre** or first-order autocorrelation.
+- Generally errors will have a more complex dependency structure and the simple first-order dependency is taken as a **simple approximation** of the actual error structure.
+
+## Durbin-Watson Test
+
+**The Durbin-Watson statistic is defined as:**
+
+$$
+d = \frac{\sum_{t=2}^n (e_t - e_{t-1})^2}{\sum_{t=1}^n e_t^2}
+$$
+\bigskip
+
+- $e_i$ is the $i$-th OLS residual.
+- The tested hypotheses are $H_0: \rho=0$ versus $H_1: \rho > 0$. Where $\rho = 0$ means that the $\epsilon_i$'s are uncorrelated.
+- Determining the distribution of $d$ is not trivial, and for determinig the $p$-values multiple procedures exist (which we do not discuss here).
+
+## Durbin-Watson Test
+
+```{r}
+lmtest::dwtest(mod) # p-value based on linear combination of chi-square values
+car::durbinWatsonTest(mod) # p-value based on bootstrapping
+```
+
+# Handling Autocorrelation: Transformation
+
+## Transformations for Handling Autocorrelation
+
+$$
+\begin{array}{ccc}
+\epsilon_t     & = & y_t - \beta_0 - \beta_1 x_t\\
+\epsilon_{t-1} & = & y_{t-1} - \beta_0 - \beta_1 x_{t-1}
+\end{array}
+$$
+
+\bigskip
+Substituting in $\epsilon_t = \rho \epsilon_{t-1} + \omega_t$ yields:
+
+$$
+y_t - \beta_0 - \beta_1 x_t  = \rho \; ( y_{t-1} - \beta_0 - \beta_1 x_{t-1} ) + \omega_t
+$$
+
+\bigskip
+Rearranging yields:
+
+$$
+\begin{array}{ccccccc}
+y_t - \rho y_{t-1} &=& \beta_0 (1-\rho) &+&  \beta_1 (x_t - \rho x_{t-1}) &+& \omega_t\\
+y_t^* &=& \beta_0^* &+&  \beta_1^* \quad x_t^* &+& \omega_t
+\end{array}
+$$
+
+## Transformations for Handling Autocorrelation
+
+- Since the $\omega_t$'s are uncorrelated, the transfromed model represents a linear model with uncorrelated errors.
+- This suggests to estimate OLS on the transformed variabels $y_t^*$ and $x_t^*$. The relation between the parameters in the transformed and original model are:
+
+$$
+\hat\beta_0 = \frac{\hat\beta_0^*}{1-\hat\rho} \qquad\text{and}\qquad \hat\beta_1 = \hat\beta_1^*
+$$
+\bigskip
+
+###
+The strength of the autocorrelation is unknown, so that $\rho$ needs to be estimated!
+
+## Transformations for Handling Autocorrelation
+
+**Summary of the Procedure (Cochrane and Orcutt)**
+
+1. Compute the OLS estimates of $\beta_0$ and $\beta_1$ by fitting $y_t = \beta_0 + \beta_1 x_t+\epsilon_t$ to the data.
+
+2. Compute the residuals from the OLS model and estimate $\rho$ using $\hat\rho=\sum_{t=2}^n e_t e_{t-1} / \sum_{t=1}^n e_t^2$.
+
+3. Refit a linear model $y_t^* = \beta_0^* + \beta_1^* x_t^* + \omega_t$ using the transformed variables $y_t^* = y_t - \rho y_{t-1}$ and $x_t^* = x_t - \rho x_{t-1}$.
+
+4. Examine the residuals of the newly fitted model. If the new residuals continue to show autocorrelation, repeat the entire procedure using the current model as starting point.
+
+## Cochrane-Orcutt Estimation (Manually)
+
+```{r, size="tiny"}
+# Functions
+d <- function(e){sum((head(e,length(e)-1) - tail(e,length(e)-1))^2) / sum(e^2)}
+rho <- function(e){sum(head(e,length(e)-1) * tail(e,length(e)-1)) / sum(e^2)}
+
+# Model 1 (OLS)
+mod <- lm(Expenditure ~ 1 + Stock, data=P211)
+
+# Model 2 (Cochrane Orcutt)
+df <- P211
+df$Expenditure_lag1 <- c(NA, head(df$Expenditure,nrow(df)-1))
+df$Stock_lag1 <- c(NA, head(df$Stock,nrow(df)-1))
+df$y_new <- df$Expenditure - rho(residuals(mod)) * df$Expenditure_lag1
+df$x_new <- df$Stock - rho(residuals(mod)) * df$Stock_lag1
+mod.co <- lm(y_new ~ 1 + x_new, data=df) 
+
+# Comparison: Both models in terms of the original Data
+c(coef(mod), beta1_se=summary(mod)$coefficients[2,2])
+c(coef(mod.co)[1] / (1 - rho(residuals(mod))), coef(mod.co)[2], 
+  beta1_se=summary(mod.co)$coefficients[2,2])
+
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{}
+\small
+The $\beta_1$ coefficient only changed slightly, however, the standard error increased by a factor of almost 3.
+\end{alertblock}
+\end{textblock}
+
+## Cochrane-Orcutt Estimation (Manually)
+
+```{r, fig.height=4}
+par(mfrow=c(1,2))
+plot(rstandard(mod.co), type="b", main="Standardized Residuals")
+abline(h=0, col="darkgrey", lty="dashed")
+acf(rstandard(mod.co))
+```
+
+## Iterative Cochrane-Orcutt-Style Estimation
+
+- A more direct approach is estimating values of $\rho$, $\beta_0$ and $\beta_1$ directly, instead of the classical two-step Cochrane-Orcutt prodecure. This can be achived by integrating $\rho$ as parameter in the transformed model and simultaneously minimizing the sum of squares.
+
+$$
+S(\beta_0, \beta_1, \rho) = \sum_{t=2}^n [y_t - \rho y_{t-1} - \beta_0(1-\rho)-\beta_1(x_t-\rho x_{t-1})]^2
+$$
+
+\medskip
+- The standard error of $\beta_1$ can then be calculated using $\hat\sigma = S(\hat\beta_0,\hat\beta_1,\hat\rho)/(n-2)$ (treating $\hat\rho$ as known) like
+
+$$
+s.e(\hat\beta_1) = \frac{\hat\sigma}{\sqrt{\sum [x_t - \hat\rho x_{t-1} - \bar x(1-\hat\rho)]^2}}
+$$
+
+## Iterative Cochrane-Orcutt-Style Estimation (R)
+
+```{r}
+(mod.coit <- orcutt::cochrane.orcutt(mod))
+```
+
+# Autocorrelation and missing Variables
+
+## Autocorrelation and missing Variables
+
+- When an index plot of the residuals shows a pattern described previous (e.g. positive or negative clusters), it is reasonable to suspect that this may be due to the **omission of variables that change over time**.
+- Exploring additional regressors is better than reverting to an autoregressive model, as it is less complex an potentially easier to understand. **The transformations that correct for pure autocorrelation may be viewed as an action of last resort.**
+- In general a high value of the Durbin-Watson statistic should be seen as an indicator that a problem exists (missign variable and pure autocorrelation are possible).
+
+## Example: Housing Starts
+
+```{r, size="tiny"}
+P219
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Data Description}
+\small
+\texttt{H}\;      Housing Starts\\
+\texttt{P}\;      Population Size (millions)\\
+\texttt{D}\;      Availabilit for Mortgage Money Index
+\end{alertblock}
+\end{textblock}
+
+## Example: Housing Starts
+
+- The goal of the model is to better understand the relationship between housing starts (indicator for privately owened ney houses on which construction has been started) and population growth. 
+- A **starting point** is the simple (and naive) model which relates housing starts and population
+
+$$
+H_t = \beta_0 + \beta_1 P_t + \epsilon_t
+$$
+
+## Example: Housing Starts
+
+```{r}
+mod1 <- lm(H ~ 1 + P, data=P219)
+summary(mod1)
+```
+
+## Example: Housing Starts
+
+```{r, fig.height=3}
+plot(rstandard(mod1), main="Standardized Residuals")
+abline(h=0, col="darkgrey", lty="dashed")
+car::durbinWatsonTest(mod1)
+```
+
+## Example: Housing Starts
+
+- The residual index plot and the Durbin-Watson-Test suggest autocorrelation.
+- The importance of additional variables for the relationship like, *unemployment rate*, *social trends in marriage and family formation*, *goverment programs for housing* and *availability of construction and mortgage funds* cannot be neglected.
+
+```{r}
+mod2 <- lm(H ~ 1 + P + D, data=P219)
+car::durbinWatsonTest(mod2) # Adding Money Indicator removes autocorrelation!
+```
+
+## Example: Housing Starts
+
+```{r, results="asis"}
+mod3 <- lm(scale(H) ~ 1 + scale(P) + scale(D), data=P219)
+texreg(list(mod1, mod2, mod3))
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{}
+\small
+The standardized model shows that the mortgage index has a larger effect (and thus is more important for modeling the relationship). If \textbf{D} increases by one standard deviation \textbf{H} increases by 0.54 standard deviations.
+\end{alertblock}
+\end{textblock}
+
+## Limits of the Durbin-Watson Test
+
+- If the pattern of time dependence is other than first order, teh plot of residuals will still be informative.
+- The Durbin-Watson statistic is, however, not designed to capture higher-order time dependence and may not yield much valuable information.
+
+## Example: Ski Sales
+
+```{r, size="tiny"}
+P224
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Data Description}
+\small
+\texttt{Quarter}\;      Quarter\\
+\texttt{Sales}\;        Sales\\
+\texttt{PDI}\;     Personal Disposable Income \\
+\texttt{Season}\;      Indicator of Season (1 for Q1 and Q4, 0 otherwise)
+\end{alertblock}
+\end{textblock}
+
+## Example: Ski Sales
+
+```{r}
+mod1 <- lm(Sales ~ 1 + PDI, data=P224)
+d(residuals(mod1)) # Durbin-Watson Statistic (own Function defined above)
+```
+
+```{r, echo=F}
+df <- P224
+df$res <- rstandard(mod1)
+plot(df$res, ylab="Residuals", main="Standardized Residuals (values in Season are White)")
+points(which(!as.logical(df$Season)),y=df$res[!as.logical(df$Season)], pch=19)
+```
+
+## Example: Ski Sales
+
+```{r, results="asis"}
+mod2 <- lm(Sales ~ 1 + PDI + Season, data=P224)
+texreg(list(mod1,mod2))
+```
+
+## Example: Ski Sales
+
+```{r, echo=F}
+plot(P224$PDI, P224$Sales, main="Pooled vs. different Intercept based on Season-Dummy")
+points(P224$PDI[!as.logical(df$Season)], P224$Sales[!as.logical(df$Season)],pch=19)
+
+abline(mod1, col="red")
+abline(a=coef(mod2)[1]                , b=coef(mod2)[2], col="black") # Not in Season
+abline(a=coef(mod2)[1] + coef(mod2)[3], b=coef(mod2)[2], col="grey") # In Season
+```
+
+## Example: Ski Sales
+
+```{r}
+d(residuals(mod2)) # Durbin-Watson Statistic (own Function defined above)
+```
+
+```{r, echo=F}
+df$res2 <- rstandard(mod2)
+plot(df$res2, ylab="Residuals", main="Standardized Residuals (values in Season are White)")
+points(which(!as.logical(df$Season)),y=df$res2[!as.logical(df$Season)], pch=19)
+```
+
+## Conclusion 1/2
+
+- The Durbin-Watson statistic is only sensitive to correlated errors, when the correlation occurs between adjacent observations (first-order autocorrelation).
+- There are other tests that may be used for detection of higher-order autocorrelations (e.g. the Box-Pierce statistic), which we not cover here.
+- The plot of the residuals is capable of revealing correlation strucutres of any order.
+- If autocorrelation is identified, the model needs to be adapted.
+- No autocorrelation is equivalent that the Durbin-Watson statistic is close to 2 (as $d \propto 2\cdot(1-\rho)$).
+
+## Conclusion 2/2
+
+- The data used here is mostly time series data instead of cross-sectional data (all observations caputred at one point in time).
+- The problem of autocorrelation is not relevant for cross-sectional data as the ordering of the observations is **often arbitrarily**. The correlation of adjacent observations is thus an effect of the organization of the data.
+- Time series data often contains trens, which are are direct functions of time a time variable $t$. So variables such as $t$ or $t^2$ could be included in the list of predictor variables. 
+- Additional variables such as lagged values of an regressor could be included in a model so that e.g. $y_t = \beta_0 + \beta_1 x_{1,t} + \beta_2 x_{1,t-1} \beta_3 x_{2,t}$.
+

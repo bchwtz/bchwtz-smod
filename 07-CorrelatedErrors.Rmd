@@ -1,0 +1,6 @@
+# Correlated Errors
+ 
+```{r, echo = F, out.width="80%", fig.cap="[Download Slides](slides/07-CorrelatedErrors.pdf)"}
+knitr::include_graphics("slides/gifs/07-CorrelatedErrors.gif")
+```
+
