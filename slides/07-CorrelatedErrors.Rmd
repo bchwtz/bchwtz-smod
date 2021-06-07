@@ -33,6 +33,14 @@ library(texreg)
 library(gridExtra)
 ```
 
+# Evaluation
+
+## Evaluation
+\center
+\Huge
+Bitte evaluieren Sie den Kurs!
+\large
+http://evasys.fh-swf.de/evasys/online.php?pswd=K94FQ
 
 # Organizational Information
 
