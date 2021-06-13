@@ -521,20 +521,6 @@ mod.adv <- lm(St ~ 1 + At + Pt + Et  + At.1 + Pt.1, data=P248)
 round(olsrr::ols_eigen_cindex(mod.adv), 4)
 ```
 
-## Condition Indices
-
-- Usually one wants to know **which variables are involved in the collinearity problem**.
-- This can be answered using the **eigen vectors** of the correlation matrix, which are pairwise orthogonal.
-- We examine this using the import dataset:
-
-```{r}
-cormat <- cor(P241[c("DOPROD", "STOCK", "CONSUM")])
-eigen(cormat)
-```
-
-## Condition Indices
-
-
 ## Conclusion
 
 - Using the described techniques we can now detect multicollinearity.
