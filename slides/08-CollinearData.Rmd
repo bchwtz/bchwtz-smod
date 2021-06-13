@@ -1,0 +1,545 @@
+---
+title: "Statistical Modeling"
+author: "CH.8 - Analysis of Collinear Data"
+date: "SS 2021 || Prof. Dr. Buchwitz"
+output:
+  beamer_presentation:
+    fig_width: 8
+    fig_height: 5
+    highlight: tango
+    theme: metropolis
+    includes:
+      in_header: header.tex
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE, size="scriptsize", 
+                      fig.align = "center")
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+
+## Load Data
+load("~/sciebo/courses/bchwtz-smod/nongit/RABE5.RData")
+library(equatiomatic)
+library(car)
+library(olsrr)
+library(GGally)
+library(stargazer)
+library(texreg)
+library(gridExtra)
+```
+
+# Organizational Information
+
+## Course Contents
+
+| Session   | Topic                   |
+| --------- |:------------------------|
+|  1        | Simple Linear Regression     | 
+|  2        | Multiple Linear Regression   |
+|  3        | Regression Diagnostics       |
+|  4        | Qualitative Variables as Predictors |
+|  5        | Transformation of Variables |
+|  6        | Weighted Least Squares |
+|  7        | Correlated Errors |
+|  8        | Analysis of Collinear Data |
+|  9        | Working with Collinear Data  |
+| 10        | Variable Selection Procedures |
+| 11        | Logistic Regression |
+| 12        | Further Topics |
+
+# Multicollinearity
+
+## Introduction
+
+- The interpretation of the coefficients in a multiple regression equation depend implicitly on the assumption that the predictors are **not strongly interrelated**.
+- The common interpretation of regression coefficient is the change in the response when the corresponding predictor is increased by one unit and all other predictors are held constant. 
+
+\bigskip
+\begin{alertblock}{}
+\textbf{This interpretation may not be valid if there are string linear relationships among the regressors.}
+\end{alertblock}
+
+## Multicollinearity
+
+- When there is complete absence of linear relationships among the predictor variables, they are said to be *orthogonal*.
+- In most applications the regressors are not orthogonal. However, in some situations the predictor variables are so strongly interrelated that the regression resuls
+ts are ambigious.
+- The condition of severe nonorthogonality is also referred to as the problem of **multicollineartiy**.
+- This problem is *not a specification error* and thus cannot be detected in teh residuals.
+- **Multicollinearity** is a condition of deficient data.
+
+## Multicollinearity
+
+**We cover the following topics:**
+
+1. How does collinearity affect statistical inference and forecasting?
+2. How can collinearity be detected?
+3. What can be done to resolve the difficulties associated with collinearity (**next Session**).
+
+\bigskip
+
+###
+In an analysis these questions cannot be answered separately. When multicollinearity all therre issues must be treated simultaneously.
+
+# Effects of Multicollinearity
+
+## Example: Effects on Inference
+
+```{r, size="tiny"}
+P236
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Data Description}
+\small
+\texttt{ACHV}\;      Student achievements.\\
+\texttt{FAM}\;        Faculty credentials\\
+\texttt{PEER}\;       Influence of peer group in school.\\
+\texttt{SCHOOL}\;     School facilities. \\
+\medskip
+All variables are normalized indices. Goal is to evaluate the effect of school inputs on achievements. 
+\end{alertblock}
+\end{textblock}
+
+## Example: Effects on Inference
+
+- The goal of the analysis is to measure the effect of the school inputs on achievements to asses *Equal Education Opportunity*. The variable `SCHOOL` is an index and we assume that it measures those aspects of the school environment that would affect achievement (physical plant, teaching materials, special programs, etc.). 
+- `ACHV` is an index constructed based on normalized test scores.
+- Before we can assess the effect of the school we need to account for other variables that may influence `ACHV`, like the peer group and the personal environment. We assume that thos are captured in the indices for `PEER` and `FAM`.
+
+$$
+ACHV = \beta_0 + \beta_1 FAM + \beta_2 PEER + \beta_3 SCHOOL + \epsilon
+$$
+
+## Example: Effects on Inference
+
+- The contribution of the `SCHOOL` variable can be testes using the $t$-Test for $\beta_3$.
+- The $t$-Test checks wheteher `SCHOOL` is necessary in the equation, given that `FAM` and `PEER` are already included.
+- This can be interpreted as checking for an effect after the `ACHV` index has been adjusted for `FAM` and `PEER`.
+
+$$
+ACHV - \beta_1 FAM - \beta_2 PEER = \beta_0 + \beta_3 SCHOOL + \epsilon
+$$
+
+\bigskip
+\begin{alertblock}{}
+\textbf{Note:} This model is only for the sake of interpretation the model on the previous page is sufficient for the actual analysis.
+\end{alertblock}
+
+## Example: Effects on Inference
+
+```{r}
+mod <- lm(ACHV ~ 1 + FAM + PEER + SCHOOL, data=P236)
+summary(mod)
+```
+
+## Example: Effects on Inference
+
+```{r, fig.height=4}
+par(mfrow=c(1,2))
+plot(rstandard(mod))
+plot(fitted(mod), rstandard(mod))
+```
+
+## Example: Effects on Inference
+
+**Observation:**
+
+- The regression model accounts for `r round(summary(mod)$r.squared,4)*100`% of the data. 
+- The $F$-Statistic with a value of `r round(summary(mod)$f[1],4)` is significant and indicates a joint effect of the variables.
+- All $t$-Statistics are small and indicate that none of the variables individually are significant.
+
+\bigskip
+**Conclusion:**
+
+- The given situation is common for settings where **multicollinearity** occurs.
+- The small $t$-values suggest that any of the variables can be dropped and the joint $R^2$ is affected by the realtionship among the predictors.
+
+## Example: Effects on Inference
+
+```{r, echo=F}
+panel.cor <- function(x, y){
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- round(cor(x, y), digits=2)
+  txt <- paste0("r = ", r)
+  cex.cor <- 0.8/strwidth(txt)
+  text(0.5, 0.5, txt, cex = cex.cor * abs(r))
+}
+
+pairs(P236[ ,-1], lower.panel=panel.cor)
+```
+
+## Example: Effects on Inference
+
+```{r, echo=F}
+df <- data.frame(Combination=1:4,
+                 FAM=c("+","+","+","-","+","-","-","-"),
+                 PEER=c("+","+","-","+","-","+","-","-"),
+                 SCHOOL=c("+","-","+","+","-","-","+","-"))
+kable(df,align=rep("c",ncol(df)))
+```
+
+\bigskip
+
+\begin{alertblock}{}
+A "+" indicates a value above average in the data. The dataset only contains combiantions 1 and 8 and is deficient so that not all partial effects can be estimated.
+\end{alertblock}
+
+## Example: Effects on Inference
+
+- The dataset contains *missing combinations* which leads to the empy regions in the pairsplot. There may be two reasons for this:
+  1) Incomplete data collection, so that collecting additional data leads do disappearing multicollinearity.
+  2) The ground truth (population) only contains a specific set of combinations. Then it is not possible to separate effects and estimate the individual effects on achievement. A detailed investigation may lead to additinal variables thate are *more basic* determinants for the response.
+
+
+## Example: Effects on Forecasting
+
+- We now examine the effect of multicollinearity on **forecasting**.
+- The considered dataset (imports in the French economy) is index by time (variable `YEAR`).
+- To generate **forecasts for the response**, future values of the predictor variables are plugged into the estimated regression equation.
+- The future values of the predictor variables must be known or need to be forecasted themselfes (not discussed in this course). 
+- We assume that the future values of the predictor variables are **given**, which is highly **unrealistic and only for explanatory purposes**.
+
+## Example: Effects on Forecasting
+
+```{r, size="tiny"}
+P241
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Data Description}
+\small
+\texttt{YEAR}\;        Year of Observation.\\
+\texttt{IMPORT}\;      Import Volume.\\
+\texttt{DOPROD}\;      Domestic Production.\\
+\texttt{STOCK}\;       Stock Formation.\\
+\texttt{CONSUM}\;      Domestic Consumption. \\
+\medskip
+Variables are measured in billion French francs.
+\end{alertblock}
+\end{textblock}
+
+## Example: Effects on Forecasting
+
+```{r, size="tiny"}
+mod <- lm(IMPORT ~ 1 + DOPROD + STOCK + CONSUM, data=P241)
+summary(mod)
+```
+
+## Example: Effects on Forecasting
+
+```{r}
+plot(rstandard(mod), type="b")
+```
+
+## Example: Effects on Forecasting
+
+$$
+\text{IMPORT} = \beta_0 + \beta_1 \text{DOPROD} + \beta_2 \text{STOCK} + \beta_3 \text{CONSUM} + \epsilon
+$$
+
+\bigskip
+- The index plots of the residuals suggests that the model is not well specified, even though the $R^2$ is high.
+- The problem reflected in the data is that the European Common Market began operations in 1960, causing changes in import-export relationships.
+- Our objective is to study the effect of **multicollinearity**, we decide to ignore the dynamics after 1959 and only anlyze the first 11 years of data.
+
+## Example: Effects on Forecasting
+
+```{r, size="tiny"}
+mod <- lm(IMPORT ~ 1 + DOPROD + STOCK + CONSUM, data=head(P241,11))
+summary(mod)
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{}
+\small
+An increase in Domestic Production should cause an increase in the imports, when \texttt{STOCK} and \texttt{CONSUM} are held constant. Contrary to the prior model and to our believes, the coefficient for \texttt{DOPROD} is not statistically significant. 
+\medskip
+The residuals show no suspicious patterns.
+\end{alertblock}
+\end{textblock}
+
+## Example: Effects on Forecasting
+
+```{r}
+kable(round(cor(head(P241,11)),4))
+```
+
+- Investigation reveals that correlation between `CONSUM` and `DOPROD` is very high throughout the 11 year period. 
+
+## Example: Effects on Forecasting
+
+- The estimated relationship between `CONSUM` and `DOPROD` is given below.
+
+```{r, results="asis", echo=F}
+mod1 <- lm(CONSUM ~ 1 + DOPROD, data=head(P241,11))
+equatiomatic::extract_eq(mod1, coef_digits=3, use_coefs=T)
+```
+
+- Even in the presence of severe multicollinearity the regression equation *may* produce some good forecasts. The forecasting equation follows directly from the regression output.
+
+```{r, results="asis", echo=F}
+equatiomatic::extract_eq(mod, coef_digits=3, use_coefs=T)
+```
+
+\begin{alertblock}{}
+\small
+For our purpose we must be confident that the character and strength of the overall relationship will hold into future periods (which is untrue in the given case, but ignored for convenience of explanation). 
+\end{alertblock}
+
+## Example: Effects on Forecasting
+
+- If we forecast the change in `IMPORT` next year corresponding to tan in crease in `DROPROD` of 10 units while holding `STOCK` and `CONSUM`at their current levels:
+
+$$
+\text{IMPORT}_{1960} \approx \text{IMPORT}_{1959} - 0.051 \cdot 10
+$$
+
+- This leads to an decrease in `IMPORT` by $\approx 0.51$ units. However, if the relationship between `DOPROD`and `CONSUM` is kept intact, `CONSUM` will increase as well and the forecasted results changes and yields a forecased increase in `IMPORT`.
+
+$$
+\text{IMPORT}_{1960} \approx \text{IMPORT}_{1959} - 0.051 \cdot 10 + 0.287 \cdot 0.686 \cdot 10
+$$
+
+# Detection of Collinearity
+
+## Simple Signs of Collinearity
+
+- In the following we review the discussed ideas and introduce additional criteria that indicate multicollinearity.
+- Besides simple indicators we are going to consider the two criteria **Variance Inflation Factors** (VIF) and **Condition Indices**.
+- Simple indicators of multicollinearity are usually encountered during the process of adding, deleting or transforming variables or data points while searching for a good model.
+
+## Simple Signs of Collinearity
+
+Indications of multicollinearity that appear as instability in the estimated coefficients are as follows:
+
+- Large changes in the estimated coefficients when a variables is added or deleted.
+- Large changes in the estimated coefficients when a data point is added or deleted.
+
+Once the residual plots indicate that the model has been satisfactorily specified, collinearity may be present if:
+
+- The algebraic signs of estimated coefficients do not conform to prior expectations.
+- Coefficients of variables that are expected to be important have large standard errors (small $t$-values). 
+
+## Simple Signs of Collinearity
+
+- The table shows the effect of adding an removing a variable for the French economy data. We see that the presence or absence of certain variables has a large effect on the other coefficients.
+- This problem is visible in the pairwise correlation coefficients.
+
+\medskip
+
+```{r, results="asis", size="tiny", echo=F}
+d <- head(P241,11)
+mod1 <- lm(IMPORT ~ 1 + DOPROD                 , data=d)
+mod2 <- lm(IMPORT ~ 1 +          STOCK         , data=d)
+mod3 <- lm(IMPORT ~ 1 +                  CONSUM, data=d)
+mod4 <- lm(IMPORT ~ 1 + DOPROD + STOCK         , data=d)
+mod5 <- lm(IMPORT ~ 1 + DOPROD +         CONSUM, data=d)
+mod6 <- lm(IMPORT ~ 1 +          STOCK + CONSUM, data=d)
+mod7 <- lm(IMPORT ~ 1 + DOPROD + STOCK + CONSUM, data=d)
+texreg(list(mod1,mod2,mod3,mod4,mod5,mod6,mod7))
+```
+
+## Simple Signs of Collinearity
+
+The source of multicollinearity may be more subtle than the simple relationship between two variables so that it **may not be possible to detect such a relationship with a simple coerrelation coefficient**.
+
+```{r}
+kable(cor(P248)) # Advertising Data
+```
+
+## Simple Signs of Collinearity
+
+```{r, size="tiny"}
+P248
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Data Description}
+\small
+\texttt{$S_t$}\;      Sales Volume.\\
+\texttt{$A_t$}\;      Advertising Expenditures.\\
+\texttt{$P_t$}\;      Promotion Expenditures.\\
+\texttt{$E_t$}\;      Sales Expense.\\
+\medskip
+$A_{t-1}$ and $P_{t-1}$ are the lagged one-year variables.
+\end{alertblock}
+\end{textblock}
+
+## Simple Signs of Collinearity
+
+```{r, size="tiny"}
+mod <- lm(St ~ 1 + At + Pt + Et  + At.1 + Pt.1, data=P248)
+summary(mod)
+```
+
+## Simple Signs of Collinearity
+
+```{r, fig.height=4}
+par(mfrow=c(1,2))
+plot(rstandard(mod), fitted(mod))
+plot(rstandard(mod), type="b")
+```
+
+## Simple Signs of Collinearity
+
+```{r, fig.height=4}
+par(mfrow=c(1,3))
+plot(rstandard(mod), P248$At)
+plot(rstandard(mod), P248$Pt)
+plot(rstandard(mod), P248$Et)
+```
+
+## Simple Signs of Collinearity
+
+- The residual plots do not exhibit clear signs of misspecification and the correlation between the predictors is moderate and does not indicate a problem.
+- Experimentation shows that dripping the advertising variable $A_t$ leads to severe changes in the coefficients (coefficient of $P_t$ drops significantly, coefficients of lagged values change signs.)
+
+```{r}
+mod.experiment <- lm(St ~ 1 + Pt + Et  + At.1 + Pt.1, data=P248)
+coef(mod.experiment)
+```
+
+## Simple Signs of Collinearity
+
+- The reason for the multicollinearity in the previous example is a budget constraint so that the sum of $A_t$, $A_{t-1}$, $P_t$ and $P_{t-1}$ was held approximately constant:
+
+$$
+A_t + A_{t-1} + P_t + P_{t-1} \approx 5
+$$
+
+- This can be empirically confirmed by regressing $A_t$ on $A_{t-1}$, $P_t$ and $P_{t-1}$.
+
+```{r}
+mod.constraint <- lm(At ~ 1 + Pt + At.1 + Pt.1, data=P248)
+equatiomatic::extract_eq(mod.constraint, use_coef=T)
+```
+
+## Variance Inflation Factors (VIF)
+
+- A thorough investigation of muticollinearity will involve examining the value of $R^2$ that restulst from regression **each of the predictors against all others**.
+- The resulting effects can be judged by examining a quantitiy called *cariance inflation index* (**VIF**).
+
+$$
+\text{VIF}_j = \frac{1}{1-R^2_j} \quad\text{with}\quad j=1,\ldots,p
+$$
+
+- $R^2_j$ denotes the multiple correlation coefficient from regression the predictor $X_j$ on all other $p-1$ predictor variables.
+- When $X_j$ has a strong linear relationship with the other variables, $R^2_j$ will be close to 1 and VIF$_j$ will be large. 
+
+###
+\center
+A $\text{VIF}>10$ is often taken as indicator that the data has multicollinearity problems.
+
+## Variance Inflation Factors (VIF)
+
+- When $R^2_j$ is close to zero $VIF \approx 1$. The departure from 1 indicates departure from orthogonality and tendency toward collinearity.
+- The naming is derived from the fact that $\text{VIF}_j$ measures the amount by which the variance of the $j$-th regression coefficient is increased due to the linear association of $X_j$ with other predictors **relative** to the value of the variance that would result in absence of a linear relation.
+- As $R^2_j$ approaches 1, the $\text{VIF}_j$ for $\hat\beta_j$ tends to infinity.
+
+## Variance Inflation Factors (VIF)
+
+- The precision of the OLS estimates is measured by its variance, which is proportional to the variance of the error term in the regression model $\sigma^2$. 
+- The **constant of proportionality** is the VIF. 
+- The VIF's therefore can be used to obtain an expression for the expected squared distance of the OLS estimators from their true values. The smaller $D^2$ the more accurate are the estimates.
+
+$$
+D^2 = \sigma^2 \sum_{j=1}^p \text{VIF}_j
+$$
+
+## Variance Inflation Factors (VIF)
+
+- If the predictors were orthogonal, the VIF's would be equal to 1 and $D^2 = p\sigma^2$. It follows that the ratio $\overline{\text{VIF}}$ measures the squared error in the OLS estimators relative to the size of the error if the data were orthogonal.
+
+$$
+\overline{\text{VIF}} = \frac{\sigma^2 \sum_{i=1}^p \text{VIF}_i}{p \sigma^2} = \frac{\sum_{i=1}^p \text{VIF}_i}{p}
+$$ 
+
+- $\overline{\text{VIF}}$ can also be used as an **index for multicollinearity**.
+
+
+## Variance Inflation Factors (VIF)
+
+```{r, size="tiny"}
+# Equal Education Opportunity Data
+mod.eeo <- lm(ACHV ~ 1 + FAM + PEER + SCHOOL, data=P236) 
+vif.eeo <- car::vif(mod.eeo)
+c(vif.eeo, averageVIF = mean(vif.eeo))
+
+# Import Data
+mod.imp <- lm(IMPORT ~ 1 + DOPROD + STOCK + CONSUM, data=P241) 
+vif.imp <- car::vif(mod.imp)
+c(vif.imp, averageVIF = mean(vif.imp))
+
+# Advertising Data
+mod.adv <- lm(St ~ 1 + At + Pt + Et  + At.1 + Pt.1, data=P248) 
+vif.adv <- car::vif(mod.adv)
+c(vif.adv, averageVIF = mean(vif.adv))
+```
+
+## Condition Indices
+
+- Another way to detect collinearity in the data is to examine the condition indices fo the *correlation matrix* of the predictor variables.
+- The condition indices are based on the eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_p$ of them correlation matrix. If any $\lambda_ =0$, there is perfect linear relationship, which is an extreme case of collinearity. Strong heterogeneity in the eigenvalues (one value much smaller than the others) also indicates mulitcollinearity.
+- An empirical criterion for the presence of collinearity is given by the sum of the recoprocals of the eigenvalues of the correlation matrix. If that sum is much larger (e.g. 5 times larger) than the number of predictor variables $p$, collinearity is present. 
+
+$$
+\sum_{j=1}^p\frac{1}{\lambda_i}
+$$
+
+## Condition Indices
+
+- The condition indices measures the overall collinearity of the variables. The $j$-th condition index is given by
+
+$$
+\kappa_j =\sqrt{\frac{\lambda_1}{\lambda_p}} \quad\text{for}\quad j=1,2,\ldots,p
+$$
+
+\bigskip
+- The largest condition index is called *condition number* of the matrix. If that condition number is small, then the predictor variables are not collinear. A large condition number indicates strong evidence of collinearity.
+- Corrective actions should be taken, when the conditio number **exceeds 15** (which means that $\lambda_1$ is more than 225 times $\lambda_p$)
+
+## Condition Indices
+
+```{r, size="tiny"}
+# Equal Education Opportunity Data
+mod.eeo <- lm(ACHV ~ 1 + FAM + PEER + SCHOOL, data=P236) 
+round(olsrr::ols_eigen_cindex(mod.eeo), 4)
+
+# Import Data
+mod.imp <- lm(IMPORT ~ 1 + DOPROD + STOCK + CONSUM, data=head(P241,11)) 
+round(olsrr::ols_eigen_cindex(mod.imp), 4)
+
+# Advertising Data
+mod.adv <- lm(St ~ 1 + At + Pt + Et  + At.1 + Pt.1, data=P248) 
+round(olsrr::ols_eigen_cindex(mod.adv), 4)
+```
+
+## Condition Indices
+
+- Usually one wants to know **which variables are involved in the collinearity problem**.
+- This can be answered using the **eigen vectors** of the correlation matrix, which are pairwise orthogonal.
+- We examine this using the import dataset:
+
+```{r}
+cormat <- cor(P241[c("DOPROD", "STOCK", "CONSUM")])
+eigen(cormat)
+```
+
+## Condition Indices
+
+
+## Conclusion
+
+- Using the described techniques we can now detect multicollinearity.
+- However, it is unclear how to deal with variables that cause collinearity issues. Removing those variables is often not a viable option.
+- We will learn better ways of dealing with collinearity in the next chapter.
+
+
+
