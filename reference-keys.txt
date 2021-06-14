@@ -14,7 +14,7 @@ qualitative-variables
 transformations
 weighted-least-squares
 correlated-errors
-collinear-data
+collinear-analysis
 factor-analysis
 foundations
 estimation
