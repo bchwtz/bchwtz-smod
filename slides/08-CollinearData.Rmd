@@ -424,7 +424,7 @@ equatiomatic::extract_eq(mod.constraint, use_coef=T)
 ## Variance Inflation Factors (VIF)
 
 - A thorough investigation of muticollinearity will involve examining the value of $R^2$ that restulst from regression **each of the predictors against all others**.
-- The resulting effects can be judged by examining a quantitiy called *cariance inflation index* (**VIF**).
+- The resulting effects can be judged by examining a quantitiy called *variance inflation index* (**VIF**).
 
 $$
 \text{VIF}_j = \frac{1}{1-R^2_j} \quad\text{with}\quad j=1,\ldots,p
@@ -486,8 +486,8 @@ c(vif.adv, averageVIF = mean(vif.adv))
 ## Condition Indices
 
 - Another way to detect collinearity in the data is to examine the condition indices fo the *correlation matrix* of the predictor variables.
-- The condition indices are based on the eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_p$ of them correlation matrix. If any $\lambda_ =0$, there is perfect linear relationship, which is an extreme case of collinearity. Strong heterogeneity in the eigenvalues (one value much smaller than the others) also indicates mulitcollinearity.
-- An empirical criterion for the presence of collinearity is given by the sum of the recoprocals of the eigenvalues of the correlation matrix. If that sum is much larger (e.g. 5 times larger) than the number of predictor variables $p$, collinearity is present. 
+- The condition indices are based on the eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_p$ of them correlation matrix. If any $\lambda = 0$, there is perfect linear relationship, which is an extreme case of collinearity. Strong heterogeneity in the eigenvalues (one value much smaller than the others) also indicates mulitcollinearity.
+- An empirical criterion for the presence of collinearity is given by the sum of the reciprocals of the eigenvalues of the correlation matrix. If that sum is much larger (e.g. 5 times larger) than the number of predictor variables $p$, collinearity is present. 
 
 $$
 \sum_{j=1}^p\frac{1}{\lambda_i}

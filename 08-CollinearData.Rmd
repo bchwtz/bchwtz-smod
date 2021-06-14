@@ -1,6 +1,6 @@
-# Collinear Data
+# Collinear Analysis
  
-```{r, echo = F, out.width="80%", fig.cap="[Download Slides](slides/08-CollinearData.pdf)"}
-knitr::include_graphics("slides/gifs/08-CollinearData.gif")
+```{r, echo = F, out.width="80%", fig.cap="[Download Slides](slides/09-CollinearAnalysis.pdf)"}
+knitr::include_graphics("slides/gifs/09-CollinearAnalysis.gif")
 ```
 
