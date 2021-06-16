@@ -172,7 +172,7 @@ $$ Y = f(X) + \epsilon$$
 \bigskip
 \normalsize
 
-- We start with the simple case to study the relationship between the response $Y$ and a single predicotr $X$.
+- We start with the simple case to study the relationship between the response $Y$ and a single predictor $X$.
 - As we only have one regressor variable we drop the subscript to simplify the notation ($X_1 = X$).
 - We derive and formulate the regression model and focus on the key results but favor numerical examples over mathematical derivations.
 
@@ -247,7 +247,7 @@ $$ Cor(Y,X) = \frac{1}{n-1}\sum_{i=1}^{n} (\frac{y_i - \bar{y}}{s_y})(\frac{x_i 
 - Calculating the covariance of the standardized values yields the correlation coefficient.
 - $Cor(Y,X)$ can be interpreted in two ways, either as
   + the covariance between two standardized variables or as
-  + ratio betwee of the covariance to the standard deviations of the two variables
+  + ratio of the covariance to the standard deviations of the two variables
 - Opposed to the covariance, $Cor(Y,X)$ is scale invariant so that it is not affected by unit changes. It also satisfies $-1 \geq Cor(Y,X) \leq 1$ and therefore indicates **direction** and **strength**.
 
 ## Correlation Coefficient
@@ -384,7 +384,7 @@ $$S(\beta_0,\beta_1) = \sum_{i=1}^{n} \epsilon_i^2 = \sum_{i=1}^{n}(y_i-\beta_0-
 \medskip
 - This is a quadratic function that can be minimized. The analytical solution for the values $\hat\beta_0$ and $\hat\beta_1$ that minimize the function $S(\;)$ are
 
-$$\hat\beta_1 = \frac{\sum(y_i - \bar y)(y_i - \bar x)}{\sum (x_i - \bar x)} \quad\text{and}\quad \hat\beta_0 = \bar y - \hat\beta_1 \bar x$$
+$$\hat\beta_1 = \frac{\sum(y_i - \bar y)(x_i - \bar x)}{\sum (x_i - \bar x)} \quad\text{and}\quad \hat\beta_0 = \bar y - \hat\beta_1 \bar x$$
 
 \medskip
 - Both, $\hat\beta_0$ and $\hat\beta_1$ are called the **least squares estimates** and give the line with the smallest possible sum of squares of vertical distances.
@@ -638,7 +638,7 @@ $$ SSR = \sum(\hat y_i - \bar y)^2$$
 $$ SSE = \sum(y_i - \hat y_i)^2$$
 
 \bigskip
-- Sum of Squares Total (SST) is the total deviation of $Y$ from its mean $\hat y$.
+- Sum of Squares Total (SST) is the total deviation of $Y$ from its mean $\bar y$.
 - Sum of Squares Regression (SSR) is the explained deviation, that is modeled by the regression line.
 - Sum of Squares Error (SSE) is the total deviation of the residuals.
 
@@ -677,7 +677,7 @@ $$
 
 - The first, SSR, measures the quality of $X$ as a predictor of $Y$
 - the second, SSE, measures the error in this prediciton.
-- Therefore the ratio $R^2 = SSR/SST$ is the proportion of the total variation in $Y$ that is accounted for by the predicotr $X$. It follows that:
+- Therefore the ratio $R^2 = SSR/SST$ is the proportion of the total variation in $Y$ that is accounted for by the predictor $X$. It follows that:
 
 $$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$
 
