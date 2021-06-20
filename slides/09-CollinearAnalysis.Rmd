@@ -56,12 +56,355 @@ library(gridExtra)
 
 ## Introduction
 
-- The interpretation of the coefficients in a multiple regression equation depend implicitly on the assumption that the predictors are **not strongly interrelated**.
-- The common interpretation of regression coefficient is the change in the response when the corresponding predictor is increased by one unit and all other predictors are held constant. 
+- When multicollinearity is present, the least squares estimates of the individual regression coefficients ten to be **unstable** and can lead to erroneous inferences.
+- In the last session we discussed the problem of multicollinearity and ways to diagnose this problem. We found that eliminating predictors from the analysis does not always work and in most analytical settings is not a feasible option.
+- We consider two alternative approaches for dealing with multicollinearity:
+  + Imposing or searching for constraints on the regression parameters.
+  + Using alternative estimation techniques (e.g. principal components regression and ridge regression).
+
+# Principal Components
+
+## Principal Components
+
+- The principal components method is based on the fact that any set of $p$ predictors $X_1, X_2, \ldots, X_p$ can be **transformed** to a set of $p$ **orthogonal** variables.
+- The new orthogonal variables are known as the **principal components** and are denoted by $C_1, C_2, \ldots, C_p$.
+- Each variable $C_j$ is a linear function of the standardized variables $\tilde{X}_1, \tilde{X}_2, \ldots, \tilde{X}_p$.
+
+$$
+C_j = v_{1j} \tilde{X}_1 + v_{2j} \tilde{X}_2 + \ldots + v_{pj} \tilde{X}_p \quad\text{for}\quad j = 1,2,\ldots,p
+$$
+
+## Principal Components
+
+- The coefficients of the linear functions are chosen so that the variables $C_1, \ldots, C_p$ are orthogonal.
+- The coefficients for the $j$-th principal components $C_j$ are the elements of the $j$-th eigenvector that corresponds to the eigenvalue $\lambda_j$, the $j$-th largest eigenvalue of the correlation matrix of the $p$ variables.
+
+$$
+V = 
+\begin{pmatrix}
+V_1 & V_2 & \cdots & V_p\\
+\end{pmatrix} =
+\begin{pmatrix}
+v_{11} & v_{12} & \cdots & v_{1p} \\
+v_{21} & v_{22} & \cdots & v_{2p} \\
+\vdots & \vdots & \ddots & \vdots  \\
+v_{p1} & v_{p2} & \cdots & v_{pp} \\
+\end{pmatrix}
+$$
+
+## Example: French Econmony Data
+
+```{r, size="tiny"}
+P241
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Data Description}
+\small
+\texttt{YEAR}\;        Year of Observation.\\
+\texttt{IMPORT}\;      Import Volume.\\
+\texttt{DOPROD}\;      Domestic Production.\\
+\texttt{STOCK}\;       Stock Formation.\\
+\texttt{CONSUM}\;      Domestic Consumption. \\
+\medskip
+Variables are measured in billion French francs.
+\end{alertblock}
+\end{textblock}
+
+## Principal Components
+
+- It can be shown that the variance of the $j$-th principal component is $Var(C_j)=\lambda_j$ for $j=1,2,\ldots,p$. Therefore the variance-covariance matrix of the principal components is 
+
+$$
+\begin{pmatrix}
+\lambda_1 & 0         & \cdots & 0 \\
+0         & \lambda_2 & \cdots & 0 \\
+\vdots    & \vdots    & \ddots & \vdots  \\
+0         & 0         & \cdots & \lambda_p \\
+\end{pmatrix}
+$$
 
 \bigskip
+- All the off-diagonal elements are zero because the principal components are orthogonal. The value of the $j$-th diagonal element $\lambda_j$ is the variance of $C_j$, the $j$-th principlal component.
+- The principal components are arranged so that $\lambda_1 \geq \lambda_2 \geq \ldots \lambda_p$, which means that the first component has the largest variance.
+
+## Principal Components
+
+```{r}
+d <- head(P241[ ,c("DOPROD", "STOCK", "CONSUM")], 11)
+d.pca <- prcomp(d, center=TRUE, scale=TRUE)
+C <- d.pca$x
+round(C, 4)
+```
+
+## Principal Components
+
+```{r, size="tiny"}
+cormat <- cor(d)
+eigen(cormat)   # Eigen Decomposition of Correlation Matrix
+round(var(C),4) # Variance-Covariance Matrix of PCs
+```
+
+\begin{textblock}{4.6}(7.5,1)
+\begin{alertblock}{Remember}
+\footnotesize
+Multicollinearity leads to heterogeneous sizes of eigenvalues so that one eigenvalue is much smaller than the others. When one eigenvalue is exactly zero a perfect linear relationship (special case of extreme multicollinearity) among the original variables exists.\\
+\bigskip
+The variance-covariance matrix of the new variables only has entries on the main diagonal (which correspond to the eigenvalues) and zeros in all other places (as the variables are orthogonal).
+\end{alertblock}
+\end{textblock}
+
+## Principal Components
+
+- The principal components lack simple interpretation as they are *a mixture* of the (standardized) original variables. 
+- Since $\lambda_j$ is the variance of the $j$-th principal component, a value of $lambda_j \approx 0$ shows that the respective principal componennt $C_j$ is equal to a constant. That constant is the mean value of $C_j$ (which is zero as the variables have been standardized).
+- Inspecting the eigenvectors of the previous example shows that *only* the variables `CONSUM` and `DOPROD` play a relevant role when determining $C_3$.
+
+```{r, echo=F}
+V3 <- eigen(cor(d))$vectors[,3]
+names(V3) <- c("X1_tilde","X2_tilde","X3_tilde")
+V3
+```
+
+
+$$
+\tilde{X}_1 \approx \tilde{X}_3 \quad\text{as}\quad v_{23} \approx 0.007 \approx 0
+$$
+
+# Principal Component Regression
+
+## Principal Component Regression
+
+- We consider the model for the *French Economony Dataset*
+
+$$
+\text{IMPORT} = \beta_0 + \beta_1 \text{DOPROD} + \beta_2 \text{STOCK} + \beta_3 \text{CONSUM} + \epsilon
+$$
+
+\medskip
+- This model expressed using the standardized variables $\tilde{Y}=(y_i - \bar{y})/s_y$ and $\tilde{X_j}=(x_{ij} - \bar{x}_j)/s_{x_j}$ yields
+
+$$
+\tilde{Y} = \theta_1 \tilde{X}_1 + \theta_2 \tilde{X}_2 + \theta_3 \tilde{X}_3 + \epsilon'
+$$
+
+\medskip
+- Utilizing the principal components of the standardized predictors the model can be written as
+
+$$
+\tilde{Y} = \alpha_1 C_1 + \alpha C_2 + \alpha_3 C_3 + \epsilon'
+$$
+
+## Principal Component Regression
+
+```{r, size="tiny"}
+# Data Preparation
+d <- head(P241,11)
+d_scaled <- as.data.frame(scale(d))
+d_prcomp <- as.data.frame(cbind(IMPORT=d_scaled$IMPORT,
+                                prcomp(d[,c("DOPROD","STOCK","CONSUM")],
+                                       center=TRUE, scale=T)$x))
+# Motel Estimation
+mod1 <- lm(IMPORT ~  1 + DOPROD + STOCK + CONSUM, data=d)
+(mod2 <- lm(IMPORT ~ -1 + DOPROD + STOCK + CONSUM, data=d_scaled))
+(mod3 <- lm(IMPORT ~ -1 + PC1 + PC2 + PC3, data=d_prcomp))
+```
+
+## Principal Component Regression
+
+```{r}
+ev <- eigen(cor(d[,c("DOPROD","STOCK","CONSUM")]))$vectors
+
+# Multiply eigenvectors with constant to match output in book
+ev[,2]  <- ev[,2] * -1; ev[,3]  <- ev[,3] * -1
+
+# Eigenvectors
+ev
+```
+
+## Principal Component Regression
+
+```{r, echo=F}
+evr <- round(ev,3)
+```
+
+- The coefficients of the principal component regression can be calculated based on the regression coefficients from the model using the standardized values.
+
+$$
+\begin{array}{ccrccrccrc}
+\alpha_1 &=& `r evr[1,1]` & \theta_1 &+& `r evr[2,1]` & \theta_2 &+& `r evr[3,1]` & \theta_3\\
+\alpha_2 &=& `r evr[1,2]` & \theta_1 &+& `r evr[2,2]` & \theta_2 &+& `r evr[3,2]` & \theta_3\\
+\alpha_3 &=& `r evr[1,3]` & \theta_1 &+& `r evr[2,3]` & \theta_2 &+& `r evr[3,3]` & \theta_3\\
+\end{array}
+$$
+
+\medskip
+- Conversely this relationship can be turned around to obtain the coefficients from the regression with standardized variables from the principal component regression.
+
+$$
+\begin{array}{ccrccrccrc}
+\theta_1 &=& `r evr[1,1]` & \alpha_1 &+& `r evr[1,2]` & \alpha_2 &+& `r evr[1,3]` & \alpha_3\\
+\theta_2 &=& `r evr[2,1]` & \alpha_1 &+& `r evr[2,2]` & \alpha_2 &+& `r evr[2,3]` & \alpha_3\\
+\theta_3 &=& `r evr[3,1]` & \alpha_1 &+& `r evr[3,2]` & \alpha_2 &+& `r evr[3,3]` & \alpha_3\\
+\end{array}
+$$
+
+## Principal Component Regression
+
+```{r, size="tiny"}
+# Calculate alpha (principal components) from theta (standardized variables)
+as.vector(coef(mod2) %*% ev)
+coef(mod3)
+```
+
+```{r, size="tiny"}
+# Calculate theta (standardized variables) from alpha (principal components)
+as.vector(ev %*% coef(mod3))
+coef(mod2)
+```
+
+## Principal Component Regression
+
+$$
+\begin{array}{ccccccccc}
+\tilde{Y} &=& \theta_1 \tilde{X}_1 &+& \theta_2 \tilde{X}_2 &+& \theta_3 \tilde{X}_3 &+& \epsilon'\\
+          &=& \alpha_1 C_1 &+& \alpha C_2 &+& \alpha_3 C_3 &+& \epsilon'
+\end{array}
+$$
+
+\bigskip
+- Although the above equations both hold, the $C$'s are **orthogonal**.
+- The orthogonality bypasses (but not eliminates) the multicollinearity problem, however, the resulting relationship and therefore the coefficients are **not easily interpreted**.
+- The $\alpha$'s unlike the $\theta$'s do not have simple interpretations as marginal effects of the original (standardized) predictor variables.
+
 \begin{alertblock}{}
-\textbf{This interpretation may not be valid if there are string linear relationships among the regressors.}
+\small \center
+The final estimation results are always restated in terms of the $\theta$'s or origninal $\beta$'s for interpretation!
 \end{alertblock}
 
-## Multicollinearity
+## Principal Component Regression
+
+Based on the coefficients obtained from regressing the standardized variables the relationship can be expressed in terms of the original $\beta_j$'s using the following relationship:
+
+$$
+\hat\beta_j = \frac{s_y}{s_j} \hat\theta_j \quad\text{for}\quad j=1,2,\ldots,p
+$$
+
+$$
+\beta_0 = \bar{y} - \hat\beta_1 \bar{x}_1 - \hat\beta_2 \bar{x}_2 - \ldots - \hat\beta_p \bar{x}_p 
+$$
+
+\bigskip
+###
+This back-transform of the variables to the original scale is crucial for interpretation of the final results!
+
+## Reduction of Multicollinearity in the Data
+
+- Principal component regression can be used to **reduce collinearity in the estimation data**.
+- this can be achieved by using **less than the full set of principal components** to explain the variation in the response.
+- When all principal components are used the OLS solution can be exactly reproduced (as seen before).
+
+## Reduction of Multicollinearity in the Data
+
+- The $C_j$'s have sample variances $\lambda_1, \lambda_2, \ldots, \lambda_p$ equal to their eigenvalues. 
+
+```{r}
+eigen(cor(d[,c("DOPROD","STOCK","CONSUM")]))$values
+```
+
+- Since $C_3$ has very small variance, the linear function defining $C_3$ is **approximately equal to zero** and is the source of collinearity in the data. 
+
+## Reduction of Multicollinearity in the Data
+
+- We exclude $C_3$ from the analysis and consider the two possible remaining regression models
+
+$$ \tilde{Y} = \alpha_1 C_1 + \epsilon $$
+$$ \tilde{Y} = \alpha_1 C_1 + \alpha_2 C_2 + \epsilon $$
+
+\bigskip
+**There are two important things to note here:**
+
+1. In an regression equation where the full set of potential predictor variables under consideration are orthogonal, the estimated values of the regression **coefficients are not altered** when subsets of these variables are either introduced or deleted.
+2. Both models lead to estimates for **all** three of the original standardized coefficients $\theta_1, \theta_2$ and $theta_3$.
+
+## Reduction of Multicollinearity in the Data
+
+```{r}
+mod_prcomp1 <- lm(IMPORT ~ -1 + PC1            , data=d_prcomp)
+mod_prcomp2 <- lm(IMPORT ~ -1 + PC1 + PC2      , data=d_prcomp)
+mod_prcomp3 <- lm(IMPORT ~ -1 + PC1 + PC2 + PC3, data=d_prcomp)
+```
+
+```{r, results='asis', echo=F}
+texreg::texreg(list(mod_prcomp1,mod_prcomp2,mod_prcomp3))
+```
+
+## Reduction of Multicollinearity in the Data
+
+
+```{r}
+# Coefficients for standardized predictors when using one principal component
+coefs1 <- coef(mod3)[1] * ev[,1]
+names(coefs1) <- c("DOPROD","STOCK","CONSUM")
+coefs1
+```
+
+```{r}
+# Coefficients for standardized predictors when using two principal components
+coefs2 <- coef(mod3)[1] * ev[,1] + coef(mod3)[2] * ev[,2]
+names(coefs2) <- c("DOPROD","STOCK","CONSUM")
+coefs2
+```
+
+## Reduction of Multicollinearity in the Data
+
+```{r}
+s <- apply(d[ ,c("IMPORT","DOPROD","STOCK","CONSUM")],2,sd)
+m <- apply(d[ ,c("IMPORT","DOPROD","STOCK","CONSUM")],2,mean)
+```
+
+```{r}
+# Model with one PC for non-standardized data
+coefs_org1 <- s[1]/s[2:4] * coefs1
+intercept_org1 <- unname(m[1] - sum(m[2:4]*coefs_org1))
+(beta_org1 <- c(Intercept=intercept_org1, coefs_org1))
+
+# Model with two PCs for non-standardized data
+coefs_org2 <- s[1]/s[2:4] * coefs2
+intercept_org2 <- unname(m[1] - sum(m[2:4]*coefs_org2))
+(beta_org2 <- c(Intercept=intercept_org2, coefs_org2))
+```
+
+## Reduction of Multicollinearity in the Data
+
+
+
+## Reduction of Multicollinearity in the Data
+
+- The following table shows that the coefficients are dependent on the number of incorporated principal components.
+- As each component explains additional variance the $R^2$ inceases with the number of considered principal components.
+
+\bigskip
+```{r, echo=F}
+coefs3 <- coef(mod3)[1] * ev[,1] + coef(mod3)[2] * ev[,2] + coef(mod3)[3] * ev[,3]
+coefs_org3 <- s[1]/s[2:4] * coefs3
+intercept_org3 <- unname(m[1] - sum(m[2:4]*coefs_org3))
+beta_org3 <- c(Intercept=intercept_org3, coefs_org3)
+
+x <- cbind(std_PC1=c(NA,coefs1), org_PC1=beta_org1,
+           std_PC2=c(NA,coefs2), org_PC2=beta_org2,
+           std_PC3=c(NA,coefs3), org_PC3=beta_org3)
+rownames(x) <- c("Intercept","DOPROD","STOCK","CONSUM")
+kable(x, digits=3)
+```
+
+## Constraints on the Regression Coefficients
+
+## Caution when using Principal Component Regression
+
+# Ridge Regression
+
+## Ridge Regression
+
+
+
