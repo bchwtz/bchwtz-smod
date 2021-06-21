@@ -31,6 +31,7 @@ library(GGally)
 library(stargazer)
 library(texreg)
 library(gridExtra)
+library(glmnet)
 ```
 
 # Organizational Information
@@ -377,12 +378,18 @@ intercept_org2 <- unname(m[1] - sum(m[2:4]*coefs_org2))
 
 ## Reduction of Multicollinearity in the Data
 
+- It is evident that using different numbers of principal components gives substantially different results. 
+- I has already been argued that the **OLS estimates are unsatisfactory** (the negative coefficient of $\tilde{X}_1$ is unexpected and cannot be sensibly interpreted.
+- The **third principal component** is the cause of multicollinearity as it is *almost constant*.
+- Of the remaining two components the first one is associated with the effect of `DOPROD` and `CONSUM`. The second is uniquely associated with `STOCK` (as only the coefficient for `STOCK` changes when $C_2$ is added to the regression of `IMPORT` on $C_1$).
 
+###
+Principal component regression can be influenced by the presence of high-leverage points and outliers, which should be removed beforehand.
 
 ## Reduction of Multicollinearity in the Data
 
 - The following table shows that the coefficients are dependent on the number of incorporated principal components.
-- As each component explains additional variance the $R^2$ inceases with the number of considered principal components.
+- As each component explains additional variance the $R^2$ increases with the number of considered principal components.
 
 \bigskip
 ```{r, echo=F}
@@ -398,13 +405,138 @@ rownames(x) <- c("Intercept","DOPROD","STOCK","CONSUM")
 kable(x, digits=3)
 ```
 
-## Constraints on the Regression Coefficients
+## Caution when using Principal Component Regression
+
+- Principal component regression is not guaranteed to work with all datasets.
+- The following dataset (Hald's dataset)  suffers from multicollinearity issues, when calculating the principal components the following model can be estimated, where $U$ is the standardized response and the $C_j$'s are the principal components.
+
+$$
+U = \alpha_1 C_1 + \alpha_2 C_2 + \alpha_3 C_3 + \alpha_4 C_4 + \epsilon
+$$
+
+\medskip
+- It can be seen that in the full model only $\alpha_4$ is significant, and almost the complete variability of the response ($R^2 \approx 1$) is captured. When $C_4$ is dropped the remaining three components account for none of the variability of ($R^2 \approx 0$).
 
 ## Caution when using Principal Component Regression
+
+```{r}
+#TODO: Fix Dataset and show regression models with impact on R2
+P278 # Dataset defect
+```
 
 # Ridge Regression
 
 ## Ridge Regression
 
+- Ridge regression provides an alternative estimation method that can be employed when the predictor variables are highly collinear.
+- There are multiple computational variations of the ridge regression, the presented one is associated with the *ridge trace*.
+- Ridge analysis using the ridge trace represents a unified approach to problems of detection and estimation when multicollinearity is suspected.
+- The **estimators produced are biased** but tend to have a smaller mean squared error when compared to OLS estimators.
 
+###
+The ridge method shrinks the estimated coefficients toward zero. This class of estimators is sometimes called **Shrinkage Estimators**.
+
+## Ridge Regression
+
+$$
+\tilde{Y} = \theta_1 \tilde{X}_1 + \theta_2 \tilde{X}_2 + \theta_3 \tilde{X}_3 + \epsilon'
+$$
+
+\bigskip
+- Based on the standardized form of the regression model, the estimation equations for the ridge regression are given 
+
+$$
+\begin{array}{cccccccccccc}
+(1+k)  & \theta_1 &+& r_{12} & \theta_2 &+& \ldots &+& r_{1p} & \theta_p &=& r_{1y}\\
+r_{21} & \theta_1 &+& (1+k)  & \theta_2 &+& \ldots &+& r_{2p} & \theta_p &=& r_{2y}\\
+       &          &\vdots&   &          &\vdots&   &\vdots&   &          &\vdots&  \\
+r_{p1} & \theta_1 &+& r_{p2} & \theta_2 &+& \ldots &+& (1+k)  & \theta_p &=& r_{py}\\
+\end{array}
+$$
+
+\bigskip
+- Here $r_{iy}$ is the correlation coefficient between the $i$-th predictor and and the response variable $\tilde{Y}$.
+
+## Ridge Regression
+
+- The ridge estimates may be viewed as resulting from a set fo data that ha sbeen *slightly altered*.
+- The essential parameter that distinguishes ridge regression from OLS is $k$. When $k=0$ the $\hat\theta$'s are the OLS estimates.
+- The paramterter $k$ may be referred to as the **bias parameter**. As $k$ increases from zero, the bias of the estimates increases. 
+
+## Ridge Regression
+
+$$
+\text{Total Variance}(k) = \sum_{j=1}^p Var(\hat\theta_j(k)) = \sigma^2 \sum_{j=1}^p \frac{\lambda_j}{(\lambda_j + k)^2}
+$$
+
+$$
+\text{Total Variance}(0) = \sigma^2 \sum_{j=1}^p \frac{1}{\lambda_j}
+$$
+
+- As $k$ continues to increase, the regression estimates all tend toward zero. 
+- The idea of ridge regression os to pick a value of $k$ for which the reduction in total variance is not exceeded by the increase in bias.
+- In practice a value of $k$ is shown by computing $\hat\theta_1, \ldots, \hat\theta_p$ for a range of $k$ values between 0 and 1 and plotting the results against k. The resulting graph is know as the **ridge trace** and can be used to select an appropriate value for $k$.
+
+## Ridge Regression Estimation
+
+```{r}
+y <- as.numeric(scale(head(P241,11)$IMPORT))
+x <- as.matrix(scale(head(P241,11)[,c("DOPROD","STOCK","CONSUM")]))
+k <- rev(seq(0,1,0.001))
+mod <- glmnet::glmnet(x,y, family="gaussian", lambda = k, alpha = 0)
+mod
+```
+
+## Ridge Trace
+
+```{r}
+plot(k,rep(NA,length(k)),type="l",ylim=c(-0.3, 0.8), ylab="Coefficient")
+lines(k, mod$beta[1,]) # Coefficient for DOPROD
+lines(k,mod$beta[3,]) # Coefficient for CONSUM
+lines(k,mod$beta[2,]) # Coefficient for STOCK
+abline(h=0, lty="dashed", col="darkgrey")
+```
+
+## Ridge Regression
+
+- When working with collinear data the values for $k$ are typically chosen at the low end of the range. 
+- If the estimated coefficients show *large fluctuations* for small values of $k$, instability has been demonstrated and collinearity is probably at work.
+- The previously shown **ridge trace plot** shows that the coefficients $\hat\theta_{\text{CONSUM}}$ and $\hat\theta_{\text{DOPROD}}$ are quite unstable for small values of $k$. The unplausible negative coefficient disappears quickly and stabilizes around 0.4.
+- The coefficient $\hat\theta_{\text{STOCK}}$ is unaffected by the collinearity and remains almost stable throughout the range of $k$.
+
+## Ridge Regression
+
+The next step in ridge analysis is to select a value of $k$ and to obtain the corresponding estimates of the regression coefficients. As $k$ is a **bias parameter** it is dersirable ro select the smallest value of $k$ for which stability occurs. Several methods have been suggested:
+
+\center
+1. Fixed Point Method
+2. Iterative Method
+3. Ridge Trace
+
+## Ridge Regression: Fixed Point Method
+
+$$
+k=\frac{p \hat\sigma^2(0)}{\sum_{j=1}^p [\hat\theta_j(0)]^2}
+$$
+
+\bigskip
+- Here $\hat\theta_1(0),\ldots,\hat\theta_p(0)$ are the parameters of the OLS estimate, when $k=0$, and $\hat\sigma^2(0)$ is the corresponding mean square.
+
+## Ridge Regression: Interative Method
+
+$$
+k_1=\frac{p \hat\sigma^2(0)}{\sum_{j=1}^p [\hat\theta_j(k_0)]^2} \qquad
+k_2=\frac{p \hat\sigma^2(0)}{\sum_{j=1}^p [\hat\theta_j(k_1)]^2} \qquad \ldots
+$$
+
+\bigskip
+- Start with the initial estimate of $k_0$ which is the resulting estimate from the fixed point  estimation procedure.
+- Then use the previous value of $k$ to determine the next one and repeat this process until the difference between two successive estimates of $k$ is neglegible (until the algorithm converges).
+
+## Ridge Regression: Ridge Trace
+
+- The behavior of $\hat\theta_j(k)$ as a function of $k$ is easily observed from the ridge trace. 
+- The value of $k$ selected is the smalles value for which all the coefficients $\hat\theta_j(k)$ are stable.
+- In addition, at the selected value of $k$ the residual sum of squares should be close to is minimum value.
+- The variance inflation factors $\text{VIF}_j(k)$ should also get down to less than 1. Recall that a value of $\text{VIF}_j=1$ is a characteristic of an orthogonal system and a value of less than 10 indicates an noncollinear or stable system.
 
