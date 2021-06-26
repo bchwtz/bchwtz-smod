@@ -85,7 +85,7 @@ $$ Y = \beta_0 + \beta_1X_1 + \beta_2 X_2 + \ldots + \beta_p X_p + \epsilon$$
 $$ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \ldots + \beta_p x_{ip} + \epsilon_i$$
 \normalsize
 \smallskip
-$$ i=1,2,\ldots,p$$
+$$ i=1,2,\ldots,n$$
 
 \bigskip
 
@@ -106,7 +106,7 @@ $X_5$      Too critical of poor performance
 $X_6$      Rate of advancing to better jobs
 --------   -----------
 
-- $X_1$, $X_2$ and $X_5$ relate to direct inerpersonal relationships between employee and supervisor
+- $X_1$, $X_2$ and $X_5$ relate to direct interpersonal relationships between employee and supervisor
 - $X_3$ and $X_4$ relate to the job as a whole
 - $X_6$ is and indicator of the perceived progress of the employee
 
@@ -177,7 +177,7 @@ $$\hat\sigma^2=\frac{SSE}{n-p-1} \quad\text{with}\quad SSE = \sum_{i=1}^n(y_i-\h
 - $n-p-1$ is called the degrees of freedom and is equal to the number of observations minus the number of estimated regression coefficients.
 
 ## Interpretation
-- The simple regression equaiton (only $X_1$) represents a line.
+- The simple regression equation (only $X_1$) represents a line.
 - The multiple regression equation represents a plane ($X_1$ and $X_2$) or a hyperplane (more than two predictors).
 ```{r, eval=F}
 library(car) # 3d Visualization of regression plane for two X variables
@@ -187,7 +187,7 @@ car::scatter3d(P060$Y,P060$X1, P060$X2)
 - $\beta_0$ is the *constant coefficient* or *intercept* and results in the value of $Y$, when $X_1 = X_2 = \ldots = X_p = 0$. 
 - The regression coefficient $\beta_j$ has several interpretations:
   + $\beta_j$ is the change in $Y$ corresponding to a unit change in $X_j$, when all other predictors are held constant (ceteris paribus).
-  + $\beta_j$ is also called teh partial regression coefficient as it represents the contribution of $X_j$ to the response variable, after it has been adjusted for the other predictor variables.
+  + $\beta_j$ is also called the partial regression coefficient as it represents the contribution of $X_j$ to the response variable, after it has been adjusted for the other predictor variables.
   
 ## Example: Supervisor Performance
 
@@ -357,11 +357,11 @@ $$R_a^2 = 1 - \frac{SSE/(n-p-1)}{SST/(n-1)} = 1 - \frac{n-1}{n-p-1}(1 - R^2)$$
 
 ## Inference for Regression Coefficients
 
-- Testing the **individual** regression coefficients for $H_0: \beta_j = \beta_j^0$ versus $H_1: \beta_j \neq \beta_j^0$ can be done using the t-testby comapring the observed value $t_j$ with the appropriate critical value $t_{n-p-1,\alpha/2}$.
+- Testing the **individual** regression coefficients for $H_0: \beta_j = \beta_j^0$ versus $H_1: \beta_j \neq \beta_j^0$ can be done using the t-test by comapring the observed value $t_j$ with the appropriate critical value $t_{n-p-1,\alpha/2}$.
 - For the two-sided test, $H_0$ is rejected at the significance level $\alpha$ if
 $$|t_j|\geq t_{n-p-1,\alpha/2} \quad\text{with}\quad t_j = \frac{\hat\beta_j - \beta_j^0}{s.e.(\hat\beta_j)}$$
 
-- An equivalent decision can be made using the p-value and reject $H_0$ if $p(|t_j|) \leq \alpha$. The p-value is the probabillity that a random variable hacinf a Student t-distribution with n-p-1 degrees of freadoms is greated than $|t_j|$ (the observed value of the t-test).
+- An equivalent decision can be made using the p-value and reject $H_0$ if $p(|t_j|) \leq \alpha$. The p-value is the probabillity that a random variable hacinf a Student t-distribution with n-p-1 degrees of freedoms is greater than $|t_j|$ (the observed value of the t-test).
 
 ## Inference for Regression Coefficients
 
@@ -440,9 +440,9 @@ $$ F = \frac{[SSE(RM) - SSE(FM)]/(p+1-k)}{SSE(FM)/(n-p-1)}$$
 - If the observed F-value is large in comparison to the tabulated value of F with the respective degrees of freedom, the result is significant at level $\alpha$.
 - This means that the reduced model is unsatisfactory and the null hypothesis (with the suggested values for the $\beta$'s) is rejected.
 - $H_0$ is rejected if
-$$F \geq F_{(p+1-k, \; n-p-1 \;;\alpha)} \quad\text{or}\quad p(F)\leq\alpha$$
+$$F \geq F_{(p+1-k, \; n-p-1 \;;1-\alpha)} \quad\text{or}\quad p(F)\leq\alpha$$
 
-  + Here $F$ is the observed value of the F-test, $F_{(p+1-k, \; n-p-1 \;;\alpha)}$ is the appropriate critical value obtained from the F table and $p(F)$ is the p-value for the F-Test (probability that a random variable having an F-distribution and the stated DoF is greater than the observed F).
+  + Here $F$ is the observed value of the F-test, $F_{(p+1-k, \; n-p-1 \;;1-\alpha)}$ is the appropriate critical value obtained from the F table and $p(F)$ is the p-value for the F-Test (probability that a random variable having an F-distribution and the stated DoF is greater than the observed F).
 
 ## Hypothesis Testing: All Regression Coefficients equal to Zero
 $$

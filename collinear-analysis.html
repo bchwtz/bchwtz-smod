@@ -4,35 +4,35 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 9 Collinear Analysis | Statistical Modeling</title>
-  <meta name="description" content="Chapter 9 Collinear Analysis | Statistical Modeling Course Notes" />
+  <title>Chapter 10 Collinear Analysis | Statistical Modeling</title>
+  <meta name="description" content="Chapter 10 Collinear Analysis | Statistical Modeling Course Notes" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 9 Collinear Analysis | Statistical Modeling" />
+  <meta property="og:title" content="Chapter 10 Collinear Analysis | Statistical Modeling" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Chapter 9 Collinear Analysis | Statistical Modeling Course Notes" />
+  <meta property="og:description" content="Chapter 10 Collinear Analysis | Statistical Modeling Course Notes" />
   <meta name="github-repo" content="bchwtz/bchwtz-smod" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 9 Collinear Analysis | Statistical Modeling" />
+  <meta name="twitter:title" content="Chapter 10 Collinear Analysis | Statistical Modeling" />
   
-  <meta name="twitter:description" content="Chapter 9 Collinear Analysis | Statistical Modeling Course Notes" />
+  <meta name="twitter:description" content="Chapter 10 Collinear Analysis | Statistical Modeling Course Notes" />
   
 
 <meta name="author" content="Benjamin Buchwitz" />
 
 
-<meta name="date" content="2021-06-21" />
+<meta name="date" content="2021-06-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="correlated-errors.html"/>
-<link rel="next" href="factor-analysis.html"/>
+<link rel="prev" href="collinear-data.html"/>
+<link rel="next" href="variable-selection.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -149,20 +149,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>6</b> Transformations</a></li>
 <li class="chapter" data-level="7" data-path="weighted-least-squares.html"><a href="weighted-least-squares.html"><i class="fa fa-check"></i><b>7</b> Weighted Least Squares</a></li>
 <li class="chapter" data-level="8" data-path="correlated-errors.html"><a href="correlated-errors.html"><i class="fa fa-check"></i><b>8</b> Correlated Errors</a></li>
-<li class="chapter" data-level="9" data-path="collinear-analysis.html"><a href="collinear-analysis.html"><i class="fa fa-check"></i><b>9</b> Collinear Analysis</a></li>
-<li class="chapter" data-level="10" data-path="factor-analysis.html"><a href="factor-analysis.html"><i class="fa fa-check"></i><b>10</b> Factor Analysis</a><ul>
-<li class="chapter" data-level="10.1" data-path="factor-analysis.html"><a href="factor-analysis.html#foundations"><i class="fa fa-check"></i><b>10.1</b> Foundations</a></li>
-<li class="chapter" data-level="10.2" data-path="factor-analysis.html"><a href="factor-analysis.html#estimation"><i class="fa fa-check"></i><b>10.2</b> Estimation</a><ul>
-<li class="chapter" data-level="10.2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-component-method"><i class="fa fa-check"></i><b>10.2.1</b> Principal Component Method</a></li>
-<li class="chapter" data-level="10.2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-factor-solution"><i class="fa fa-check"></i><b>10.2.2</b> Principal Factor Solution</a></li>
-<li class="chapter" data-level="10.2.3" data-path="factor-analysis.html"><a href="factor-analysis.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>10.2.3</b> Maximum Likelihood Estimation</a></li>
+<li class="chapter" data-level="9" data-path="collinear-data.html"><a href="collinear-data.html"><i class="fa fa-check"></i><b>9</b> Collinear Data</a></li>
+<li class="chapter" data-level="10" data-path="collinear-analysis.html"><a href="collinear-analysis.html"><i class="fa fa-check"></i><b>10</b> Collinear Analysis</a></li>
+<li class="chapter" data-level="11" data-path="variable-selection.html"><a href="variable-selection.html"><i class="fa fa-check"></i><b>11</b> Variable Selection</a></li>
+<li class="chapter" data-level="12" data-path="factor-analysis.html"><a href="factor-analysis.html"><i class="fa fa-check"></i><b>12</b> Factor Analysis</a><ul>
+<li class="chapter" data-level="12.1" data-path="factor-analysis.html"><a href="factor-analysis.html#foundations"><i class="fa fa-check"></i><b>12.1</b> Foundations</a></li>
+<li class="chapter" data-level="12.2" data-path="factor-analysis.html"><a href="factor-analysis.html#estimation"><i class="fa fa-check"></i><b>12.2</b> Estimation</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-component-method"><i class="fa fa-check"></i><b>12.2.1</b> Principal Component Method</a></li>
+<li class="chapter" data-level="12.2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-factor-solution"><i class="fa fa-check"></i><b>12.2.2</b> Principal Factor Solution</a></li>
+<li class="chapter" data-level="12.2.3" data-path="factor-analysis.html"><a href="factor-analysis.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>12.2.3</b> Maximum Likelihood Estimation</a></li>
 </ul></li>
-<li class="chapter" data-level="10.3" data-path="factor-analysis.html"><a href="factor-analysis.html#rotation"><i class="fa fa-check"></i><b>10.3</b> Rotation</a></li>
-<li class="chapter" data-level="10.4" data-path="factor-analysis.html"><a href="factor-analysis.html#basic-factor-analysis-in-r"><i class="fa fa-check"></i><b>10.4</b> Basic Factor Analysis in R</a><ul>
-<li class="chapter" data-level="10.4.1" data-path="factor-analysis.html"><a href="factor-analysis.html#data-preparation-and-description"><i class="fa fa-check"></i><b>10.4.1</b> Data Preparation and Description</a></li>
-<li class="chapter" data-level="10.4.2" data-path="factor-analysis.html"><a href="factor-analysis.html#selecting-numbers-of-factors"><i class="fa fa-check"></i><b>10.4.2</b> Selecting numbers of Factors</a></li>
-<li class="chapter" data-level="10.4.3" data-path="factor-analysis.html"><a href="factor-analysis.html#applying-factor-analysis"><i class="fa fa-check"></i><b>10.4.3</b> Applying Factor Analysis</a></li>
-<li class="chapter" data-level="10.4.4" data-path="factor-analysis.html"><a href="factor-analysis.html#interpreting-the-factors"><i class="fa fa-check"></i><b>10.4.4</b> Interpreting the Factors</a></li>
+<li class="chapter" data-level="12.3" data-path="factor-analysis.html"><a href="factor-analysis.html#rotation"><i class="fa fa-check"></i><b>12.3</b> Rotation</a></li>
+<li class="chapter" data-level="12.4" data-path="factor-analysis.html"><a href="factor-analysis.html#basic-factor-analysis-in-r"><i class="fa fa-check"></i><b>12.4</b> Basic Factor Analysis in R</a><ul>
+<li class="chapter" data-level="12.4.1" data-path="factor-analysis.html"><a href="factor-analysis.html#data-preparation-and-description"><i class="fa fa-check"></i><b>12.4.1</b> Data Preparation and Description</a></li>
+<li class="chapter" data-level="12.4.2" data-path="factor-analysis.html"><a href="factor-analysis.html#selecting-numbers-of-factors"><i class="fa fa-check"></i><b>12.4.2</b> Selecting numbers of Factors</a></li>
+<li class="chapter" data-level="12.4.3" data-path="factor-analysis.html"><a href="factor-analysis.html#applying-factor-analysis"><i class="fa fa-check"></i><b>12.4.3</b> Applying Factor Analysis</a></li>
+<li class="chapter" data-level="12.4.4" data-path="factor-analysis.html"><a href="factor-analysis.html#interpreting-the-factors"><i class="fa fa-check"></i><b>12.4.4</b> Interpreting the Factors</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#exercises"><i class="fa fa-check"></i>Exercises</a></li>
 </ul></li>
@@ -189,11 +191,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="collinear-analysis" class="section level1">
-<h1><span class="header-section-number">Chapter 9</span> Collinear Analysis</h1>
-<div class="figure"><span id="fig:unnamed-chunk-10"></span>
+<h1><span class="header-section-number">Chapter 10</span> Collinear Analysis</h1>
+<div class="figure"><span id="fig:unnamed-chunk-11"></span>
 <img src="slides/gifs/09-CollinearAnalysis.gif" alt="[Download Slides](slides/09-CollinearAnalysis.pdf)" width="80%" />
 <p class="caption">
-Figure 9.1: <a href="slides/09-CollinearAnalysis.pdf">Download Slides</a>
+Figure 10.1: <a href="slides/09-CollinearAnalysis.pdf">Download Slides</a>
 </p>
 </div>
 
@@ -203,8 +205,8 @@ Figure 9.1: <a href="slides/09-CollinearAnalysis.pdf">Download Slides</a>
           </div>
         </div>
       </div>
-<a href="correlated-errors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="factor-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="collinear-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="variable-selection.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -236,7 +238,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/08-CollinearData.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/09-CollinearAnalysis.Rmd",
 "text": "Edit"
 },
 "history": {
