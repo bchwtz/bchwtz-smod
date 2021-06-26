@@ -1,0 +1,6 @@
+# Variable Selection
+ 
+```{r, echo = F, out.width="80%", fig.cap="[Download Slides](slides/10-VariableSelection.pdf)"}
+knitr::include_graphics("slides/gifs/10-VariableSelection.gif")
+```
+

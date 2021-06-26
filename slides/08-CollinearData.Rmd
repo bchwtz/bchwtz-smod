@@ -423,7 +423,7 @@ equatiomatic::extract_eq(mod.constraint, use_coef=T)
 
 ## Variance Inflation Factors (VIF)
 
-- A thorough investigation of muticollinearity will involve examining the value of $R^2$ that restulst from regression **each of the predictors against all others**.
+- A thorough investigation of muticollinearity will involve examining the value of $R^2$ that results from regression **each of the predictors against all others**.
 - The resulting effects can be judged by examining a quantitiy called *variance inflation index* (**VIF**).
 
 $$
