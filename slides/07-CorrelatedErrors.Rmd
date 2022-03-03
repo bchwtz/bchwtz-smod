@@ -12,7 +12,7 @@ knit: rmarkdown::render
 ---
 
 ```{r setup, include=FALSE}
-library(fhswf)
+library(fhswf) 
 library(knitr)
 options(digits = 4)
 knitr::opts_chunk$set(echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE, 
