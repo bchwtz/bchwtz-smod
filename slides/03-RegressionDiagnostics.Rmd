@@ -259,7 +259,7 @@ summary(mod)
 ## Model Fitting `olsrr::ols_regress()`
 
 ```{r, size="tiny"}
-mod <- ols_regress(Y ~ 1 + X1 + X2, data=P103)
+mod <- olsrr::ols_regress(Y ~ 1 + X1 + X2, data=P103)
 mod
 ```
 
@@ -452,7 +452,7 @@ summary(mod)
 ## Added-Variable Plot
 
 ```{r, fig.height=5, warning=F, message=F}
-ols_plot_added_variable(mod)
+olsrr::ols_plot_added_variable(mod)
 ```
 
 \begin{textblock}{4.6}(7.5,1)

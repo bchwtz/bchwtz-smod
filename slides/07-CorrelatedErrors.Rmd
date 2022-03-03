@@ -349,7 +349,7 @@ car::durbinWatsonTest(mod2) # Adding Money Indicator removes autocorrelation!
 
 ```{r, results="asis"}
 mod3 <- lm(scale(H) ~ 1 + scale(P) + scale(D), data=P219)
-texreg(list(mod1, mod2, mod3))
+texreg::texreg(list(mod1, mod2, mod3))
 ```
 
 \begin{textblock}{4.6}(7.5,1)
@@ -398,7 +398,7 @@ points(which(!as.logical(df$Season)),y=df$res[!as.logical(df$Season)], pch=19)
 
 ```{r, results="asis"}
 mod2 <- lm(Sales ~ 1 + PDI + Season, data=P224)
-texreg(list(mod1,mod2))
+texreg::texreg(list(mod1,mod2))
 ```
 
 ## Example: Ski Sales
