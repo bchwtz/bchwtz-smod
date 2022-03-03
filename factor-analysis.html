@@ -33,6 +33,7 @@
   
 <link rel="prev" href="variable-selection.html"/>
 <link rel="next" href="system-info.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -50,10 +51,8 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
-<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
@@ -61,18 +60,18 @@
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -92,7 +91,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -142,35 +141,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./"><b>Statistical Modeling</b></a></li>
 
 <li class="divider"></li>
-<li><a href="index.html#prerequisites">Prerequisites<span></span></a></li>
-<li class="chapter" data-level="1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html"><i class="fa fa-check"></i><b>1</b> Simple Linear Regression<span></span></a></li>
-<li class="chapter" data-level="2" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple Linear Regression<span></span></a></li>
-<li class="chapter" data-level="3" data-path="regression-diagnostics.html"><a href="regression-diagnostics.html"><i class="fa fa-check"></i><b>3</b> Regression Diagnostics<span></span></a></li>
-<li class="chapter" data-level="4" data-path="qualitative-variables.html"><a href="qualitative-variables.html"><i class="fa fa-check"></i><b>4</b> Qualitative Variables<span></span></a></li>
-<li class="chapter" data-level="5" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>5</b> Transformations<span></span></a></li>
-<li class="chapter" data-level="6" data-path="weighted-least-squares.html"><a href="weighted-least-squares.html"><i class="fa fa-check"></i><b>6</b> Weighted Least Squares<span></span></a></li>
-<li class="chapter" data-level="7" data-path="correlated-errors.html"><a href="correlated-errors.html"><i class="fa fa-check"></i><b>7</b> Correlated Errors<span></span></a></li>
-<li class="chapter" data-level="8" data-path="collinear-data.html"><a href="collinear-data.html"><i class="fa fa-check"></i><b>8</b> Collinear Data<span></span></a></li>
-<li class="chapter" data-level="9" data-path="collinear-analysis.html"><a href="collinear-analysis.html"><i class="fa fa-check"></i><b>9</b> Collinear Analysis<span></span></a></li>
-<li class="chapter" data-level="10" data-path="variable-selection.html"><a href="variable-selection.html"><i class="fa fa-check"></i><b>10</b> Variable Selection<span></span></a></li>
-<li class="chapter" data-level="11" data-path="factor-analysis.html"><a href="factor-analysis.html"><i class="fa fa-check"></i><b>11</b> Factor Analysis<span></span></a><ul>
-<li class="chapter" data-level="11.1" data-path="factor-analysis.html"><a href="factor-analysis.html#foundations"><i class="fa fa-check"></i><b>11.1</b> Foundations<span></span></a></li>
-<li class="chapter" data-level="11.2" data-path="factor-analysis.html"><a href="factor-analysis.html#estimation"><i class="fa fa-check"></i><b>11.2</b> Estimation<span></span></a><ul>
-<li class="chapter" data-level="11.2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-component-method"><i class="fa fa-check"></i><b>11.2.1</b> Principal Component Method<span></span></a></li>
-<li class="chapter" data-level="11.2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-factor-solution"><i class="fa fa-check"></i><b>11.2.2</b> Principal Factor Solution<span></span></a></li>
-<li class="chapter" data-level="11.2.3" data-path="factor-analysis.html"><a href="factor-analysis.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>11.2.3</b> Maximum Likelihood Estimation<span></span></a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="chapter" data-level="1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html"><i class="fa fa-check"></i><b>1</b> Simple Linear Regression</a></li>
+<li class="chapter" data-level="2" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple Linear Regression</a></li>
+<li class="chapter" data-level="3" data-path="regression-diagnostics.html"><a href="regression-diagnostics.html"><i class="fa fa-check"></i><b>3</b> Regression Diagnostics</a></li>
+<li class="chapter" data-level="4" data-path="qualitative-variables.html"><a href="qualitative-variables.html"><i class="fa fa-check"></i><b>4</b> Qualitative Variables</a></li>
+<li class="chapter" data-level="5" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>5</b> Transformations</a></li>
+<li class="chapter" data-level="6" data-path="weighted-least-squares.html"><a href="weighted-least-squares.html"><i class="fa fa-check"></i><b>6</b> Weighted Least Squares</a></li>
+<li class="chapter" data-level="7" data-path="correlated-errors.html"><a href="correlated-errors.html"><i class="fa fa-check"></i><b>7</b> Correlated Errors</a></li>
+<li class="chapter" data-level="8" data-path="collinear-data.html"><a href="collinear-data.html"><i class="fa fa-check"></i><b>8</b> Collinear Data</a></li>
+<li class="chapter" data-level="9" data-path="collinear-analysis.html"><a href="collinear-analysis.html"><i class="fa fa-check"></i><b>9</b> Collinear Analysis</a></li>
+<li class="chapter" data-level="10" data-path="variable-selection.html"><a href="variable-selection.html"><i class="fa fa-check"></i><b>10</b> Variable Selection</a></li>
+<li class="chapter" data-level="11" data-path="factor-analysis.html"><a href="factor-analysis.html"><i class="fa fa-check"></i><b>11</b> Factor Analysis</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="factor-analysis.html"><a href="factor-analysis.html#foundations"><i class="fa fa-check"></i><b>11.1</b> Foundations</a></li>
+<li class="chapter" data-level="11.2" data-path="factor-analysis.html"><a href="factor-analysis.html#estimation"><i class="fa fa-check"></i><b>11.2</b> Estimation</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-component-method"><i class="fa fa-check"></i><b>11.2.1</b> Principal Component Method</a></li>
+<li class="chapter" data-level="11.2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-factor-solution"><i class="fa fa-check"></i><b>11.2.2</b> Principal Factor Solution</a></li>
+<li class="chapter" data-level="11.2.3" data-path="factor-analysis.html"><a href="factor-analysis.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>11.2.3</b> Maximum Likelihood Estimation</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="factor-analysis.html"><a href="factor-analysis.html#rotation"><i class="fa fa-check"></i><b>11.3</b> Rotation<span></span></a></li>
-<li class="chapter" data-level="11.4" data-path="factor-analysis.html"><a href="factor-analysis.html#basic-factor-analysis-in-r"><i class="fa fa-check"></i><b>11.4</b> Basic Factor Analysis in R<span></span></a><ul>
-<li class="chapter" data-level="11.4.1" data-path="factor-analysis.html"><a href="factor-analysis.html#data-preparation-and-description"><i class="fa fa-check"></i><b>11.4.1</b> Data Preparation and Description<span></span></a></li>
-<li class="chapter" data-level="11.4.2" data-path="factor-analysis.html"><a href="factor-analysis.html#selecting-numbers-of-factors"><i class="fa fa-check"></i><b>11.4.2</b> Selecting numbers of Factors<span></span></a></li>
-<li class="chapter" data-level="11.4.3" data-path="factor-analysis.html"><a href="factor-analysis.html#applying-factor-analysis"><i class="fa fa-check"></i><b>11.4.3</b> Applying Factor Analysis<span></span></a></li>
-<li class="chapter" data-level="11.4.4" data-path="factor-analysis.html"><a href="factor-analysis.html#interpreting-the-factors"><i class="fa fa-check"></i><b>11.4.4</b> Interpreting the Factors<span></span></a></li>
+<li class="chapter" data-level="11.3" data-path="factor-analysis.html"><a href="factor-analysis.html#rotation"><i class="fa fa-check"></i><b>11.3</b> Rotation</a></li>
+<li class="chapter" data-level="11.4" data-path="factor-analysis.html"><a href="factor-analysis.html#basic-factor-analysis-in-r"><i class="fa fa-check"></i><b>11.4</b> Basic Factor Analysis in R</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="factor-analysis.html"><a href="factor-analysis.html#data-preparation-and-description"><i class="fa fa-check"></i><b>11.4.1</b> Data Preparation and Description</a></li>
+<li class="chapter" data-level="11.4.2" data-path="factor-analysis.html"><a href="factor-analysis.html#selecting-numbers-of-factors"><i class="fa fa-check"></i><b>11.4.2</b> Selecting numbers of Factors</a></li>
+<li class="chapter" data-level="11.4.3" data-path="factor-analysis.html"><a href="factor-analysis.html#applying-factor-analysis"><i class="fa fa-check"></i><b>11.4.3</b> Applying Factor Analysis</a></li>
+<li class="chapter" data-level="11.4.4" data-path="factor-analysis.html"><a href="factor-analysis.html#interpreting-the-factors"><i class="fa fa-check"></i><b>11.4.4</b> Interpreting the Factors</a></li>
 </ul></li>
-<li><a href="factor-analysis.html#exercises">Exercises<span></span></a></li>
+<li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#exercises"><i class="fa fa-check"></i>Exercises</a></li>
 </ul></li>
-<li class="part"><span><b>Appendix<span></span></b></span></li>
-<li><a href="system-info.html#system-info">System Info<span></span></a></li>
+<li class="part"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="" data-path="system-info.html"><a href="system-info.html"><i class="fa fa-check"></i>System Info</a></li>
 <li class="divider"></li>
 <li><a href="http://www.bchwtz.de" target="blank"><center>www.<b>BCHWTZ</b>.de</center></a></li>
 
@@ -191,12 +193,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="factor-analysis" class="section level1 hasAnchor">
-<h1><span class="header-section-number">Chapter 11</span> Factor Analysis<a href="factor-analysis.html#factor-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="factor-analysis" class="section level1" number="11">
+<h1><span class="header-section-number">Chapter 11</span> Factor Analysis</h1>
 <p>Statistically speaking the main goal of factor analysis is to describe the covariance structure among many variables in terms of a few underlying, but unobservable random quantities, called factors. This usually happens by assuming that the supposed variables can be organized into (contextually meaningful) groups. The variables in a given group are assumed to be highly correlated and thus represent or are related to a latent construct. While the correlation within a group of variables is high, the correlation between different groups should be low. Following that argumentation it may be possible to condense the information from multiple observed variables within a group into a single unobserved factor variable. While Explanatory Factor Analysis (EFA) aims at finding the mentioned groups Confirmatory Factor Analysis (CFA) aims at confirming an <em>a priori</em> hypothesized variable grouping constellation.</p>
 <p>While EFA and CFA serve different purposes when doing research, their foundation, especially the model formulation, the estimation and the derivation of quantities of interest is highly comparable and will be presented below.</p>
-<div id="foundations" class="section level2 hasAnchor">
-<h2><span class="header-section-number">11.1</span> Foundations<a href="factor-analysis.html#foundations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="foundations" class="section level2" number="11.1">
+<h2><span class="header-section-number">11.1</span> Foundations</h2>
 <p><span class="math display">\[
 X_1 - \mu_1 = l_{11} F_1 + l_{12} F_2 + \ldots + l_{1m} F_m + \epsilon_1 \\
 X_2 - \mu_2 = l_{21} F_1 + l_{22} F_2 + \ldots + l_{2m} F_m + \epsilon_2 \\
@@ -205,52 +207,52 @@ X_p - \mu_p = l_{p1} F_1 + l_{p2} F_2 + \ldots + l_{pm} F_m + \epsilon_p
 \]</span>
 Although the equations above seem to be related to multiple regression equations the fact that all quantities on the right hand side are unobseved (in fact only <span class="math inline">\(X\)</span> is observed) distinguishes this factor model from regression problems. The factor analysis model can also be written in matrix notation, which allows for easier derivation of some of the following procedures and thus should be considered valuable as well.</p>
 <p><span class="math display">\[
-\underset{p \times 1}{\boldsymbol X}  = 
+\underset{p \times 1}{\boldsymbol X}  =
 \underset{p \times 1}{\boldsymbol \mu} +
 \underset{p \times m}{\boldsymbol L} \; \underset{m \times p}{\boldsymbol F} +
 \underset{p \times 1}{\boldsymbol \epsilon}
 \]</span></p>
 <p><span class="math display">\[
-\underset{p \times 1}{\boldsymbol X - \boldsymbol \mu}  = 
+\underset{p \times 1}{\boldsymbol X - \boldsymbol \mu}  =
 \underset{p \times m}{\boldsymbol L} \; \underset{m \times p}{\boldsymbol F} +
 \underset{p \times 1}{\boldsymbol \epsilon}
 \]</span></p>
 <p><span class="math display">\[
-\boldsymbol \Sigma = Cov(\boldsymbol X) = 
-\underset{\;\\Communality}{\boldsymbol L \boldsymbol L^T} + 
+\boldsymbol \Sigma = Cov(\boldsymbol X) =
+\underset{\;\\Communality}{\boldsymbol L \boldsymbol L^T} +
 \underset{\;\\Uniqueness}{\boldsymbol \Psi}
 \]</span></p>
 </div>
-<div id="estimation" class="section level2 hasAnchor">
-<h2><span class="header-section-number">11.2</span> Estimation<a href="factor-analysis.html#estimation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="estimation" class="section level2" number="11.2">
+<h2><span class="header-section-number">11.2</span> Estimation</h2>
 <p>Work in Progress …</p>
-<div id="principal-component-method" class="section level3 hasAnchor">
-<h3><span class="header-section-number">11.2.1</span> Principal Component Method<a href="factor-analysis.html#principal-component-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="principal-component-method" class="section level3" number="11.2.1">
+<h3><span class="header-section-number">11.2.1</span> Principal Component Method</h3>
 </div>
-<div id="principal-factor-solution" class="section level3 hasAnchor">
-<h3><span class="header-section-number">11.2.2</span> Principal Factor Solution<a href="factor-analysis.html#principal-factor-solution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="principal-factor-solution" class="section level3" number="11.2.2">
+<h3><span class="header-section-number">11.2.2</span> Principal Factor Solution</h3>
 </div>
-<div id="maximum-likelihood-estimation" class="section level3 hasAnchor">
-<h3><span class="header-section-number">11.2.3</span> Maximum Likelihood Estimation<a href="factor-analysis.html#maximum-likelihood-estimation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="maximum-likelihood-estimation" class="section level3" number="11.2.3">
+<h3><span class="header-section-number">11.2.3</span> Maximum Likelihood Estimation</h3>
 </div>
 </div>
-<div id="rotation" class="section level2 hasAnchor">
-<h2><span class="header-section-number">11.3</span> Rotation<a href="factor-analysis.html#rotation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="rotation" class="section level2" number="11.3">
+<h2><span class="header-section-number">11.3</span> Rotation</h2>
 <p>Work in Progress …</p>
 </div>
-<div id="basic-factor-analysis-in-r" class="section level2 hasAnchor">
-<h2><span class="header-section-number">11.4</span> Basic Factor Analysis in R<a href="factor-analysis.html#basic-factor-analysis-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="data-preparation-and-description" class="section level3 hasAnchor">
-<h3><span class="header-section-number">11.4.1</span> Data Preparation and Description<a href="factor-analysis.html#data-preparation-and-description" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="basic-factor-analysis-in-r" class="section level2" number="11.4">
+<h2><span class="header-section-number">11.4</span> Basic Factor Analysis in R</h2>
+<div id="data-preparation-and-description" class="section level3" number="11.4.1">
+<h3><span class="header-section-number">11.4.1</span> Data Preparation and Description</h3>
 <p>Lets get our hands dirty and apply what we learned. The following code loads some data that results from a questionnaire with 50 questions.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="factor-analysis.html#cb1-1"></a>q &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;data/fa_questions.rds&quot;</span>)  <span class="co"># Questions asked</span></span>
-<span id="cb1-2"><a href="factor-analysis.html#cb1-2"></a>d &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;data/fa_sample.rds&quot;</span>)     <span class="co"># Response data</span></span>
-<span id="cb1-3"><a href="factor-analysis.html#cb1-3"></a></span>
-<span id="cb1-4"><a href="factor-analysis.html#cb1-4"></a><span class="co"># Alternatively data can be downloaded</span></span>
-<span id="cb1-5"><a href="factor-analysis.html#cb1-5"></a><span class="co">#q &lt;- readRDS(gzcon(url(&quot;https://bchwtz.de/lfs/fa_questions.rds&quot;)))</span></span>
-<span id="cb1-6"><a href="factor-analysis.html#cb1-6"></a><span class="co">#d &lt;- readRDS(gzcon(url(&quot;https://bchwtz.de/lfs/fa_sample.rds&quot;)))</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="factor-analysis.html#cb1-1" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/fa_questions.rds&quot;</span>)  <span class="co"># Questions asked</span></span>
+<span id="cb1-2"><a href="factor-analysis.html#cb1-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/fa_sample.rds&quot;</span>)     <span class="co"># Response data</span></span>
+<span id="cb1-3"><a href="factor-analysis.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="factor-analysis.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternatively data can be downloaded</span></span>
+<span id="cb1-5"><a href="factor-analysis.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#q &lt;- readRDS(gzcon(url(&quot;https://bchwtz.de/lfs/fa_questions.rds&quot;)))</span></span>
+<span id="cb1-6"><a href="factor-analysis.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#d &lt;- readRDS(gzcon(url(&quot;https://bchwtz.de/lfs/fa_sample.rds&quot;)))</span></span></code></pre></div>
 <p>The variable <code>q</code> contains the questions from the questionnaire (50 items) while <code>d</code> contains the actual responses. Respondents hat the option to answer each question using a 5-point Likert-Scale, that was labeled 1=Disagree, 3=Neutral, 5=Agree. However, the data is not pre-processed and needs to be thoroughly investigated and potentially cleaned up before it can be used for analytic procedures.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="factor-analysis.html#cb2-1"></a><span class="kw">head</span>(q, <span class="dt">n=</span><span class="dv">6</span>) <span class="co"># Show first 6 rows from the dataframe</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="factor-analysis.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(q, <span class="at">n=</span><span class="dv">6</span>) <span class="co"># Show first 6 rows from the dataframe</span></span></code></pre></div>
 <pre><code>##     Q coding                            question
 ## 1 Q01      P   I feel comfortable around people.
 ## 2 Q02      P             I have excellent ideas.
@@ -259,7 +261,7 @@ Although the equations above seem to be related to multiple regression equations
 ## 5 Q05      N   I do not have a good imagination.
 ## 6 Q06      P I sympathize with others&#39; feelings.</code></pre>
 <p>The object <code>q</code> contains three variables (columns), the question ID <code>Q</code>, an indication if the question is positively (<code>coding == "P"</code>) or negatively (<code>coding == "N"</code>) formulated and the actual formulation of the item <code>question</code>. The responses are saved in object <code>d</code> and the following code snipped shows the first six observations (rows) for the rist five variables <code>Q01</code> to <code>Q05</code> (columns).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="factor-analysis.html#cb4-1"></a><span class="kw">head</span>(d[ ,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], <span class="dt">n=</span><span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="factor-analysis.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d[ ,<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], <span class="at">n=</span><span class="dv">6</span>)</span></code></pre></div>
 <pre><code>##   Q01 Q02 Q03 Q04 Q05
 ## 1   3   4   1   2   2
 ## 2   3   3   3   4   4
@@ -267,13 +269,15 @@ Although the equations above seem to be related to multiple regression equations
 ## 4   3   4   2   1   2
 ## 5   1   5   3   1   1
 ## 6   4   3   2   1   3</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="factor-analysis.html#cb6-1"></a><span class="kw">dim</span>(d)         <span class="co"># Dimensions of the data matrix</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="factor-analysis.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(d)         <span class="co"># Dimensions of the data matrix</span></span></code></pre></div>
 <pre><code>## [1] 14095    53</code></pre>
 <details>
-<p><summary>All 50 Items - Click to expand!</summary></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="factor-analysis.html#cb8-1"></a><span class="kw">library</span>(kableExtra)</span>
-<span id="cb8-2"><a href="factor-analysis.html#cb8-2"></a><span class="kw">kable_paper</span>(<span class="kw">kbl</span>(q), <span class="st">&quot;hover&quot;</span>, <span class="dt">full_width =</span> F)</span></code></pre></div>
-<table class=" lightable-paper lightable-hover" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<summary>
+All 50 Items - Click to expand!
+</summary>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="factor-analysis.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb8-2"><a href="factor-analysis.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable_paper</span>(<span class="fu">kbl</span>(q), <span class="st">&quot;hover&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
+<table class=" lightable-paper lightable-hover" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -847,21 +851,21 @@ I use difficult words.
 <li><code>testelapse</code>: Is the time in seconds spent on the page with the survey questions.</li>
 <li><code>country</code>: Indicates the country of the respondet, but is determined by technical information and was <em>not asked as a question</em>, thus may be inaccurate.</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="factor-analysis.html#cb9-1"></a><span class="kw">summary</span>(d<span class="op">$</span>testelapse)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="factor-analysis.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(d<span class="sc">$</span>testelapse)</span></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NA&#39;s 
 ##      2.0    182.0    238.0    565.9    327.0 699842.0       11</code></pre>
-<p>The descriptive statistics for the <code>testelapse</code> variable shows that on average respondents spent 565.91 seconds for answering the questions. 50% of the responses took longer than 238 seconds. However the fastest respondent only used the questionnaire for 2 seconds, while the longest response took 6.9984210^{5} seconds ( = 194.4 hours). Additionally 11 observations contain not value (<code>NA</code>) for the <code>testelapse</code> variable.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="factor-analysis.html#cb11-1"></a><span class="kw">table</span>(d<span class="op">$</span>IPC)</span></code></pre></div>
+<p>The descriptive statistics for the <code>testelapse</code> variable shows that on average respondents spent 565.91 seconds for answering the questions. 50% of the responses took longer than 238 seconds. However the fastest respondent only used the questionnaire for 2 seconds, while the longest response took 6.99842^{5} seconds ( = 194.4 hours). Additionally 11 observations contain not value (<code>NA</code>) for the <code>testelapse</code> variable.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="factor-analysis.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(d<span class="sc">$</span>IPC)</span></code></pre></div>
 <pre><code>## 
 ##     1     2     3     4     5     6     7     8     9    10    11    12    13 
 ## 12327  1060   228   116    35    18    28    24    27    20    11    12    13 
 ##    14    15    16    19    22    29    42 
 ##    14    15    16    38    22    29    42</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="factor-analysis.html#cb13-1"></a><span class="kw">barplot</span>(<span class="kw">table</span>(d<span class="op">$</span>IPC))</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="factor-analysis.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(d<span class="sc">$</span>IPC))</span></code></pre></div>
 <p><img src="bchwtz-smod_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>When looking at the <code>IPC</code> variable using the raw numbers or the barplot above, we can see that most responses originated from a unique IP address, while there are fewer IPs that contributed multiple entries. However, there also seem to be some larger networks or abusive users that contribute multiple observations with the maximum being 42 from a single IP.</p>
 <p>The following output shows the descriptive statistics for the first five variables (<code>Q01</code>-<code>Q05</code>). As the responses were collected using a 5-point Likert-Scale the minimum for each variable is 1 and the maximum 5. The remaining values variate nicely and are all within a reasonable range. However, it becomes quickly visible that some respondents have not answered all questions as, each variable contains <code>NA</code> values.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="factor-analysis.html#cb14-1"></a><span class="kw">t</span>(<span class="kw">sapply</span>(d[ , <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], summary))</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="factor-analysis.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">sapply</span>(d[ , <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], summary))</span></code></pre></div>
 <pre><code>##     Min. 1st Qu. Median     Mean 3rd Qu. Max. NA&#39;s
 ## Q01    1       2      3 3.112902       4    5   74
 ## Q02    1       3      4 3.826643       5    5   95
@@ -869,8 +873,10 @@ I use difficult words.
 ## Q04    1       1      2 2.422241       3    5   58
 ## Q05    1       1      1 1.806505       2    5  105</code></pre>
 <details>
-<p><summary>All 50 Descriptive Statistics - Click to expand!</summary></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="factor-analysis.html#cb16-1"></a><span class="kw">t</span>(<span class="kw">sapply</span>(d[ , <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>], summary))</span></code></pre></div>
+<summary>
+All 50 Descriptive Statistics - Click to expand!
+</summary>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="factor-analysis.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">sapply</span>(d[ , <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>], summary))</span></code></pre></div>
 <pre><code>##     Min. 1st Qu. Median     Mean 3rd Qu. Max. NA&#39;s
 ## Q01    1       2      3 3.112902       4    5   74
 ## Q02    1       3      4 3.826643       5    5   95
@@ -924,16 +930,16 @@ I use difficult words.
 ## Q50    1       3      4 3.655848       5    5  107</code></pre>
 </details>
 <p>Lets have a detailed look at <code>Q01</code>, which was formulated as shown below. Once again the scale meant the following: 1=Disagree, 3=Neutral, 5=Agree.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="factor-analysis.html#cb18-1"></a>q[q<span class="op">$</span>Q <span class="op">==</span><span class="st"> &quot;Q01&quot;</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="factor-analysis.html#cb18-1" aria-hidden="true" tabindex="-1"></a>q[q<span class="sc">$</span>Q <span class="sc">==</span> <span class="st">&quot;Q01&quot;</span>, ]</span></code></pre></div>
 <pre><code>##     Q coding                          question
 ## 1 Q01      P I feel comfortable around people.</code></pre>
 <p>Deep diving into the descriptive statistics and actual responses for the variable <code>Q01</code> shows, that the value of the first quartile is 2, meaning that 25% or more of the respondents answered with either value 1 or 2 (the code below shows the frequencies and exact proportions). In total 32.62% disagree (at least lightly) with the item and do not feel comfortable around people. On the other side 39.27% somehow agree to the statement and have no worse feelings when being in a group of people. However, 28% of the respondents say that they feel neutral (no agreement or disagreement with the item) when in groups. Additionally 74 people have not answered <code>Q01</code>.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="factor-analysis.html#cb20-1"></a>tab &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">table</span>(d[,<span class="dv">1</span>]))</span>
-<span id="cb20-2"><a href="factor-analysis.html#cb20-2"></a>q01_details &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">value =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</span>
-<span id="cb20-3"><a href="factor-analysis.html#cb20-3"></a>                          <span class="dt">freq =</span> tab,</span>
-<span id="cb20-4"><a href="factor-analysis.html#cb20-4"></a>                          <span class="dt">prop =</span> tab<span class="op">/</span><span class="kw">sum</span>(tab))</span>
-<span id="cb20-5"><a href="factor-analysis.html#cb20-5"></a>q01_details<span class="op">$</span>cumprop &lt;-<span class="st"> </span><span class="kw">cumsum</span>(q01_details<span class="op">$</span>prop)</span>
-<span id="cb20-6"><a href="factor-analysis.html#cb20-6"></a><span class="kw">round</span>(q01_details, <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="factor-analysis.html#cb20-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">table</span>(d[,<span class="dv">1</span>]))</span>
+<span id="cb20-2"><a href="factor-analysis.html#cb20-2" aria-hidden="true" tabindex="-1"></a>q01_details <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">value =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb20-3"><a href="factor-analysis.html#cb20-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">freq =</span> tab,</span>
+<span id="cb20-4"><a href="factor-analysis.html#cb20-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">prop =</span> tab<span class="sc">/</span><span class="fu">sum</span>(tab))</span>
+<span id="cb20-5"><a href="factor-analysis.html#cb20-5" aria-hidden="true" tabindex="-1"></a>q01_details<span class="sc">$</span>cumprop <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(q01_details<span class="sc">$</span>prop)</span>
+<span id="cb20-6"><a href="factor-analysis.html#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(q01_details, <span class="at">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##   value freq   prop cumprop
 ## 1     1 1207 0.0861  0.0861
 ## 2     2 3367 0.2401  0.3262
@@ -946,25 +952,25 @@ I use difficult words.
 <li><p>We want to be sure that every natural person only contributes one observation to the dataset, which we will ensure by only considering lines where the <code>IPC</code> variable has the value <code>1</code>.</p></li>
 <li><p>We do not want missing observations in the sense of unanswered questions (<code>NA</code> values) in the dataset, but only consider responses that answered all questions from the questionnaire.</p></li>
 </ol>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="factor-analysis.html#cb22-1"></a><span class="co"># 1) Remove rows with unreasonable response times</span></span>
-<span id="cb22-2"><a href="factor-analysis.html#cb22-2"></a>d_cleaned &lt;-<span class="st"> </span>d[d<span class="op">$</span>testelapse <span class="op">&gt;=</span><span class="st"> </span><span class="dv">100</span> <span class="op">&amp;</span><span class="st"> </span>d<span class="op">$</span>testelapse <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3600</span>, ]</span>
-<span id="cb22-3"><a href="factor-analysis.html#cb22-3"></a></span>
-<span id="cb22-4"><a href="factor-analysis.html#cb22-4"></a><span class="co"># 2) Remove responses from non unique IPs</span></span>
-<span id="cb22-5"><a href="factor-analysis.html#cb22-5"></a>d_cleaned &lt;-<span class="st"> </span>d_cleaned[d_cleaned<span class="op">$</span>IPC <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, ]</span>
-<span id="cb22-6"><a href="factor-analysis.html#cb22-6"></a></span>
-<span id="cb22-7"><a href="factor-analysis.html#cb22-7"></a><span class="co"># 3) Remove rows with missing (NA) values.</span></span>
-<span id="cb22-8"><a href="factor-analysis.html#cb22-8"></a>d_cleaned &lt;-<span class="st"> </span><span class="kw">na.omit</span>(d_cleaned) </span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="factor-analysis.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) Remove rows with unreasonable response times</span></span>
+<span id="cb22-2"><a href="factor-analysis.html#cb22-2" aria-hidden="true" tabindex="-1"></a>d_cleaned <span class="ot">&lt;-</span> d[d<span class="sc">$</span>testelapse <span class="sc">&gt;=</span> <span class="dv">100</span> <span class="sc">&amp;</span> d<span class="sc">$</span>testelapse <span class="sc">&lt;=</span> <span class="dv">3600</span>, ]</span>
+<span id="cb22-3"><a href="factor-analysis.html#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="factor-analysis.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) Remove responses from non unique IPs</span></span>
+<span id="cb22-5"><a href="factor-analysis.html#cb22-5" aria-hidden="true" tabindex="-1"></a>d_cleaned <span class="ot">&lt;-</span> d_cleaned[d_cleaned<span class="sc">$</span>IPC <span class="sc">==</span> <span class="dv">1</span>, ]</span>
+<span id="cb22-6"><a href="factor-analysis.html#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="factor-analysis.html#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) Remove rows with missing (NA) values.</span></span>
+<span id="cb22-8"><a href="factor-analysis.html#cb22-8" aria-hidden="true" tabindex="-1"></a>d_cleaned <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(d_cleaned) </span></code></pre></div>
 <p>Cleaning up our data naturally leads to observations that we do not consider. The dataset beforehand hat 14095 observations, while our cleaned up dataset that is nor ready for analysis has only 10760 responses. While deleting 3335observations seems a lot, this is necessary to have a clean and logically flawless foundation for our analysis</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="factor-analysis.html#cb23-1"></a><span class="kw">dim</span>(d)                    <span class="co"># Dimensions for the raw data</span></span>
-<span id="cb23-2"><a href="factor-analysis.html#cb23-2"></a><span class="co">## [1] 14095    53</span></span>
-<span id="cb23-3"><a href="factor-analysis.html#cb23-3"></a><span class="kw">dim</span>(d_cleaned)            <span class="co"># Dimensions after cleaning up</span></span>
-<span id="cb23-4"><a href="factor-analysis.html#cb23-4"></a><span class="co">## [1] 10760    53</span></span>
-<span id="cb23-5"><a href="factor-analysis.html#cb23-5"></a><span class="kw">nrow</span>(d) <span class="op">-</span><span class="st"> </span><span class="kw">nrow</span>(d_cleaned) <span class="co"># Number of discarded observations</span></span>
-<span id="cb23-6"><a href="factor-analysis.html#cb23-6"></a><span class="co">## [1] 3335</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="factor-analysis.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(d)                    <span class="co"># Dimensions for the raw data</span></span>
+<span id="cb23-2"><a href="factor-analysis.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 14095    53</span></span>
+<span id="cb23-3"><a href="factor-analysis.html#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(d_cleaned)            <span class="co"># Dimensions after cleaning up</span></span>
+<span id="cb23-4"><a href="factor-analysis.html#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 10760    53</span></span>
+<span id="cb23-5"><a href="factor-analysis.html#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(d) <span class="sc">-</span> <span class="fu">nrow</span>(d_cleaned) <span class="co"># Number of discarded observations</span></span>
+<span id="cb23-6"><a href="factor-analysis.html#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 3335</span></span></code></pre></div>
 <p>While we could use the whole dataset for our analysis, 50 questions is a fairly long questionnaire and may be confusing for a first factor analysis. We therefore select only a subset of variables for further investigation. Specifically we revert to the following items and variables in the dataset. For the further analysis we also rely only on the responses. The metadata and technical information of the variables <code>IPC</code>, <code>testelapse</code> and <code>country</code> has been extensively for the descriptive statistics.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="factor-analysis.html#cb24-1"></a>items_selected &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Q01&quot;</span>, <span class="st">&quot;Q04&quot;</span>, <span class="st">&quot;Q11&quot;</span>, <span class="st">&quot;Q17&quot;</span>, <span class="st">&quot;Q28&quot;</span>, <span class="st">&quot;Q33&quot;</span>)</span>
-<span id="cb24-2"><a href="factor-analysis.html#cb24-2"></a>d_small &lt;-<span class="st"> </span>d_cleaned[ ,items_selected]</span></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="factor-analysis.html#cb25-1"></a>q[q<span class="op">$</span>Q <span class="op">%in%</span><span class="st"> </span>items_selected, ]</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="factor-analysis.html#cb24-1" aria-hidden="true" tabindex="-1"></a>items_selected <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Q01&quot;</span>, <span class="st">&quot;Q04&quot;</span>, <span class="st">&quot;Q11&quot;</span>, <span class="st">&quot;Q17&quot;</span>, <span class="st">&quot;Q28&quot;</span>, <span class="st">&quot;Q33&quot;</span>)</span>
+<span id="cb24-2"><a href="factor-analysis.html#cb24-2" aria-hidden="true" tabindex="-1"></a>d_small <span class="ot">&lt;-</span> d_cleaned[ ,items_selected]</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="factor-analysis.html#cb25-1" aria-hidden="true" tabindex="-1"></a>q[q<span class="sc">$</span>Q <span class="sc">%in%</span> items_selected, ]</span></code></pre></div>
 <pre><code>##      Q coding                                    question
 ## 1  Q01      P           I feel comfortable around people.
 ## 4  Q04      P                 I am the life of the party.
@@ -973,13 +979,13 @@ I use difficult words.
 ## 28 Q28      P                   I have a rich vocabulary.
 ## 33 Q33      P I don&#39;t mind being the center of attention.</code></pre>
 </div>
-<div id="selecting-numbers-of-factors" class="section level3 hasAnchor">
-<h3><span class="header-section-number">11.4.2</span> Selecting numbers of Factors<a href="factor-analysis.html#selecting-numbers-of-factors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="selecting-numbers-of-factors" class="section level3" number="11.4.2">
+<h3><span class="header-section-number">11.4.2</span> Selecting numbers of Factors</h3>
 <p>Before applying a factor analysis routine we need to explicitly decide how many factors should be extracted from our cleaned and reduced dataset <code>d_small</code>. As factor analysis is essentially a elaborate decomposition of the variance-covariance-matrix of our variables, it is a good idea to look at the correlation matrix before proceeding.</p>
 <p><strong>NOTE:</strong> For the remainder of this chapter we treat the likert-scale responses as metric and calculate measures that were invented for continuous data (well knowing that this is a drawback with potential downsides).</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="factor-analysis.html#cb27-1"></a><span class="co"># Calculate Correlation Matrix, </span></span>
-<span id="cb27-2"><a href="factor-analysis.html#cb27-2"></a>R &lt;-<span class="st"> </span><span class="kw">cor</span>(d_small)</span>
-<span id="cb27-3"><a href="factor-analysis.html#cb27-3"></a><span class="kw">round</span>(R, <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="factor-analysis.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Correlation Matrix, </span></span>
+<span id="cb27-2"><a href="factor-analysis.html#cb27-2" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fu">cor</span>(d_small)</span>
+<span id="cb27-3"><a href="factor-analysis.html#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(R, <span class="at">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##         Q01     Q04    Q11     Q17    Q28     Q33
 ## Q01  1.0000  0.5031 0.1168 -0.0394 0.0785  0.4665
 ## Q04  0.5031  1.0000 0.0944 -0.0333 0.0967  0.4866
@@ -989,24 +995,24 @@ I use difficult words.
 ## Q33  0.4665  0.4866 0.1609 -0.0155 0.1535  1.0000</code></pre>
 <p>As the correlation matrix is symmetric we can concentrate on the lower (or upper) triangle-matrix for our interpretation.</p>
 <p>However, the correlation structure does not provide a clear picture of the underlying constructs and it is still difficult to decide on the number of factors used. Therefore we consult additional measures that help us to decide. All the following statistics, the Kaiser-Guttman-Criterion, the criterion of extracted variance and the screeplot are based on the Eigenvalues of the correlation matrix that we calculated beforehand. While there are multiple functions (especially in the <code>psych</code> package) that allow for producing the results below more or less automatically, we quickly calculate the results ourselves to foster our understanding.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="factor-analysis.html#cb29-1"></a><span class="co"># Eigenvalues &amp; Proportion of Variance</span></span>
-<span id="cb29-2"><a href="factor-analysis.html#cb29-2"></a>eigval &lt;-<span class="st"> </span><span class="kw">eigen</span>(R)<span class="op">$</span>values</span>
-<span id="cb29-3"><a href="factor-analysis.html#cb29-3"></a>eigval</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="factor-analysis.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eigenvalues &amp; Proportion of Variance</span></span>
+<span id="cb29-2"><a href="factor-analysis.html#cb29-2" aria-hidden="true" tabindex="-1"></a>eigval <span class="ot">&lt;-</span> <span class="fu">eigen</span>(R)<span class="sc">$</span>values</span>
+<span id="cb29-3"><a href="factor-analysis.html#cb29-3" aria-hidden="true" tabindex="-1"></a>eigval</span></code></pre></div>
 <pre><code>## [1] 2.0795498 1.3267681 0.9023841 0.6719476 0.5285274 0.4908229</code></pre>
 <p>First we need to calculate the Eigenvalue decomposition of the correlation matrix <code>R</code>, which can be done using the function <code>eigen()</code>.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="factor-analysis.html#cb31-1"></a><span class="co"># Scree plot</span></span>
-<span id="cb31-2"><a href="factor-analysis.html#cb31-2"></a><span class="kw">plot</span>(eigval, <span class="dt">type =</span> <span class="st">&quot;b&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Eigenvalue&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Index&quot;</span>,</span>
-<span id="cb31-3"><a href="factor-analysis.html#cb31-3"></a>     <span class="dt">xaxt=</span><span class="st">&quot;n&quot;</span>,<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="kw">max</span>(eigval)),</span>
-<span id="cb31-4"><a href="factor-analysis.html#cb31-4"></a>     <span class="dt">main =</span> <span class="st">&quot;Scree plot&quot;</span>)</span>
-<span id="cb31-5"><a href="factor-analysis.html#cb31-5"></a></span>
-<span id="cb31-6"><a href="factor-analysis.html#cb31-6"></a><span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span><span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(eigval))</span>
-<span id="cb31-7"><a href="factor-analysis.html#cb31-7"></a><span class="kw">abline</span>(<span class="dt">h=</span><span class="dv">1</span>, <span class="dt">lty =</span> <span class="st">&quot;dotted&quot;</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="factor-analysis.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scree plot</span></span>
+<span id="cb31-2"><a href="factor-analysis.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(eigval, <span class="at">type =</span> <span class="st">&quot;b&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Eigenvalue&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Index&quot;</span>,</span>
+<span id="cb31-3"><a href="factor-analysis.html#cb31-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xaxt=</span><span class="st">&quot;n&quot;</span>,<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(eigval)),</span>
+<span id="cb31-4"><a href="factor-analysis.html#cb31-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Scree plot&quot;</span>)</span>
+<span id="cb31-5"><a href="factor-analysis.html#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="factor-analysis.html#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(eigval))</span>
+<span id="cb31-7"><a href="factor-analysis.html#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">1</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <p><img src="bchwtz-smod_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="factor-analysis.html#cb32-1"></a>proptotvar &lt;-<span class="st"> </span>eigval <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(eigval)</span>
-<span id="cb32-2"><a href="factor-analysis.html#cb32-2"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Eigenvalue =</span> eigval, </span>
-<span id="cb32-3"><a href="factor-analysis.html#cb32-3"></a>                 <span class="dt">Var=</span>proptotvar, </span>
-<span id="cb32-4"><a href="factor-analysis.html#cb32-4"></a>                 <span class="dt">sumVar=</span><span class="kw">cumsum</span>(proptotvar))</span>
-<span id="cb32-5"><a href="factor-analysis.html#cb32-5"></a><span class="kw">round</span>(df, <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="factor-analysis.html#cb32-1" aria-hidden="true" tabindex="-1"></a>proptotvar <span class="ot">&lt;-</span> eigval <span class="sc">/</span> <span class="fu">sum</span>(eigval)</span>
+<span id="cb32-2"><a href="factor-analysis.html#cb32-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Eigenvalue =</span> eigval, </span>
+<span id="cb32-3"><a href="factor-analysis.html#cb32-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Var=</span>proptotvar, </span>
+<span id="cb32-4"><a href="factor-analysis.html#cb32-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">sumVar=</span><span class="fu">cumsum</span>(proptotvar))</span>
+<span id="cb32-5"><a href="factor-analysis.html#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(df, <span class="at">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##   Eigenvalue    Var sumVar
 ## 1     2.0795 0.3466 0.3466
 ## 2     1.3268 0.2211 0.5677
@@ -1015,20 +1021,20 @@ I use difficult words.
 ## 5     0.5285 0.0881 0.9182
 ## 6     0.4908 0.0818 1.0000</code></pre>
 </div>
-<div id="applying-factor-analysis" class="section level3 hasAnchor">
-<h3><span class="header-section-number">11.4.3</span> Applying Factor Analysis<a href="factor-analysis.html#applying-factor-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="applying-factor-analysis" class="section level3" number="11.4.3">
+<h3><span class="header-section-number">11.4.3</span> Applying Factor Analysis</h3>
 <p>In R there are multiple implementations of factor analysis available. Each model variant and each implementation comes with its own strengths and drawbacks. A good starting point is the <code>factanal()</code> function that comes with the preinstalled <code>stats</code> package. However, more elaborate and flexible approaches are available for download (e.g. in the <code>psych</code> package). In this part we are focusing on the the factor analysis procedure that is implemented in the <code>factanal()</code> function, which performs maximum-likelihood factor analysis on a covariance, correlation or data matrix. For using <code>factanal()</code> four arguments are essential <code>x</code> to input the data, <code>factors</code> to specify the number of factors that should be used, <code>scores</code> to specify the method used to calculate the factor scores and <code>rotation</code> to specify the method for orthogonal or oblique rotation.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="factor-analysis.html#cb34-1"></a><span class="kw">factanal</span>(x,        <span class="co"># Data</span></span>
-<span id="cb34-2"><a href="factor-analysis.html#cb34-2"></a>         factors,  <span class="co"># Number of factors</span></span>
-<span id="cb34-3"><a href="factor-analysis.html#cb34-3"></a>         scores,   <span class="co"># Method to calculate factor scores</span></span>
-<span id="cb34-4"><a href="factor-analysis.html#cb34-4"></a>         rotation) <span class="co"># Method for rotation</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="factor-analysis.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factanal</span>(x,        <span class="co"># Data</span></span>
+<span id="cb34-2"><a href="factor-analysis.html#cb34-2" aria-hidden="true" tabindex="-1"></a>         factors,  <span class="co"># Number of factors</span></span>
+<span id="cb34-3"><a href="factor-analysis.html#cb34-3" aria-hidden="true" tabindex="-1"></a>         scores,   <span class="co"># Method to calculate factor scores</span></span>
+<span id="cb34-4"><a href="factor-analysis.html#cb34-4" aria-hidden="true" tabindex="-1"></a>         rotation) <span class="co"># Method for rotation</span></span></code></pre></div>
 <p>While <code>x</code> and <code>factors</code> must be specified by the user the arguments <code>scores</code> and <code>rotation</code> use default values. Factor scores could be calculated either using Thompsons method (<code>scores = "regression"</code>), based on Bartlett’s weighted least-squares approach (<code>scores = "Bartlett"</code>) or not calculated at all (defaul: <code>scores = "none"</code>). Applying factor rotation can either be done using the default Varimax option (<code>rotation = "varimax"</code>) for orthogonal transformation or using <code>rotation = "Bartlett"</code> for an oblique transformation. Alternatively results can be obtained without applying a transformation using <code>rotation = "none"</code>.</p>
 <p>Based on our prior investigation we are now applying factor analysis with 2 factors. To get started we do not apply any rotational techniques, but start interpreting the results we obtain from that simple algorithm. This allows us to discuss the impact and effect of applying rotational transformations to the loading matrix in a subsequent step. As method for calculating the factor scores we apply the regression method. The results are estimated using Maximum Likelihood and stored in <code>fa_none</code>.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="factor-analysis.html#cb35-1"></a>fa_none &lt;-<span class="st"> </span><span class="kw">factanal</span>(d_small , </span>
-<span id="cb35-2"><a href="factor-analysis.html#cb35-2"></a>                    <span class="dt">factors =</span> <span class="dv">2</span>,</span>
-<span id="cb35-3"><a href="factor-analysis.html#cb35-3"></a>                    <span class="dt">scores =</span> <span class="st">&quot;regression&quot;</span>,</span>
-<span id="cb35-4"><a href="factor-analysis.html#cb35-4"></a>                    <span class="dt">rotation =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb35-5"><a href="factor-analysis.html#cb35-5"></a>fa_none</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="factor-analysis.html#cb35-1" aria-hidden="true" tabindex="-1"></a>fa_none <span class="ot">&lt;-</span> <span class="fu">factanal</span>(d_small , </span>
+<span id="cb35-2"><a href="factor-analysis.html#cb35-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">factors =</span> <span class="dv">2</span>,</span>
+<span id="cb35-3"><a href="factor-analysis.html#cb35-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">scores =</span> <span class="st">&quot;regression&quot;</span>,</span>
+<span id="cb35-4"><a href="factor-analysis.html#cb35-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">rotation =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb35-5"><a href="factor-analysis.html#cb35-5" aria-hidden="true" tabindex="-1"></a>fa_none</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## factanal(x = d_small, factors = 2, scores = &quot;regression&quot;, rotation = &quot;none&quot;)
@@ -1057,13 +1063,13 @@ I use difficult words.
 <ul>
 <li><p><strong>Call:</strong> The model output starts with the call that we used to apply the <code>factanal()</code> function.</p></li>
 <li><p><strong>Uniqueness:</strong> The first numerical values in the output represent the estimates for the uniqueness <span class="math inline">\(\hat\Psi\)</span>, which range from 0 to 1. The uniqueness can be interpreted as the proportion of variance of the variables that cannot be explained by a linear combination of the factors. Therefore a high value of the uniqueness indicates, that the factors do not account well for the variability of the respective variable.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="factor-analysis.html#cb37-1"></a>fa_none<span class="op">$</span>uniquenesses</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="factor-analysis.html#cb37-1" aria-hidden="true" tabindex="-1"></a>fa_none<span class="sc">$</span>uniquenesses</span></code></pre></div>
 <pre><code>##       Q01       Q04       Q11       Q17       Q28       Q33 
 ## 0.5149702 0.4799127 0.7780746 0.9413099 0.5177331 0.5350869</code></pre></li>
 <li><p><strong>Loadings:</strong> The next section represents the factor loading estimates <span class="math inline">\(\hat{L}\)</span>, which lie between -1 and 1. These loadings can be interpreted as the contribution of each variable from the dataset to the specific factor (below per column). While the output above suppresses values, which are smaller than 0.1 for easier visual group allocation, the full matrix can be easily extractes as shown below.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="factor-analysis.html#cb39-1"></a><span class="co"># Loadings</span></span>
-<span id="cb39-2"><a href="factor-analysis.html#cb39-2"></a>loadings &lt;-<span class="kw">unclass</span>(fa_none<span class="op">$</span>loadings)</span>
-<span id="cb39-3"><a href="factor-analysis.html#cb39-3"></a>loadings</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="factor-analysis.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loadings</span></span>
+<span id="cb39-2"><a href="factor-analysis.html#cb39-2" aria-hidden="true" tabindex="-1"></a>loadings <span class="ot">&lt;-</span><span class="fu">unclass</span>(fa_none<span class="sc">$</span>loadings)</span>
+<span id="cb39-3"><a href="factor-analysis.html#cb39-3" aria-hidden="true" tabindex="-1"></a>loadings</span></code></pre></div>
 <pre><code>##          Factor1     Factor2
 ## Q01  0.680914360 -0.14623783
 ## Q04  0.706371879 -0.14534125
@@ -1072,32 +1078,32 @@ I use difficult words.
 ## Q28  0.259993358  0.64394987
 ## Q33  0.681098523 -0.03192189</code></pre>
 <p>Squaring the loadings and summing them up (by column) yields the fraction of total variance explained by factor, which is usally referred to as communality <span class="math inline">\(\hat L \hat L^T\)</span>. *A good factor model yields in high values for the communality and low values for the uniqueness.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="factor-analysis.html#cb41-1"></a><span class="co"># Communalities</span></span>
-<span id="cb41-2"><a href="factor-analysis.html#cb41-2"></a>communalities &lt;-<span class="st"> </span><span class="kw">apply</span>(fa_none<span class="op">$</span>loadings<span class="op">^</span><span class="dv">2</span>, <span class="dv">1</span>, sum)</span>
-<span id="cb41-3"><a href="factor-analysis.html#cb41-3"></a>communalities</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="factor-analysis.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Communalities</span></span>
+<span id="cb41-2"><a href="factor-analysis.html#cb41-2" aria-hidden="true" tabindex="-1"></a>communalities <span class="ot">&lt;-</span> <span class="fu">apply</span>(fa_none<span class="sc">$</span>loadings<span class="sc">^</span><span class="dv">2</span>, <span class="dv">1</span>, sum)</span>
+<span id="cb41-3"><a href="factor-analysis.html#cb41-3" aria-hidden="true" tabindex="-1"></a>communalities</span></code></pre></div>
 <pre><code>##        Q01        Q04        Q11        Q17        Q28        Q33 
 ## 0.48502987 0.52008531 0.22192820 0.05869216 0.48226798 0.46491421</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="factor-analysis.html#cb43-1"></a><span class="co"># Recalculating Uniqueness</span></span>
-<span id="cb43-2"><a href="factor-analysis.html#cb43-2"></a><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>communalities </span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="factor-analysis.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recalculating Uniqueness</span></span>
+<span id="cb43-2"><a href="factor-analysis.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> communalities </span></code></pre></div>
 <pre><code>##       Q01       Q04       Q11       Q17       Q28       Q33 
 ## 0.5149701 0.4799147 0.7780718 0.9413078 0.5177320 0.5350858</code></pre></li>
 <li><p><strong>Explained Variance:</strong></p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="factor-analysis.html#cb45-1"></a><span class="co"># Calculating Sum of Squares (SS) loadings</span></span>
-<span id="cb45-2"><a href="factor-analysis.html#cb45-2"></a><span class="kw">round</span>(<span class="kw">apply</span>(fa_none<span class="op">$</span>loadings<span class="op">^</span><span class="dv">2</span>, <span class="dv">2</span>, sum), <span class="dt">digits=</span><span class="dv">4</span>)</span>
-<span id="cb45-3"><a href="factor-analysis.html#cb45-3"></a><span class="co">## Factor1 Factor2 </span></span>
-<span id="cb45-4"><a href="factor-analysis.html#cb45-4"></a><span class="co">##  1.5526  0.6803</span></span>
-<span id="cb45-5"><a href="factor-analysis.html#cb45-5"></a></span>
-<span id="cb45-6"><a href="factor-analysis.html#cb45-6"></a><span class="co"># Calculating Sum of Squares (SS) loadings by eigenvalue decomposition of squared loading matrix.</span></span>
-<span id="cb45-7"><a href="factor-analysis.html#cb45-7"></a>L_hat &lt;-<span class="st"> </span>fa_none<span class="op">$</span>loadings</span>
-<span id="cb45-8"><a href="factor-analysis.html#cb45-8"></a><span class="kw">round</span>(<span class="kw">eigen</span>( L_hat <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(L_hat))<span class="op">$</span>values, <span class="dt">digits=</span><span class="dv">4</span>)</span>
-<span id="cb45-9"><a href="factor-analysis.html#cb45-9"></a><span class="co">## [1] 1.5545 0.6784 0.0000 0.0000 0.0000 0.0000</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="factor-analysis.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating Sum of Squares (SS) loadings</span></span>
+<span id="cb45-2"><a href="factor-analysis.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">apply</span>(fa_none<span class="sc">$</span>loadings<span class="sc">^</span><span class="dv">2</span>, <span class="dv">2</span>, sum), <span class="at">digits=</span><span class="dv">4</span>)</span>
+<span id="cb45-3"><a href="factor-analysis.html#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Factor1 Factor2 </span></span>
+<span id="cb45-4"><a href="factor-analysis.html#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  1.5526  0.6803</span></span>
+<span id="cb45-5"><a href="factor-analysis.html#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="factor-analysis.html#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating Sum of Squares (SS) loadings by eigenvalue decomposition of squared loading matrix.</span></span>
+<span id="cb45-7"><a href="factor-analysis.html#cb45-7" aria-hidden="true" tabindex="-1"></a>L_hat <span class="ot">&lt;-</span> fa_none<span class="sc">$</span>loadings</span>
+<span id="cb45-8"><a href="factor-analysis.html#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">eigen</span>( L_hat <span class="sc">%*%</span> <span class="fu">t</span>(L_hat))<span class="sc">$</span>values, <span class="at">digits=</span><span class="dv">4</span>)</span>
+<span id="cb45-9"><a href="factor-analysis.html#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1.5545 0.6784 0.0000 0.0000 0.0000 0.0000</span></span></code></pre></div></li>
 <li><p><strong>Likelihood Ratio Test:</strong></p></li>
 </ul>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="factor-analysis.html#cb46-1"></a>L_hat &lt;-<span class="st"> </span>fa_none<span class="op">$</span>loadings</span>
-<span id="cb46-2"><a href="factor-analysis.html#cb46-2"></a>Psi_hat &lt;-<span class="st"> </span><span class="kw">diag</span>(fa_none<span class="op">$</span>uniquenesses)</span>
-<span id="cb46-3"><a href="factor-analysis.html#cb46-3"></a>R_hat &lt;-<span class="st"> </span>L_hat <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(L_hat) <span class="op">+</span><span class="st"> </span>Psi_hat</span></code></pre></div>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="factor-analysis.html#cb47-1"></a><span class="co"># Residual Matrix</span></span>
-<span id="cb47-2"><a href="factor-analysis.html#cb47-2"></a><span class="kw">round</span>(R <span class="op">-</span><span class="st"> </span>R_hat, <span class="dt">digits=</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="factor-analysis.html#cb46-1" aria-hidden="true" tabindex="-1"></a>L_hat <span class="ot">&lt;-</span> fa_none<span class="sc">$</span>loadings</span>
+<span id="cb46-2"><a href="factor-analysis.html#cb46-2" aria-hidden="true" tabindex="-1"></a>Psi_hat <span class="ot">&lt;-</span> <span class="fu">diag</span>(fa_none<span class="sc">$</span>uniquenesses)</span>
+<span id="cb46-3"><a href="factor-analysis.html#cb46-3" aria-hidden="true" tabindex="-1"></a>R_hat <span class="ot">&lt;-</span> L_hat <span class="sc">%*%</span> <span class="fu">t</span>(L_hat) <span class="sc">+</span> Psi_hat</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="factor-analysis.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Residual Matrix</span></span>
+<span id="cb47-2"><a href="factor-analysis.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(R <span class="sc">-</span> R_hat, <span class="at">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##         Q01     Q04     Q11     Q17     Q28     Q33
 ## Q01  0.0000  0.0008  0.0112 -0.0010 -0.0044 -0.0020
 ## Q04  0.0008  0.0000 -0.0178  0.0051  0.0066  0.0009
@@ -1106,63 +1112,63 @@ I use difficult words.
 ## Q28 -0.0044  0.0066 -0.0003  0.0029  0.0000 -0.0030
 ## Q33 -0.0020  0.0009  0.0090 -0.0048 -0.0030  0.0000</code></pre>
 <p>Lets estimate two additional factor analyses to illustrate the effect of apply rotational transformations.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="factor-analysis.html#cb49-1"></a>fa_varimax &lt;-<span class="st"> </span><span class="kw">factanal</span>(d_small , <span class="dt">factors =</span> <span class="dv">2</span>, <span class="dt">rotation =</span> <span class="st">&quot;varimax&quot;</span>)</span>
-<span id="cb49-2"><a href="factor-analysis.html#cb49-2"></a>fa_promax &lt;-<span class="st"> </span><span class="kw">factanal</span>(d_small, <span class="dt">factors =</span> <span class="dv">2</span>, <span class="dt">rotation =</span> <span class="st">&quot;promax&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="factor-analysis.html#cb50-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
-<span id="cb50-2"><a href="factor-analysis.html#cb50-2"></a><span class="co"># par(mfrow = c(1,3), pty=&quot;s&quot;) # Force plots to be quadratic</span></span>
-<span id="cb50-3"><a href="factor-analysis.html#cb50-3"></a></span>
-<span id="cb50-4"><a href="factor-analysis.html#cb50-4"></a><span class="kw">plot</span>(fa_none<span class="op">$</span>loadings[,<span class="dv">1</span>], </span>
-<span id="cb50-5"><a href="factor-analysis.html#cb50-5"></a>     fa_none<span class="op">$</span>loadings[,<span class="dv">2</span>],</span>
-<span id="cb50-6"><a href="factor-analysis.html#cb50-6"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
-<span id="cb50-7"><a href="factor-analysis.html#cb50-7"></a>     <span class="dt">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>, </span>
-<span id="cb50-8"><a href="factor-analysis.html#cb50-8"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb50-9"><a href="factor-analysis.html#cb50-9"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb50-10"><a href="factor-analysis.html#cb50-10"></a>     <span class="dt">main =</span> <span class="st">&quot;No rotation&quot;</span>)</span>
-<span id="cb50-11"><a href="factor-analysis.html#cb50-11"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">v =</span> <span class="dv">0</span>, <span class="dt">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
-<span id="cb50-12"><a href="factor-analysis.html#cb50-12"></a></span>
-<span id="cb50-13"><a href="factor-analysis.html#cb50-13"></a><span class="kw">plot</span>(fa_varimax<span class="op">$</span>loadings[,<span class="dv">1</span>], </span>
-<span id="cb50-14"><a href="factor-analysis.html#cb50-14"></a>     fa_varimax<span class="op">$</span>loadings[,<span class="dv">2</span>],</span>
-<span id="cb50-15"><a href="factor-analysis.html#cb50-15"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
-<span id="cb50-16"><a href="factor-analysis.html#cb50-16"></a>     <span class="dt">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>, </span>
-<span id="cb50-17"><a href="factor-analysis.html#cb50-17"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb50-18"><a href="factor-analysis.html#cb50-18"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb50-19"><a href="factor-analysis.html#cb50-19"></a>     <span class="dt">main =</span> <span class="st">&quot;Varimax rotation&quot;</span>)</span>
-<span id="cb50-20"><a href="factor-analysis.html#cb50-20"></a></span>
-<span id="cb50-21"><a href="factor-analysis.html#cb50-21"></a><span class="kw">text</span>(fa_varimax<span class="op">$</span>loadings[,<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.08</span>, </span>
-<span id="cb50-22"><a href="factor-analysis.html#cb50-22"></a>     fa_varimax<span class="op">$</span>loadings[,<span class="dv">2</span>]<span class="op">+</span><span class="fl">0.08</span>,</span>
-<span id="cb50-23"><a href="factor-analysis.html#cb50-23"></a>     <span class="kw">colnames</span>(d_small),</span>
-<span id="cb50-24"><a href="factor-analysis.html#cb50-24"></a>     <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</span>
-<span id="cb50-25"><a href="factor-analysis.html#cb50-25"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">v =</span> <span class="dv">0</span>, <span class="dt">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
-<span id="cb50-26"><a href="factor-analysis.html#cb50-26"></a></span>
-<span id="cb50-27"><a href="factor-analysis.html#cb50-27"></a>rotmat &lt;-<span class="st"> </span>fa_varimax<span class="op">$</span>rotmat</span>
-<span id="cb50-28"><a href="factor-analysis.html#cb50-28"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">1</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
-<span id="cb50-29"><a href="factor-analysis.html#cb50-29"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">2</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">2</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
-<span id="cb50-30"><a href="factor-analysis.html#cb50-30"></a></span>
-<span id="cb50-31"><a href="factor-analysis.html#cb50-31"></a><span class="kw">plot</span>(fa_promax<span class="op">$</span>loadings[,<span class="dv">1</span>], </span>
-<span id="cb50-32"><a href="factor-analysis.html#cb50-32"></a>     fa_promax<span class="op">$</span>loadings[,<span class="dv">2</span>],</span>
-<span id="cb50-33"><a href="factor-analysis.html#cb50-33"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
-<span id="cb50-34"><a href="factor-analysis.html#cb50-34"></a>     <span class="dt">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>,</span>
-<span id="cb50-35"><a href="factor-analysis.html#cb50-35"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb50-36"><a href="factor-analysis.html#cb50-36"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb50-37"><a href="factor-analysis.html#cb50-37"></a>     <span class="dt">main =</span> <span class="st">&quot;Promax rotation&quot;</span>)</span>
-<span id="cb50-38"><a href="factor-analysis.html#cb50-38"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">v =</span> <span class="dv">0</span>, <span class="dt">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
-<span id="cb50-39"><a href="factor-analysis.html#cb50-39"></a></span>
-<span id="cb50-40"><a href="factor-analysis.html#cb50-40"></a>rotmat &lt;-<span class="st"> </span>fa_promax<span class="op">$</span>rotmat</span>
-<span id="cb50-41"><a href="factor-analysis.html#cb50-41"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">1</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
-<span id="cb50-42"><a href="factor-analysis.html#cb50-42"></a><span class="kw">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">2</span>],<span class="dt">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">2</span>], <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="factor-analysis.html#cb49-1" aria-hidden="true" tabindex="-1"></a>fa_varimax <span class="ot">&lt;-</span> <span class="fu">factanal</span>(d_small , <span class="at">factors =</span> <span class="dv">2</span>, <span class="at">rotation =</span> <span class="st">&quot;varimax&quot;</span>)</span>
+<span id="cb49-2"><a href="factor-analysis.html#cb49-2" aria-hidden="true" tabindex="-1"></a>fa_promax <span class="ot">&lt;-</span> <span class="fu">factanal</span>(d_small, <span class="at">factors =</span> <span class="dv">2</span>, <span class="at">rotation =</span> <span class="st">&quot;promax&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="factor-analysis.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb50-2"><a href="factor-analysis.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mfrow = c(1,3), pty=&quot;s&quot;) # Force plots to be quadratic</span></span>
+<span id="cb50-3"><a href="factor-analysis.html#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="factor-analysis.html#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fa_none<span class="sc">$</span>loadings[,<span class="dv">1</span>], </span>
+<span id="cb50-5"><a href="factor-analysis.html#cb50-5" aria-hidden="true" tabindex="-1"></a>     fa_none<span class="sc">$</span>loadings[,<span class="dv">2</span>],</span>
+<span id="cb50-6"><a href="factor-analysis.html#cb50-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
+<span id="cb50-7"><a href="factor-analysis.html#cb50-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>, </span>
+<span id="cb50-8"><a href="factor-analysis.html#cb50-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-9"><a href="factor-analysis.html#cb50-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-10"><a href="factor-analysis.html#cb50-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;No rotation&quot;</span>)</span>
+<span id="cb50-11"><a href="factor-analysis.html#cb50-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">v =</span> <span class="dv">0</span>, <span class="at">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
+<span id="cb50-12"><a href="factor-analysis.html#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-13"><a href="factor-analysis.html#cb50-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fa_varimax<span class="sc">$</span>loadings[,<span class="dv">1</span>], </span>
+<span id="cb50-14"><a href="factor-analysis.html#cb50-14" aria-hidden="true" tabindex="-1"></a>     fa_varimax<span class="sc">$</span>loadings[,<span class="dv">2</span>],</span>
+<span id="cb50-15"><a href="factor-analysis.html#cb50-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
+<span id="cb50-16"><a href="factor-analysis.html#cb50-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>, </span>
+<span id="cb50-17"><a href="factor-analysis.html#cb50-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-18"><a href="factor-analysis.html#cb50-18" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-19"><a href="factor-analysis.html#cb50-19" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Varimax rotation&quot;</span>)</span>
+<span id="cb50-20"><a href="factor-analysis.html#cb50-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-21"><a href="factor-analysis.html#cb50-21" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(fa_varimax<span class="sc">$</span>loadings[,<span class="dv">1</span>]<span class="sc">-</span><span class="fl">0.08</span>, </span>
+<span id="cb50-22"><a href="factor-analysis.html#cb50-22" aria-hidden="true" tabindex="-1"></a>     fa_varimax<span class="sc">$</span>loadings[,<span class="dv">2</span>]<span class="sc">+</span><span class="fl">0.08</span>,</span>
+<span id="cb50-23"><a href="factor-analysis.html#cb50-23" aria-hidden="true" tabindex="-1"></a>     <span class="fu">colnames</span>(d_small),</span>
+<span id="cb50-24"><a href="factor-analysis.html#cb50-24" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb50-25"><a href="factor-analysis.html#cb50-25" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">v =</span> <span class="dv">0</span>, <span class="at">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
+<span id="cb50-26"><a href="factor-analysis.html#cb50-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-27"><a href="factor-analysis.html#cb50-27" aria-hidden="true" tabindex="-1"></a>rotmat <span class="ot">&lt;-</span> fa_varimax<span class="sc">$</span>rotmat</span>
+<span id="cb50-28"><a href="factor-analysis.html#cb50-28" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="at">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">1</span>],<span class="at">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">1</span>], <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb50-29"><a href="factor-analysis.html#cb50-29" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="at">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">2</span>],<span class="at">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">2</span>], <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb50-30"><a href="factor-analysis.html#cb50-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-31"><a href="factor-analysis.html#cb50-31" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fa_promax<span class="sc">$</span>loadings[,<span class="dv">1</span>], </span>
+<span id="cb50-32"><a href="factor-analysis.html#cb50-32" aria-hidden="true" tabindex="-1"></a>     fa_promax<span class="sc">$</span>loadings[,<span class="dv">2</span>],</span>
+<span id="cb50-33"><a href="factor-analysis.html#cb50-33" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Factor 1&quot;</span>, </span>
+<span id="cb50-34"><a href="factor-analysis.html#cb50-34" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Factor 2&quot;</span>,</span>
+<span id="cb50-35"><a href="factor-analysis.html#cb50-35" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-36"><a href="factor-analysis.html#cb50-36" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb50-37"><a href="factor-analysis.html#cb50-37" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Promax rotation&quot;</span>)</span>
+<span id="cb50-38"><a href="factor-analysis.html#cb50-38" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">v =</span> <span class="dv">0</span>, <span class="at">col=</span><span class="st">&quot;darkgrey&quot;</span>)</span>
+<span id="cb50-39"><a href="factor-analysis.html#cb50-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-40"><a href="factor-analysis.html#cb50-40" aria-hidden="true" tabindex="-1"></a>rotmat <span class="ot">&lt;-</span> fa_promax<span class="sc">$</span>rotmat</span>
+<span id="cb50-41"><a href="factor-analysis.html#cb50-41" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="at">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">1</span>],<span class="at">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">1</span>], <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb50-42"><a href="factor-analysis.html#cb50-42" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="at">x1=</span>rotmat[<span class="dv">2</span>,<span class="dv">2</span>],<span class="at">y1=</span>rotmat[<span class="dv">1</span>,<span class="dv">2</span>], <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <p><img src="bchwtz-smod_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 </div>
-<div id="interpreting-the-factors" class="section level3 hasAnchor">
-<h3><span class="header-section-number">11.4.4</span> Interpreting the Factors<a href="factor-analysis.html#interpreting-the-factors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="interpreting-the-factors" class="section level3" number="11.4.4">
+<h3><span class="header-section-number">11.4.4</span> Interpreting the Factors</h3>
 </div>
 </div>
-<div id="exercises" class="section level2 unnumbered hasAnchor">
-<h2>Exercises<a href="factor-analysis.html#exercises" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="factor-analysis.html#cb51-1"></a>ski &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">skiers =</span> <span class="kw">paste0</span>(<span class="st">&quot;S&quot;</span>, <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)),</span>
-<span id="cb51-2"><a href="factor-analysis.html#cb51-2"></a>                  <span class="dt">cost =</span> <span class="kw">c</span>(<span class="dv">32</span>, <span class="dv">61</span>, <span class="dv">59</span>, <span class="dv">36</span>, <span class="dv">62</span>),</span>
-<span id="cb51-3"><a href="factor-analysis.html#cb51-3"></a>                  <span class="dt">lift =</span> <span class="kw">c</span>(<span class="dv">64</span>, <span class="dv">37</span>, <span class="dv">40</span>, <span class="dv">62</span>, <span class="dv">46</span>),</span>
-<span id="cb51-4"><a href="factor-analysis.html#cb51-4"></a>                  <span class="dt">depth =</span> <span class="kw">c</span>(<span class="dv">65</span>, <span class="dv">62</span>, <span class="dv">45</span>, <span class="dv">34</span>, <span class="dv">43</span>),</span>
-<span id="cb51-5"><a href="factor-analysis.html#cb51-5"></a>                  <span class="dt">powder =</span> <span class="kw">c</span>(<span class="dv">67</span>, <span class="dv">65</span>, <span class="dv">43</span>, <span class="dv">35</span>, <span class="dv">40</span>))</span></code></pre></div>
+<div id="exercises" class="section level2 unnumbered">
+<h2>Exercises</h2>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="factor-analysis.html#cb51-1" aria-hidden="true" tabindex="-1"></a>ski <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">skiers =</span> <span class="fu">paste0</span>(<span class="st">&quot;S&quot;</span>, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)),</span>
+<span id="cb51-2"><a href="factor-analysis.html#cb51-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">cost =</span> <span class="fu">c</span>(<span class="dv">32</span>, <span class="dv">61</span>, <span class="dv">59</span>, <span class="dv">36</span>, <span class="dv">62</span>),</span>
+<span id="cb51-3"><a href="factor-analysis.html#cb51-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lift =</span> <span class="fu">c</span>(<span class="dv">64</span>, <span class="dv">37</span>, <span class="dv">40</span>, <span class="dv">62</span>, <span class="dv">46</span>),</span>
+<span id="cb51-4"><a href="factor-analysis.html#cb51-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">65</span>, <span class="dv">62</span>, <span class="dv">45</span>, <span class="dv">34</span>, <span class="dv">43</span>),</span>
+<span id="cb51-5"><a href="factor-analysis.html#cb51-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">powder =</span> <span class="fu">c</span>(<span class="dv">67</span>, <span class="dv">65</span>, <span class="dv">43</span>, <span class="dv">35</span>, <span class="dv">40</span>))</span></code></pre></div>
 
 </div>
 </div>

@@ -33,6 +33,7 @@
   
 <link rel="prev" href="weighted-least-squares.html"/>
 <link rel="next" href="collinear-data.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -50,10 +51,8 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
-<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
@@ -61,18 +60,18 @@
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -92,7 +91,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -142,35 +141,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./"><b>Statistical Modeling</b></a></li>
 
 <li class="divider"></li>
-<li><a href="index.html#prerequisites">Prerequisites<span></span></a></li>
-<li class="chapter" data-level="1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html"><i class="fa fa-check"></i><b>1</b> Simple Linear Regression<span></span></a></li>
-<li class="chapter" data-level="2" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple Linear Regression<span></span></a></li>
-<li class="chapter" data-level="3" data-path="regression-diagnostics.html"><a href="regression-diagnostics.html"><i class="fa fa-check"></i><b>3</b> Regression Diagnostics<span></span></a></li>
-<li class="chapter" data-level="4" data-path="qualitative-variables.html"><a href="qualitative-variables.html"><i class="fa fa-check"></i><b>4</b> Qualitative Variables<span></span></a></li>
-<li class="chapter" data-level="5" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>5</b> Transformations<span></span></a></li>
-<li class="chapter" data-level="6" data-path="weighted-least-squares.html"><a href="weighted-least-squares.html"><i class="fa fa-check"></i><b>6</b> Weighted Least Squares<span></span></a></li>
-<li class="chapter" data-level="7" data-path="correlated-errors.html"><a href="correlated-errors.html"><i class="fa fa-check"></i><b>7</b> Correlated Errors<span></span></a></li>
-<li class="chapter" data-level="8" data-path="collinear-data.html"><a href="collinear-data.html"><i class="fa fa-check"></i><b>8</b> Collinear Data<span></span></a></li>
-<li class="chapter" data-level="9" data-path="collinear-analysis.html"><a href="collinear-analysis.html"><i class="fa fa-check"></i><b>9</b> Collinear Analysis<span></span></a></li>
-<li class="chapter" data-level="10" data-path="variable-selection.html"><a href="variable-selection.html"><i class="fa fa-check"></i><b>10</b> Variable Selection<span></span></a></li>
-<li class="chapter" data-level="11" data-path="factor-analysis.html"><a href="factor-analysis.html"><i class="fa fa-check"></i><b>11</b> Factor Analysis<span></span></a><ul>
-<li class="chapter" data-level="11.1" data-path="factor-analysis.html"><a href="factor-analysis.html#foundations"><i class="fa fa-check"></i><b>11.1</b> Foundations<span></span></a></li>
-<li class="chapter" data-level="11.2" data-path="factor-analysis.html"><a href="factor-analysis.html#estimation"><i class="fa fa-check"></i><b>11.2</b> Estimation<span></span></a><ul>
-<li class="chapter" data-level="11.2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-component-method"><i class="fa fa-check"></i><b>11.2.1</b> Principal Component Method<span></span></a></li>
-<li class="chapter" data-level="11.2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-factor-solution"><i class="fa fa-check"></i><b>11.2.2</b> Principal Factor Solution<span></span></a></li>
-<li class="chapter" data-level="11.2.3" data-path="factor-analysis.html"><a href="factor-analysis.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>11.2.3</b> Maximum Likelihood Estimation<span></span></a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="chapter" data-level="1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html"><i class="fa fa-check"></i><b>1</b> Simple Linear Regression</a></li>
+<li class="chapter" data-level="2" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple Linear Regression</a></li>
+<li class="chapter" data-level="3" data-path="regression-diagnostics.html"><a href="regression-diagnostics.html"><i class="fa fa-check"></i><b>3</b> Regression Diagnostics</a></li>
+<li class="chapter" data-level="4" data-path="qualitative-variables.html"><a href="qualitative-variables.html"><i class="fa fa-check"></i><b>4</b> Qualitative Variables</a></li>
+<li class="chapter" data-level="5" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>5</b> Transformations</a></li>
+<li class="chapter" data-level="6" data-path="weighted-least-squares.html"><a href="weighted-least-squares.html"><i class="fa fa-check"></i><b>6</b> Weighted Least Squares</a></li>
+<li class="chapter" data-level="7" data-path="correlated-errors.html"><a href="correlated-errors.html"><i class="fa fa-check"></i><b>7</b> Correlated Errors</a></li>
+<li class="chapter" data-level="8" data-path="collinear-data.html"><a href="collinear-data.html"><i class="fa fa-check"></i><b>8</b> Collinear Data</a></li>
+<li class="chapter" data-level="9" data-path="collinear-analysis.html"><a href="collinear-analysis.html"><i class="fa fa-check"></i><b>9</b> Collinear Analysis</a></li>
+<li class="chapter" data-level="10" data-path="variable-selection.html"><a href="variable-selection.html"><i class="fa fa-check"></i><b>10</b> Variable Selection</a></li>
+<li class="chapter" data-level="11" data-path="factor-analysis.html"><a href="factor-analysis.html"><i class="fa fa-check"></i><b>11</b> Factor Analysis</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="factor-analysis.html"><a href="factor-analysis.html#foundations"><i class="fa fa-check"></i><b>11.1</b> Foundations</a></li>
+<li class="chapter" data-level="11.2" data-path="factor-analysis.html"><a href="factor-analysis.html#estimation"><i class="fa fa-check"></i><b>11.2</b> Estimation</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-component-method"><i class="fa fa-check"></i><b>11.2.1</b> Principal Component Method</a></li>
+<li class="chapter" data-level="11.2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#principal-factor-solution"><i class="fa fa-check"></i><b>11.2.2</b> Principal Factor Solution</a></li>
+<li class="chapter" data-level="11.2.3" data-path="factor-analysis.html"><a href="factor-analysis.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>11.2.3</b> Maximum Likelihood Estimation</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="factor-analysis.html"><a href="factor-analysis.html#rotation"><i class="fa fa-check"></i><b>11.3</b> Rotation<span></span></a></li>
-<li class="chapter" data-level="11.4" data-path="factor-analysis.html"><a href="factor-analysis.html#basic-factor-analysis-in-r"><i class="fa fa-check"></i><b>11.4</b> Basic Factor Analysis in R<span></span></a><ul>
-<li class="chapter" data-level="11.4.1" data-path="factor-analysis.html"><a href="factor-analysis.html#data-preparation-and-description"><i class="fa fa-check"></i><b>11.4.1</b> Data Preparation and Description<span></span></a></li>
-<li class="chapter" data-level="11.4.2" data-path="factor-analysis.html"><a href="factor-analysis.html#selecting-numbers-of-factors"><i class="fa fa-check"></i><b>11.4.2</b> Selecting numbers of Factors<span></span></a></li>
-<li class="chapter" data-level="11.4.3" data-path="factor-analysis.html"><a href="factor-analysis.html#applying-factor-analysis"><i class="fa fa-check"></i><b>11.4.3</b> Applying Factor Analysis<span></span></a></li>
-<li class="chapter" data-level="11.4.4" data-path="factor-analysis.html"><a href="factor-analysis.html#interpreting-the-factors"><i class="fa fa-check"></i><b>11.4.4</b> Interpreting the Factors<span></span></a></li>
+<li class="chapter" data-level="11.3" data-path="factor-analysis.html"><a href="factor-analysis.html#rotation"><i class="fa fa-check"></i><b>11.3</b> Rotation</a></li>
+<li class="chapter" data-level="11.4" data-path="factor-analysis.html"><a href="factor-analysis.html#basic-factor-analysis-in-r"><i class="fa fa-check"></i><b>11.4</b> Basic Factor Analysis in R</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="factor-analysis.html"><a href="factor-analysis.html#data-preparation-and-description"><i class="fa fa-check"></i><b>11.4.1</b> Data Preparation and Description</a></li>
+<li class="chapter" data-level="11.4.2" data-path="factor-analysis.html"><a href="factor-analysis.html#selecting-numbers-of-factors"><i class="fa fa-check"></i><b>11.4.2</b> Selecting numbers of Factors</a></li>
+<li class="chapter" data-level="11.4.3" data-path="factor-analysis.html"><a href="factor-analysis.html#applying-factor-analysis"><i class="fa fa-check"></i><b>11.4.3</b> Applying Factor Analysis</a></li>
+<li class="chapter" data-level="11.4.4" data-path="factor-analysis.html"><a href="factor-analysis.html#interpreting-the-factors"><i class="fa fa-check"></i><b>11.4.4</b> Interpreting the Factors</a></li>
 </ul></li>
-<li><a href="factor-analysis.html#exercises">Exercises<span></span></a></li>
+<li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#exercises"><i class="fa fa-check"></i>Exercises</a></li>
 </ul></li>
-<li class="part"><span><b>Appendix<span></span></b></span></li>
-<li><a href="system-info.html#system-info">System Info<span></span></a></li>
+<li class="part"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="" data-path="system-info.html"><a href="system-info.html"><i class="fa fa-check"></i>System Info</a></li>
 <li class="divider"></li>
 <li><a href="http://www.bchwtz.de" target="blank"><center>www.<b>BCHWTZ</b>.de</center></a></li>
 
@@ -191,8 +193,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="correlated-errors" class="section level1 hasAnchor">
-<h1><span class="header-section-number">Chapter 7</span> Correlated Errors<a href="correlated-errors.html#correlated-errors" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="correlated-errors" class="section level1" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Correlated Errors</h1>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
 <img src="slides/gifs/07-CorrelatedErrors.gif" alt="[Download Slides](slides/07-CorrelatedErrors.pdf)" width="80%" />
 <p class="caption">

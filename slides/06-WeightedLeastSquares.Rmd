@@ -352,7 +352,7 @@ mod.wls <- lm(Y ~ 1 + X1 + X2 + X3, weights=w, data=d)
 ## Example: Education Expenditure
 
 ```{r, results='asis'}
-texreg(list(mod, mod.ols, mod.wls), digits=3,
+texreg::texreg(list(mod, mod.ols, mod.wls), digits=3,
        custom.model.names = c("OLS + Outlier", "OLS","WLS"))
 ```
 
