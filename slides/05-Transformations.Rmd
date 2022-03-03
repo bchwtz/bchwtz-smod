@@ -1,7 +1,7 @@
 ---
 title: "Statistical Modeling"
 author: "CH.5 - Transformations"
-date: "SS 2021 || Prof. Dr. Buchwitz"
+date: "SS 2022 || Prof. Dr. Buchwitz"
 
 toc: true
 tocoverview: false
