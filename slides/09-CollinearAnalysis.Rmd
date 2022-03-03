@@ -2,36 +2,22 @@
 title: "Statistical Modeling"
 author: "CH.9 - Working with Collinear Data"
 date: "SS 2021 || Prof. Dr. Buchwitz"
-output:
-  beamer_presentation:
-    fig_width: 8
-    fig_height: 5
-    highlight: tango
-    theme: metropolis
-    includes:
-      in_header: header.tex
+
+toc: true
+tocoverview: false
+titlefontsize: 22pt
+
+output: fhswf::presentation
+knit: rmarkdown::render
 ---
 
 ```{r setup, include=FALSE}
+library(fhswf)
 library(knitr)
-knitr::opts_chunk$set(echo = TRUE, cache=TRUE, size="scriptsize", 
-                      fig.align = "center")
-def.chunk.hook  <- knitr::knit_hooks$get("chunk")
-knitr::knit_hooks$set(chunk = function(x, options) {
-  x <- def.chunk.hook(x, options)
-  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
-})
+options(digits = 4)
+knitr::opts_chunk$set(echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE, 
+                      dev.args=list(pointsize=11), size="scriptsize")
 
-## Load Data
-load("~/sciebo/courses/bchwtz-smod/nongit/RABE5.RData")
-library(equatiomatic)
-library(car)
-library(olsrr)
-library(GGally)
-library(stargazer)
-library(texreg)
-library(gridExtra)
-library(glmnet)
 ```
 
 # Organizational Information

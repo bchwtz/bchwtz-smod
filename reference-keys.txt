@@ -8,7 +8,6 @@ fig:unnamed-chunk-9
 fig:unnamed-chunk-10
 fig:unnamed-chunk-11
 fig:unnamed-chunk-12
-prerequisites
 simple-linear-regression
 multiple-linear-regression
 regression-diagnostics
