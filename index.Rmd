@@ -12,7 +12,7 @@ github-repo: bchwtz/bchwtz-smod
 description: "Statistical Modeling Course Notes"
 ---
 
-# Prerequisites
+# Prerequisites {-}
 
 This repo contains course materials.
 
