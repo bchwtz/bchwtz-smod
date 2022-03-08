@@ -75,15 +75,15 @@ https://www.rstudio.com/products/rstudio/download/#download
 Grading is based on a portfolio examination with three parts:
 
 1. One Lecture Recap Presentation (20%)
-2. Hand-in Excercises (40%)
+2. Hand-in Exercises (40%)
 3. Final Case Study (40%)
 
 # Introduction
 
 ## What is Regression Analysis?
 
-- Regression analysis is a conceptually simple method for investigating funcitnoal relationships among variables.
-- The relationship is expressen in the form of an equation or a model connecting the **response** or **dependent variable** with one ore more **explanatory** or **predictor** variabes.
+- Regression analysis is a conceptually simple method for investigating functional relationships among variables.
+- The relationship is expressed in the form of an equation or a model connecting the **response** or **dependent variable** with one ore more **explanatory** or **predictor** variabes.
 - We denote the response variable by $Y$ and the set of predictor variables by $X_1, X_2, \ldots, X_p$, where $p$ denotes the number of predictor variables.
 - The **true** relationship between the response and its predictors can be approximated by the regression model, where $\epsilon$ represents the random discrepancy in the relation.
 
@@ -135,7 +135,7 @@ mtcars
 ## **Example:** Problem Statement Definition
 
 - Assume we want to research whether or not an employer is discriminating against a group of employees, e.g. women and data on `salary`, `gender` and `qualification` is available.
-- There are mulitple definitions of discriminations available in the literate (a) women are paid less than equally qualified men, or (b) women are more qualified than equally paid men.
+- There are multiple definitions of discriminations available in the literature (a) women are paid less than equally qualified men, or (b) women are more qualified than equally paid men.
 
 \pause 
 
@@ -243,7 +243,7 @@ $$ Cor(Y,X) = \frac{1}{n-1}\sum_{i=1}^{n} (\frac{y_i - \bar{y}}{s_y})(\frac{x_i 
 - Calculating the covariance of the standardized values yields the correlation coefficient.
 - $Cor(Y,X)$ can be interpreted in two ways, either as
   + the covariance between two standardized variables or as
-  + ratio of the covariance to the standard deviations of the two variables
+  + the ratio of the covariance to the standard deviations of the two variables
 - Opposed to the covariance, $Cor(Y,X)$ is scale invariant so that it is not affected by unit changes. It also satisfies $-1 \geq Cor(Y,X) \leq 1$ and therefore indicates **direction** and **strength**.
 
 ## Correlation Coefficient
@@ -291,19 +291,19 @@ abline(lm(anscombe[,"y4"] ~ anscombe[,"x4"]))
 
 ## Learning: Anscombe Quartet
 
-- Like many other summary statistics the corelation coefficient can be substantially influencey by one ofr a few outlier in the data.
+- Like many other summary statistics the correlation coefficient can be substantially influenced by one of a few outliers in the data.
 - All four datasets in the Anscombe quartet have almost the **same summary** statistics, despite being inherently different.
-- A purely descriptive analysis can not reveal the different patterns **we need to plot the data before before starting an analysis**.
+- A purely descriptive analysis can not reveal the different patterns **we need to plot the data before starting an analysis**.
 - Findings:
   a) can be adequately described by a linear model
   b) is nonlinear and would be better fitted by a quadratic function
-  c) one outlier distores the slope and intercept of the lines
+  c) one outlier distorts the slope and intercept of the lines
   d) is unsuitable for linear fitting as the line is determined by a single extreme observation
 
 ## Example: Computer Repair Data
 
 ```{r}
-# Minutes = Duration of the serive operation
+# Minutes = Duration of the service operation
 # Units = Number of computers repaired during service operation
 head(P031)
 ```
@@ -313,9 +313,9 @@ Calculate $Cov(Y,X)$ and $Cor(Y,X)$ manually (step-by-step) using R by avoiding 
 
 ## The Simple Linear Regression Model
 
-- The correlation coefficient is useful to mesure the strength of a pairwise relationship, it **cannot be used for precidion purposes**.
+- The correlation coefficient is useful to measure the strength of a pairwise relationship, it **cannot be used for prediction purposes**.
 - That means that we cannot use $Cor(Y,X)$ to predict one variable, when the other one is given.
-- Regression is an extension to correlation analysis and can not only measure direction, but allows for **numerically describing** that relationship. 
+- Regression is an extension to correlation analysis and cannot only measure direction, but allows for **numerically describing** that relationship. 
 
 ## The Simple Linear Regression Model
 
@@ -336,20 +336,20 @@ $$Y = \beta_0 + \beta_1 X + \epsilon$$
 - The error term $\epsilon$ measures the discrepancy of the approximation.
 - That simple linear regression model is linear in two ways:
   + the relationship between $X$ and $Y$ is linear
-  + more generally the word linear describes that the regression parameters $\beta_0$ and $\beta_1$ enter the euquation in a linear fashion
+  + more generally the word linear describes that the regression parameters $\beta_0$ and $\beta_1$ enter the equation in a linear fashion
   + $Y=\beta_0+\beta_1 X^2 +\epsilon$ is still a linear model but with a quadratic term!
-- In correlation $X$ and $Y$ are of equal "importance" which is reflected in ithe symmetry $Cor(Y,X)=Cor(X,Y)$). 
+- In correlation $X$ and $Y$ are of equal "importance" which is reflected in the symmetry $Cor(Y,X)=Cor(X,Y)$. 
 - In regression we want to explain $Y$, hence the importance of the predictor $X$ lies on its ability to account for the variability of the response.
 
 ## Example: Computer Repair Data
 
-Reconsidering the computer repair data and assuming we want to predict the numbers of support enginerrs that will be required for a taks, we can now formulate an equation in form of a linear model that is assumed to represent the relationship between the lenght of service calls and the number of electronic components in the computer that must be repaired.
+Reconsidering the computer repair data and assuming we want to predict the numbers of support engineers that will be required for a task, we can now formulate an equation in form of a linear model that is assumed to represent the relationship between the length of service calls and the number of electronic components in the computer that must be repaired.
 
 $$\text{Minutes} = \beta_0 + \beta_1 \text{ Units} + \epsilon $$
 \medskip
 
 ### Your turn
-Consult the scatter plot (`plot`) of the data (`P031`) and check whether the straight linear relationship is a resonable assumption.
+Consult the scatter plot (`plot`) of the data (`P031`) and check whether the straight linear relationship is a reasonable assumption.
 
 ## Parameter Estimation
 
