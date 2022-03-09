@@ -44,9 +44,9 @@ knitr::opts_chunk$set(echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE,
 
 ## Introduction
 
-- Qualitative or categorical variables (such as gender, marital status, etc) are useful predictors and are usually called **indicator** or **dummy variables**.
+- Qualitative or categorical variables (such as gender, marital status, etc.) are useful predictors and are usually called **indicator** or **dummy variables**.
 - Those variables usually only take two values, 0 and 1, which signify that the observation belongs to one of two possible categories.
-- The numerical values of indicator variables**do not reflect quantitative ordering**.
+- The numerical values of indicator variables **do not reflect quantitative ordering**.
 - **Example Variable:** Gender, coded as 1 for *female* and 0 for *male*.
 - Indicator variables can also be used in a regression equation to distinguish between three or more groups.
 - The response variable is stil a quantiative continuous in all discussed cases.
@@ -72,7 +72,7 @@ $M$      Management 1 (is Manager), 0 (no Management Responsibility)
 
 - **Experience:** We assume linearity, which means that each additional year is worth a fixed salary increment. 
 - **Education:** Can be used in a linear or categorial form.
-  + Using the the variable in its raw form would assume that each step up in education is worth a fixed increment in salary. This may be too restrictive.
+  + Using the variable in its raw form would assume that each step up in education is worth a fixed increment in salary. This may be too restrictive.
   + Using education as categorical variable can be done by defining **two indicator variables**. This allows to pick up the effect of education wether it is linear or not.
 - **Management:** Is also an indicator variable, that allows to distinguish between management (1) an regular staff positions (0).
 
@@ -110,7 +110,7 @@ $$ S = \beta_0 + \beta_1 X + \gamma_1E_1 + \gamma_2E_2 + \delta_1M + \epsilon$$
 
 \pause \bigskip
 
-- There is a different valid regression equation for each of the six (three education and two managmeent) categories.
+- There is a different valid regression equation for each of the six (three education and two managment) categories.
 
 Category | $E$ | $M$ | Regression Equation
 --- | --- | --- | ---
@@ -176,7 +176,7 @@ axis(1,at=1:6,labels=levels(d$cat))
 **What is wrong with the residuals:**
 
 - Depending on the category the residuals are almost entirely positive or negative.
-- The **pattern of the residuals is highly moderated by the associated group** (education-management category). This makes it clear that thath the combinations of education and management have not been tretaed sufficiently in the model.
+- The **pattern of the residuals is highly moderated by the associated group** (education-management category). This makes it clear that the combinations of education and management have not been treated sufficiently in the model.
 - The residual plots provide evidence that the effects of education and management status on salary determination are **not additive**.
 
 \bigskip
@@ -186,7 +186,7 @@ The multiplicative pattern needs to be embedded in the model!
 
 ## Interaction Effects
 
-- Interaction effects are *multiplicative* effects that allow capturing nondditive effects in variables.
+- Interaction effects are *multiplicative* effects that allow capturing nonadditive effects in variables.
 - Interaction variables are products of existing indicator variables. 
 - Using the Salary Survey Data this can be achieved by creating the two interaction effects $(E_1\cdot M)$ and $(E_2\cdot M)$ and **adding** them to the model.
 - The interaction effects **do not replace** the indicator variables.
@@ -258,7 +258,7 @@ equatiomatic::extract_eq(mod, use_coefs=T, coef_digits=4, wrap=T)
 
 \begin{textblock}{4.6}(7.5,1)
 \begin{alertblock}{}
-\tiny \textbf{Note:} The notation is slightly different here as the equations are automatically generated. However, it does not really matter wether you use a $\beta$, $\delta$ or any other greek letter for the (interaction) effects.
+\tiny \textbf{Note:} The notation is slightly different here as the equations are automatically generated. However, it does not really matter whether you use a $\beta$, $\delta$ or any other greek letter for the (interaction) effects.
 \end{alertblock}
 \end{textblock}
 
@@ -297,12 +297,12 @@ kable(cbind(id=1:6,df[,-1],basesalaries), align="c",
 
 
 - All models lead to the **same estimates for the base salaries**. This shows that from a technical point using the `cat` variable (instead of the intercation effects) allows to capture the variation in the data.
-- It is still **beneficial to use interaction effects** as we did, because this allows to seperate the effects of the three sets of predictor variables education, managemengt and education-management interaction.
+- It is still **beneficial to use interaction effects** as we did, because this allows to separate the effects of the three sets of predictor variables education, management and education-management interaction.
 
 
 ## Systems of Regression Equations
 
-A dataset may consists of **two or more distinct subsets**, which may require individual regression quations to avoid bias. Subsets may occure cross-sectional or over time and need to be treated differently:
+A data set may consist of **two or more distinct subsets**, which may require individual regression equations to avoid bias. Subsets may occur cross-sectional or over time and need to be treated differently:
 \bigskip
 
 - Cross-Sectional Data
@@ -407,13 +407,13 @@ segments(mod2w_x,0,mod2w_x,y,col="blue",lty="dashed")
 \begin{textblock}{4.6}(7.5,1)
 \begin{alertblock}{}
 \tiny
-When different models are required for the groups, this would imply that the required score in the preemployment test that is needed to result in (minimum) job performance (horizontal dashed line) needs to distinguished by group (vertical dashed lines).
+When different models are required for the groups, this would imply that the required score in the preemployment test that is needed to result in (minimum) job performance (horizontal dashed line) needs to be distinguished by group (vertical dashed lines).
 \end{alertblock}
 \end{textblock}
 
 ## Models with different Slopes and different Intercepts
 
-- What we want to test for the Preemployment Test data is for differences in intercept and slope using the following Null.
+- What we want to test the Preemployment Test data for are differences in intercept and slope using the following Null.
 
 $$H_0:\beta_{11}=\beta_{12},\beta_{01}=\beta_{02}$$
 

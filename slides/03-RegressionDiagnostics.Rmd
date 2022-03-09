@@ -71,23 +71,23 @@ $$ \text{Observation:}\quad y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \l
 
 - This assumption is called the **linearity assumption**.
 - In simple linear regression checking can be done using a scatterplot of $Y$ versus $X$. For multiple linear regression there are other plotting techniques which we will discuss.
-- When the linearity assumptin does not hold, transforming the data may lead to linearity (Transformations are discussed at a later point).
+- When the linearity assumption does not hold, transforming the data may lead to linearity (transformations are discussed at a later point).
 
 
 ## Assumption 2: Errors
 
-- The errors $\epsilon_1,\epsilon_2,\ldots,\epsilon_n$ are assumed to be **independently and identically distributed** (iid) normal random variables each with mean zero and commonon variance $\sigma^2$. This implies:
+- The errors $\epsilon_1,\epsilon_2,\ldots,\epsilon_n$ are assumed to be **independently and identically distributed** (iid) normal random variables each with mean zero and common variance $\sigma^2$. This implies:
   + **Normality Assumption:** The error $\epsilon_i, i=1,2,\ldots,n$ has a normal distribution. 
   + The errors $\epsilon_1,\epsilon_2,\ldots,\epsilon_n$ have mean zero.
-  + **Constant Variance Assumption:** The errors have the same (but unknown) variance $\sigma^2$. When this assumtion does not hold we have the *heteroscedasticity problem*.
+  + **Constant Variance Assumption:** The errors have the same (but unknown) variance $\sigma^2$. When this assumption does not hold we have the *heteroscedasticity problem*.
   + **Independent errors Assumption:** $\epsilon_1,\epsilon_2,\ldots,\epsilon_n$  are independent of each other (pairwise covariances are zero). Violations lead to the *autocorrelation problem*.
 
 ## Assumption 3: Predictors
 
-- Thre are three assumptions for the predictor variables.
+- There are three assumptions for the predictor variables.
   + The predictor variables $X_1,X_2, \ldots, X_p$ are **nonrandom**. This means the values $x_{1j},x_{2,j},\ldots,x_{nj}$ with $j=1,2,\ldots,p$ are fixed (which is usually only fully satisfied under experimental conditions). In practice the results presented hold, but results are conditional on the data.
   + The values $x_{1j},x_{2,j},\ldots,x_{nj}$ are measured without error (which is hardly ever satisfied). In practice it is sufficient, when the measurement error is small compared to the random error $\epsilon_i$.
-  + The predictor variables $X_1,X_2,\ldots,X_p$ arre assumend to be linaerly independent of each other. This assumtion guarantees the uniqueness of the lest squares solution. If this assumption is violated this is to refeered as the *collinearity problem*.
+  + The predictor variables $X_1,X_2,\ldots,X_p$ are assumed to be linearly independent of each other. This assumption guarantees the uniqueness of the least squares solution. If this assumption is violated this is referred to as the *collinearity problem*.
 
 \bigskip
 \begin{alertblock}{}
@@ -102,14 +102,14 @@ $$ \text{Observation:}\quad y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \l
 \pause
 
 ### Conclusion
-Small or minor violations of the underlying assumptions do not invalidate the inferences or conclusions drawn from the analysis. Gross validations, however, can seriously distort conlusions. **It is essential to investigate all signs of assumption validations by _always_ checking the structure of the residuals and the data patterns at least using graphs!**
+Small or minor violations of the underlying assumptions do not invalidate the inferences or conclusions drawn from the analysis. Gross validations, however, can seriously distort conclusions. **It is essential to investigate all signs of assumption validations by _always_ checking the structure of the residuals and the data patterns at least using graphs!**
 
 ## Residuals
 
-- Analysing residuals is a simple and effective method for detecting model deficiencies in regression analysis. In most analysis it is probably the **most important** part of an analysis.
-- Residual plots may lead to suggestiosn fo structure or point to informaiton in the data tha tmight be missed or overlooked. Those clues can lead to a better understanding (and possibly a better model) of the underlying process.
+- Analysing residuals is a simple and effective method for detecting model deficiencies in regression analysis. In most analyses it is probably the **most important** part of an analysis.
+- Residual plots may lead to suggestions for structure or point to information in the data that might be missed or overlooked. Those clues can lead to a better understanding (and possibly a better model) of the underlying process.
 - Starting point for the analysis are the **ordinary** least squares residuals that
-can be calculated after obtained the fitted values:
+can be calculated after obtaining the fitted values:
 
 $$ \hat y_i = \hat\beta_0 + \hat\beta_1 x_{i1} + \hat\beta_2 x_{i2} + \ldots + \hat\beta_p x_{ip}$$
 $$e_i = y_i - \hat y_i \quad\text{for}\quad i = 1,2,\ldots,n$$
@@ -127,7 +127,7 @@ $$p_{ii}=\frac{1}{n} + \frac{(x_i - \bar x)^2}{\sum (x_i - \bar x)^2}$$
 \bigskip
 \begin{alertblock}{}
 \center
-A high laverage value indicates some "extremeness" in $X$.
+A high leverage value indicates some "extremeness" in $X$.
 \end{alertblock}
  
 ## Residuals
@@ -167,12 +167,12 @@ In practice the difference between $r_i$ and $r_i^*$ is small and both could be 
 
 **Dimensionality:**
 
-- One-dimensional graphs, inidcate the distribution of a particular variable (e.g. symmetry, skewedness) and allow identification of outliers.
+- One-dimensional graphs, indicate the distribution of a particular variable (e.g. symmetry, skewness) and allow identification of outliers.
 - Two-dimensional graphs allow exploration of relationships (by pairing variables) and general patterns.
 
 **Step in Model Selection Process:**
 
-- Graphs **before** fitting a model, to e.g. correct data errors, seelect variables and preparation for model selection.
+- Graphs **before** fitting a model, to e.g. correct data errors, select variables and preparation for model selection.
 - Graphs **after** fitting a model to check assumptions and assessing the goodness of fit.
 
 ## Example: Hamiltons Data
@@ -228,24 +228,24 @@ GGally::ggpairs(P103)
 **Interpretation:**
 
 - The pairwise correlation should always be interpreted in conjunction with the scatter plots.
-  + The correlation coefficients only measures **linear** dependence.
-  + The correlation coefficient is **non-robuts** and may be substantially influenced by few data points.
+  + The correlation coefficient only measures **linear** dependence.
+  + The correlation coefficient is **non-robust** and may be substantially influenced by few data points.
 - The appearence of the scatter plot only serves as an indication of the results to be expected.
   + In *simple linear regression* the plot of $Y$ and $X$ is expected to **show a linear pattern**.
-  + In mulitple liinear regression the scatter plots between $Y$ and each $X$ **may or may not** show a linear pattern. 
+  + In mulitple linear regression the scatter plots between $Y$ and each $X$ **may or may not** show a linear pattern. 
 
 \bigskip
 \begin{alertblock}{}
 \center
-\textbf{The abscence of a linear pattern does not invalidate the linear model!}
+\textbf{The absence of a linear pattern does not invalidate the linear model!}
 \end{alertblock}
 
 
 
 ## Graphs after fitting a Model
 
-1. Graphs for cheking the linearity and normality assumptions
-2. Graphs for the detection of ouliers and influential observations
+1. Graphs for checking the linearity and normality assumptions
+2. Graphs for the detection of outliers and influential observations
 3. Diagnostic plots for the effect of variables
 
 ## Model Fitting `lm()`
@@ -315,7 +315,7 @@ plot(y=rstandard(mod), x=fitted(mod))
 ## Leverage, Influence and Outliers 
 
 - We want to ensure that the model is not overly determined by one or a few observations. In multiple linear regression this cannot be simply detected graphically.
-- When identifiying influential data points (points that drag the regression line in their direction) looking a residuals does not necessarily help.
+- When identifiying influential data points (points that drag the regression line in their direction) looking at residuals does not necessarily help.
 - Influential points can be identified, when the regression coefficients (fitted values, $t$-Tests, etc) change heavily, when we **omit these points** while estimating the model.
 
 ## Outliers
@@ -344,7 +344,7 @@ round(cbind(obs=P010$ComIndl,residuals=rstandard(mod), leverage=hatvalues(mod)),
 
 \begin{textblock}{4.6}(7.5,1)
 \begin{alertblock}{}
-A small residual value is desireable and the standardized residuals show no outlier. However, the small residual is not due to a good fits, but due to high leverage of the observations for Neversink and Hackensack.
+A small residual value is desireable and the standardized residuals show no outlier. However, the small residual is not due to a good fit, but due to high leverage of the observations for Neversink and Hackensack.
 \end{alertblock}
 \end{textblock}
 
@@ -364,8 +364,8 @@ olsrr::ols_plot_resid_stand(mod)
 
 ## Influence
 
-- The influence of an observations my be measured by the effects on the fit when iti is omitted from the data in the fitting process. 
-- $\hat\beta_{0(i)}, \hat\beta_{1(i)}, \ldots, \hat\beta_{p(i)}$ denote the regression coefficients obtained when the $i$-th observation sis deleted. $\hat y_{1(i)}, \hat y_{2(i)}, \ldots, \hat y_{n(i)}$ and $\hat\sigma^2_{(i)}$ denote the predicted values and residual mean square error when dropping the $i$-th observation respectively. The resulting observation equation for the models follows by
+- The influence of an observation may be measured by the effects on the fit when it is omitted from the data in the fitting process. 
+- $\hat\beta_{0(i)}, \hat\beta_{1(i)}, \ldots, \hat\beta_{p(i)}$ denote the regression coefficients obtained when the $i$-th observation is deleted. $\hat y_{1(i)}, \hat y_{2(i)}, \ldots, \hat y_{n(i)}$ and $\hat\sigma^2_{(i)}$ denote the predicted values and residual mean square error when dropping the $i$-th observation respectively. The resulting observation equation for the model follows by
 
 $$ \hat y_{m(i)} = \hat\beta_{0(i)} + \hat\beta_{1(i)}x_{m1} + \ldots + \hat\beta_{p(i)}x_{mp}$$
 
@@ -373,7 +373,7 @@ $$ \hat y_{m(i)} = \hat\beta_{0(i)} + \hat\beta_{1(i)}x_{m1} + \ldots + \hat\bet
 
 ## Cook's Distance
 
-- *Cook's distance* measures the difference between the gregression coefficients obtained from the full data and the regression coefficients
+- *Cook's distance* measures the difference between the regression coefficients obtained from the full data and the regression coefficients
 obtained by deleting the $i$-th observation. 
 - The influence of the $i$-th observation for $i = 1,\ldots,n$ is given by
 
@@ -381,8 +381,8 @@ $$ C_i = \frac{\sum_{j=1}^n (\hat y_j - \hat y_{j(i)})^2}{\hat\sigma^2(p+1)} = \
 
 \bigskip
 
-- Cook's distance is a product of the sqaured residual and the so called **potential funciton** $p_{ii}/(1-p_{ii})$.
-- If $C_i$ is large omitting a datapoint causes large changes in the model. Points are said to be influential when their Cook's distance meets or exceeds the 50% point of the $F$-distribution with $p+1$ and $n-p-1$ degrees of freedom. A rule of thumb is do investiage points where $C_i \geq 1$.
+- Cook's distance is a product of the squared residual and the so called **potential function** $p_{ii}/(1-p_{ii})$.
+- If $C_i$ is large omitting a data point will cause large changes in the model. Points are said to be influential when their Cook's distance meets or exceeds the 50% point of the $F$-distribution with $p+1$ and $n-p-1$ degrees of freedom. A rule of thumb is do investigate points where $C_i \geq 1$.
 
 ## Cook's Distance
 
@@ -399,7 +399,7 @@ $$DFITS_i = \frac{\hat y_i - \hat y_{i(i)}}{\sigma^2_{(i)} \sqrt{p_{ii}}} = r_i^
 \bigskip
 
 - Points with $|DFITS_i| > 2\sqrt{(p+1)/(n-p-1)}$ are usually classified as influential.
-- $C_i$ and $DFITS_i$ are functions of the residual and levrage values. It is often sufficient to inspect either the Cook's distance or $DFITS$.
+- $C_i$ and $DFITS_i$ are functions of the residual and leverage values. It is often sufficient to inspect either the Cook's distance or $DFITS$.
 
 ## Welsch and Kuh Measure (DFITS)
 
@@ -410,16 +410,16 @@ olsrr::ols_plot_dffits(mod)
 ## What to do with outliers?
 
 - Outliers and influential observations should not routinely be deleted or automatically down-weighted.
-- **Points with high leverage and high influence are not necessarily bad observations!** They can be an indication of model mispecification (e.g. non-linearity in the data) or show that the data did not come from a normal polulation. **In those cases they may be the most informative data points.**
+- **Points with high leverage and high influence are not necessarily bad observations!** They can be an indication of model misspecification (e.g. non-linearity in the data) or show that the data did not come from a normal polulation. **In those cases they may be the most informative data points.**
 - Each *outlier* should be inspected with care and checked individually. If data points are removed this should be documented in the research including reasons for the decision. 
-- Antoher option is to use *robust regression* where less weight is given to data points with high leverage.
+- Another option is to use *robust regression* where less weight is given to data points with high leverage.
 
 ## Role of Variables in Regression Models
 
-- Predictors are usually **sequentially introduced** into a regression equaiton. 
+- Predictors are usually **sequentially introduced** into a regression equation. 
 - Given a model that contains $p$ predictors, what is the effect of deleting (or adding) one of the variables from (or to) the model?
-- One indication can be obtained by the $t$-test. If the $t$-value is large in absolute terms, the variables retained, otherwise omitted.
-- **The results of the $t$-test are only valid if the underlying assumptions hold, tehrefore additinal graphs should be inspected when deciding wether or not to include a variable in the regresison model. 
+- One indication can be obtained by the $t$-test. If the $t$-value is large in absolute terms, the variables will be retained, otherwise omitted.
+- **The results of the $t$-test will only be valid if the underlying assumptions hold, therefore additional graphs should be inspected when deciding whether or not to include a variable in the regression model. 
 
 ## Example: Scottish Hills Races Data
 ```{r, size="tiny"}
@@ -439,14 +439,14 @@ summary(mod)
 
 ## Added-Variable Plot
 
-- The added-variable plot enables us to see the magnitude of the regression coefficient of the new variable that is bein considered for inclusion.
-- The slope of the least squares line representing the points int he plot is equal to the estimated regression coefficient of the new variable. Additionally the plot shows data points that may be influential for this magnitude.
+- The added-variable plot enables us to see the magnitude of the regression coefficient of the new variable that is being considered for inclusion.
+- The slope of the least squares line representing the points in the plot is equal to the estimated regression coefficient of the new variable. Additionally, the plot shows data points that may be influential for this magnitude.
 
 ## Added-Variable Plot
 
 - The added variable plot is a plot between two pairs of residuals: the residuals when $Y$ is regressed on predictors except $X_j$ versus the residuals when regressing $X_j$ on all other predictors.
-  + First set of residuals corresponds to the remainder of $Y$ that can not be explained by the other regressors.
-  + Second set of residuals corresponds to the part of $X_j$ that cannot be explained by the other predcitors. 
+  + First set of residuals corresponds to the remainder of $Y$ that cannot be explained by the other regressors.
+  + Second set of residuals corresponds to the part of $X_j$ that cannot be explained by the other predictors. 
   + The resulting slope is equal to $\hat\beta_j$ and essentially a visualization that is equivalent to the interpretation as partial regression coefficient.
 
 ## Added-Variable Plot
@@ -457,19 +457,19 @@ olsrr::ols_plot_added_variable(mod)
 
 \begin{textblock}{4.6}(7.5,1)
 \begin{alertblock}{Your turn}
-Do both variables contribute significantly to the model? Is there anything unuasual that should be investigated further?
+Do both variables contribute significantly to the model? Is there anything unusual that should be investigated further?
 \end{alertblock}
 \end{textblock}
 
 ## Effects of an additional Predictor
 
-- When a new regressor is introduced two questions should be answerd:
+- When a new regressor is introduced two questions should be answered:
   + Is the regression coefficient of the new variable significant (different from zero)?
-  + Does the introduction fo the new variable substantially change the regressions coefficients that are already in the model.
+  + Does the introduction of the new variable substantially change the regression coefficients that are already in the model.
 
 ## Effects of an additional Predictor
 
 - **Option A:** insignificant and almost no change in coefficients $\rightarrow$ Should **not** be included unless theory dictates inclusion.
 - **Option B:** significant and subtantial changes in coefficients. $\rightarrow$ Should be included, but needs to be checked for collinearity.
 - **Option C:** significant but no substantial coefficient changes $\rightarrow$ Ideal condition as variable is uncorrelated with other regressors, variable should be retained.
-- **Option D:** insignificant but substantial coefficient changes $\rightarrow$  indicates collinearity, corrective actions are reqauired before discussion.
+- **Option D:** insignificant but substantial coefficient changes $\rightarrow$  indicates collinearity, corrective actions are required before discussion.

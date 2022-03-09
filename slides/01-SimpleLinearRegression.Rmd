@@ -380,7 +380,7 @@ $$S(\beta_0,\beta_1) = \sum_{i=1}^{n} \epsilon_i^2 = \sum_{i=1}^{n}(y_i-\beta_0-
 \medskip
 - This is a quadratic function that can be minimized. The analytical solution for the values $\hat\beta_0$ and $\hat\beta_1$ that minimize the function $S(\;)$ are
 
-$$\hat\beta_1 = \frac{\sum(y_i - \bar y)(x_i - \bar x)}{\sum (x_i - \bar x)} \quad\text{and}\quad \hat\beta_0 = \bar y - \hat\beta_1 \bar x$$
+$$\hat\beta_1 = \frac{\sum(y_i - \bar y)(x_i - \bar x)}{\sum (x_i - \bar x)^2} \quad\text{and}\quad \hat\beta_0 = \bar y - \hat\beta_1 \bar x$$
 
 \medskip
 - Both, $\hat\beta_0$ and $\hat\beta_1$ are called the **least squares estimates** and give the line with the smallest possible sum of squares of vertical distances.
@@ -400,14 +400,15 @@ $$\hat\epsilon_i = y_i - \hat y_i  \quad\text{for}\quad i=1,2\ldots,n$$
 ## Parameter Estimation
 
 ### Your turn
-Add a sketch of the least squares regression line to the plot above and nlcude, mark and annotage the the fitted values and the ordinary least squares residuals.
 
-\vspace{-3cm}
-```{r}
+Add a sketch of the least squares regression line to the plot above and include, mark and annotate the fitted values and the ordinary least squares residuals.
+
+```{r, echo=FALSE}
 plot(head(P031$Minutes),head(P031$Units),xlab="Minutes",ylab="Units", pch=19)
 ```
 
 ## Parameter Estimation
+
 ```{r, echo=F}
 x <- head(P031$Minutes)
 y <- head(P031$Units)
@@ -429,7 +430,7 @@ segments(x, ypred, x, y, col="blue")
 ## Tests of Hypotheses
 
 - So far we only made one assumption or hypothesis about the relationship between the response and predictor variables, which is called the **linearity assumption**.
-- An early step in an analysis should always be the validation of this assumption: *We wish to determine if the data at hand supports the assumtion that $Y$ and $X$ are linearly related.*
+- An early step in an analysis should always be the validation of this assumption: *We wish to determine if the data at hand supports the assumption that $Y$ and $X$ are linearly related.*
 - An **informal** way to check this assumption is to check the scatter plot.
 - A more **formal** way to check the assumption and to measure the usefulness of $X$ as a predictor for $Y$ is to conduct a hypothesis test about the regression parameter $\beta_1$.
 
@@ -437,19 +438,19 @@ segments(x, ypred, x, y, col="blue")
 
 - Testing for the postulated relationship can be done by checking the hypothesis that $\beta_1 = 0$, which means that there is **no linear relationship** between $X$ and $Y$.
 - Finding that $\beta_1 > 0$ or $\beta_1 < 0$ is equivalent to $\beta_1 \neq 0$ and would provide **evidence (not proof!) for an existing linear relationship**.
-- Testing of this hypothesis requires the assumption that the errors $\epsilon_i$ are independent random quantitites originating from a normal distribution with mean zero and common variance $\sigma^2$.
+- Testing of this hypothesis requires the assumption that the errors $\epsilon_i$ are independent random quantitites originating from a normal distribution with zero mean and common variance $\sigma^2$.
   + $\epsilon \sim N(0,\sigma^2)$
-  + $\epsilon_i$ are idenpendent 
+  + $\epsilon_i$ are independent 
 
 ## Tests of Hypotheses
 
 - Given that the assumptions for the error term $\epsilon$ hold, $\hat\beta_0$ and $\hat\beta_1$ are unbiased estimates of $\beta_0$ and $\beta_1$.
-- This means that $\hat\beta_0$ and $\hat\beta_1$ allow to draw conclusions about the unobserved and unknow paramteters $\beta_0$ and $\beta_1$ in the population, hence $E(\hat\beta) = \beta$.
+- This means that $\hat\beta_0$ and $\hat\beta_1$ allow to draw conclusions about the unobserved and unknown parameters $\beta_0$ and $\beta_1$ in the population, hence $E(\hat\beta) = \beta$.
 - Under the mentioned circumstances the variances of the regression coefficients are
 
-$$Var(\hat\beta_0) = \sigma^2[\frac{1}{n} + \frac{\bar x^2}{\sum(x_i - \bar x)^2}] \quad\text{and}\quad Var(\hat\beta_1) = \frac{\sigma^2}{\sum(x_i - \bar x)^2}$$
+$$Var(\hat\beta_0) = \sigma^2 \left[ \frac{1}{n} + \frac{\bar x^2}{\sum(x_i - \bar x)^2} \right] \quad\text{and}\quad Var(\hat\beta_1) = \frac{\sigma^2}{\sum(x_i - \bar x)^2}$$
 
-- The variances of $\hat\beta_0$ and $\hat\beta_1$ depend on the unknow and unobservable parameter $\sigma^2$, which needs to be estimated from the data before we can proceed.
+- The variances of $\hat\beta_0$ and $\hat\beta_1$ depend on the unknown and unobservable parameter $\sigma^2$, which needs to be estimated from the data before we can proceed.
 
 ## Tests of Hypotheses
 
@@ -469,7 +470,7 @@ $$ \hat\sigma^2 = \frac{\sum \epsilon_i^2}{n-2} = \frac{\sum (y_i - \hat y_i)^2}
 $$s.e.(\hat\beta_0) = \hat\sigma^2 \sqrt{\frac{1}{n} + \frac{\bar x^2}{\sum(x_i - \bar x)^2}} \quad\text{and}\quad s.e.(\hat\beta_1) = \frac{\hat\sigma^2}{\sqrt{\sum(x_i - \bar x)^2}}$$
 
 \medskip
-- The standard error of $\hat\beta_1$ is a measure of how precisely the slope hast been estimated. The smaller $s.e.(\hat\beta_1)$, the more precise is the estimator.
+- The standard error of $\hat\beta_1$ is a measure of how precisely the slope has been estimated. The smaller $s.e.(\hat\beta_1)$, the more precise is the estimator.
 
 
 ## Tests of Hypotheses
@@ -483,14 +484,14 @@ $$t_1 = \frac{\hat\beta_1}{s.e.(\hat\beta_1)}$$
 
 ## Tests of Hypotheses
 
-Carrying out the test is done by comparing the value $t_1$ against the appropriate critical value obtrained from the t-table, which is $t_{(n-2, \alpha/2)}$ (Note that we devide $\alpha$ by 2 as we have a two-sided test). 
+Carrying out the test is done by comparing the value $t_1$ against the appropriate critical value obtained from the t-table, which is $t_{(n-2, \alpha/2)}$ (Note that we devide $\alpha$ by 2 as we have a two-sided test). 
 
 
 **Reject $H_0$ at the given significance level if:**
 
 $$t_1 \geq t_{(n-2, \alpha/2)} \quad\text{or}\quad t_1 \leq -t_{(n-2, \alpha/2)}$$
 
-One condition is fulfilled if $|t_1| \leq t_{(n-2, \alpha/2)}$. A criterion equivalent to that is to compare the pvalue (implicit probability value) for the t-test with $\alpha$ and reject $H_0$ if $p(|t_1|) \leq \alpha$, where  $p(|t_1|)$, called the p-value, is the sum of the two shaded areas under the following curve. This value is also provided by R.
+One condition is fulfilled if $|t_1| \leq t_{(n-2, \alpha/2)}$. A criterion equivalent to that is to compare the p-value (implicit probability value) for the t-test with $\alpha$ and reject $H_0$ if $p(|t_1|) \leq \alpha$, where  $p(|t_1|)$, called the p-value, is the sum of the two shaded areas under the following curve. This value is also provided by R.
 
 ## Tests of Hypotheses
 
@@ -510,7 +511,7 @@ The t-test can be generalized to test the more general hypothesis $H_0: \beta_1 
 $$t_1 = \frac{\hat\beta_1 - \beta_1^0}{s.e.(\hat\beta_1)}$$
 
 \bigskip
-The t-test can also be used for the testing the intercept $\beta_0$ in the same fashion.
+The t-test can also be used for testing the intercept $\beta_0$ in the same fashion.
 
 ## Tests of Hypotheses
 
@@ -532,7 +533,7 @@ Based on the assumption that the errors $\epsilon$ are normally distributed $\ep
 $$\hat\beta_0 \pm t_{(n-2, \alpha/2)} \cdot s.e.(\hat\beta_0) \quad\text{and}\quad \hat\beta_1 \pm t_{(n-2, \alpha/2)} \cdot s.e.(\hat\beta_1)$$
 
   + with $t_{(n-2, \alpha/2)}$ being the $(1-\alpha/2)$ percentile of a $t$ distribution with $n-2$ degrees of freedom
-  + **Interpretation:** If we were to take repeated sample of the same size ($n$) at the same values of $X$ and construct e.g. the 95% conficden intervals for the slope parameter (based on $\hat\beta_1$) for each sample, then 95% of these intervals would be expected to contain the true but unknown value $\beta_1$ of the slope.
+  + **Interpretation:** If we took repeated samples of the same size ($n$) at the same values of $X$ and construct e.g. the 95% confidence intervals for the slope parameter (based on $\hat\beta_1$) for each sample, then 95% of these intervals would be expected to contain the true but unknown value $\beta_1$ of the slope.
 
 ## Confidence Intervals
 
@@ -559,17 +560,17 @@ In addition to describing and explaining observed relationships, the fitted regr
 ### Value of Response & Prediction Limits
 
 The predicted value $\hat y_0$ is given by $\hat y_0 = \hat\beta_0 + \hat\beta_1 x_0$. Its confidence interval can be constructed by $\hat y_0 \pm t_{(n-2, \alpha/2)} \cdot s.e.(\hat y_0)$. The standard error of the prediction is 
-$$s.e.(\hat y_0) = \hat\sigma \sqrt{1 + \frac{1}{n}+\frac{((x_0-\bar x)^2}{\sum (x_i-\bar x)^2}}$$
+$$s.e.(\hat y_0) = \hat\sigma \sqrt{1 + \frac{1}{n}+\frac{(x_0-\bar x)^2}{\sum (x_i-\bar x)^2}}$$
 
 ### Mean Response & Confidence Limits
 
 The predicted value $\hat\mu_0$ is given by $\hat\mu_0 = \hat\beta_0 + \hat\beta_1 x_0$. Its confidence interval is given by $\hat\mu_0 \pm t_{(n-2, \alpha/2)} \cdot s.e.(\hat\mu_0)$. The standard error of the prediction is 
-$$s.e.(\hat \mu_0) = \hat\sigma \sqrt{\frac{1}{n}+\frac{((x_0-\bar x)^2}{\sum (x_i-\bar x)^2}}$$
+$$s.e.(\hat \mu_0) = \hat\sigma \sqrt{\frac{1}{n}+\frac{(x_0-\bar x)^2}{\sum (x_i-\bar x)^2}}$$
 
 ## Predictions
 
 >- How do those two predictions differ from each other? 
->- What do the have in common?
+>- What do they have in common?
 >- Why is the uncertainty smaller when predicting the mean response $\hat\mu_0$ instead of the single value $\hat y_0$?
 
 ## Predictions
@@ -578,7 +579,7 @@ $$s.e.(\hat \mu_0) = \hat\sigma \sqrt{\frac{1}{n}+\frac{((x_0-\bar x)^2}{\sum (x
 ### Your turn
 Use the computer repair data (`P031`) to do the following with:
 
-- Predict the length of a service call and the associated standard deviation in which four components hat to be repaired
+- Predict the length of a service call and the associated standard deviation in which four components have to be repaired
 - Estimate the expected mean service time for calls that needed four components to be  repaired.
 :::
 
@@ -587,7 +588,7 @@ Use the computer repair data (`P031`) to do the following with:
 **There are two dangers in such calculations:**
 
 - Notice the substantial uncertainty / the large standard error
-- The linear relationship may only hold in the range of the observed data. In case of the computer repair data we would for example not use this procedure to predict service times for services which require that e.g. 25 components to be repaired
+- The linear relationship may only hold in the range of the observed data. In case of the computer repair data we would for example not use this procedure to predict service times for services which require e.g. 25 components to be repaired
 
 ## Goodness of Fit
 
@@ -615,13 +616,13 @@ abline(mod2, col="red")
 
 The quality of the fit can be assessed by one of the following (highly related) ways:
 
-1. The discussed tests (if $H_0$ is rejected), the magnitude of the values gices us information abouth the strength (not only existence) of the linear relationship between $Y$ and $X$. The larger $|t|$ (or the smaller the $p$-value), the stronger the linear relationship. The tests are objective but require the stated assumption of normality of $\epsilon$.
+1. The discussed tests (if $H_0$ is rejected), the magnitude of the values gives us information about the strength (not only existence) of the linear relationship between $Y$ and $X$. The larger $|t|$ (or the smaller the $p$-value), the stronger the linear relationship. The tests are objective but require the stated assumption of normality of $\epsilon$.
 
 2. One can also revert to $Cor(Y,X)$ and the scatter plot of the data. The **closer** the set of points to a straignt line, the closer is $|Cor(Y,X)|$ to 1 and the stronger is the linear relationship between $Y$ and $X$. This approach is informal and subjective, but requires only the linearity assumption.
 
 ## Goodness of Fit
 
-3. Examine the scatter plot of the response $Y$ versus the fitted values $\hat Y$. The closer the points to a straight line, the stronger is the linear relationship. This can be measure using the correlation $Cor(\hat Y,Y)$. In simple linear regression this is redundant, as $Cor(\hat Y,Y) = |Cor(Y,X)|$. However when multiple regressors are available this is an informative plot.
+3. Examine the scatter plot of the response $Y$ versus the fitted values $\hat Y$. The closer the points to a straight line, the stronger is the linear relationship. This can be measured using the correlation $Cor(\hat Y,Y)$. In simple linear regression this is redundant, as $Cor(\hat Y,Y) = |Cor(Y,X)|$. However when multiple regressors are available this is an informative plot.
 
 4. Decomposition of the variance $Var(Y)$, which is in fact closely related to the previous approach of using $Cor(\hat Y,Y)$, but useful for simple and multivariate linear regression.
 
@@ -685,6 +686,6 @@ Calculate the $R^2$ for the Computer repair data and show that $R^2 = [Cor(Y,X)]
 
 ## Additional Chapters
 
-- Regression Line throuth the Origin
+- Regression Line through the Origin
 - Trivial Models
 
