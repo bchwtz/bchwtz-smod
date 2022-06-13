@@ -203,7 +203,10 @@ mod1 <- lm(IMPORT ~  1 + DOPROD + STOCK + CONSUM, data=d)
 ev <- eigen(cor(d[,c("DOPROD","STOCK","CONSUM")]))$vectors
 
 # Multiply eigenvectors with constant to match output in book
-ev[,2]  <- ev[,2] * -1; ev[,3]  <- ev[,3] * -1
+# Note: Eigenvectoren not consistent
+if( all(ev[,1] < c(0,0,0))) ev[,1] <- ev[,1] * -1
+if(!all(ev[,2] < c(0,1,0))) ev[,2] <- ev[,2] * -1
+if(!all(ev[,3] < c(0,0,1))) ev[,3] <- ev[,3] * -1
 
 # Eigenvectors
 ev
