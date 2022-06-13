@@ -144,7 +144,7 @@ The variance-covariance matrix of the new variables only has entries on the main
 ## Principal Components
 
 - The principal components lack simple interpretation as they are *a mixture* of the (standardized) original variables. 
-- Since $\lambda_j$ is the variance of the $j$-th principal component, a value of $lambda_j \approx 0$ shows that the respective principal componennt $C_j$ is equal to a constant. That constant is the mean value of $C_j$ (which is zero as the variables have been standardized).
+- Since $\lambda_j$ is the variance of the $j$-th principal component, a value of $\lambda_j \approx 0$ shows that the respective principal componennt $C_j$ is equal to a constant. That constant is the mean value of $C_j$ (which is zero as the variables have been standardized).
 - Inspecting the eigenvectors of the previous example shows that *only* the variables `CONSUM` and `DOPROD` play a relevant role when determining $C_3$.
 
 ```{r, echo=F}
@@ -281,7 +281,7 @@ $$
 $$
 
 $$
-\beta_0 = \bar{y} - \hat\beta_1 \bar{x}_1 - \hat\beta_2 \bar{x}_2 - \ldots - \hat\beta_p \bar{x}_p 
+\hat\beta_0 = \bar{y} - \hat\beta_1 \bar{x}_1 - \hat\beta_2 \bar{x}_2 - \ldots - \hat\beta_p \bar{x}_p 
 $$
 
 \bigskip
@@ -315,7 +315,7 @@ $$ \tilde{Y} = \alpha_1 C_1 + \alpha_2 C_2 + \epsilon $$
 **There are two important things to note here:**
 
 1. In an regression equation where the full set of potential predictor variables under consideration are orthogonal, the estimated values of the regression **coefficients are not altered** when subsets of these variables are either introduced or deleted.
-2. Both models lead to estimates for **all** three of the original standardized coefficients $\theta_1, \theta_2$ and $theta_3$.
+2. Both models lead to estimates for **all** three of the original standardized coefficients $\theta_1, \theta_2$ and $\theta_3$.
 
 ## Reduction of Multicollinearity in the Data
 
@@ -480,9 +480,9 @@ mod
 
 ```{r}
 plot(k,rep(NA,length(k)),type="l",ylim=c(-0.3, 0.8), ylab="Coefficient")
-lines(k, mod$beta[1,]) # Coefficient for DOPROD
-lines(k,mod$beta[3,]) # Coefficient for CONSUM
-lines(k,mod$beta[2,]) # Coefficient for STOCK
+lines(k, mod$beta[1,], col = "blue" ) # Coefficient for DOPROD
+lines(k, mod$beta[3,], col = "red"  ) # Coefficient for CONSUM
+lines(k, mod$beta[2,], col = "green") # Coefficient for STOCK
 abline(h=0, lty="dashed", col="darkgrey")
 ```
 
@@ -527,5 +527,5 @@ $$
 - The behavior of $\hat\theta_j(k)$ as a function of $k$ is easily observed from the ridge trace. 
 - The value of $k$ selected is the smalles value for which all the coefficients $\hat\theta_j(k)$ are stable.
 - In addition, at the selected value of $k$ the residual sum of squares should be close to is minimum value.
-- The variance inflation factors $\text{VIF}_j(k)$ should also get down to less than 1. Recall that a value of $\text{VIF}_j=1$ is a characteristic of an orthogonal system and a value of less than 10 indicates an noncollinear or stable system.
+- The variance inflation factors $\text{VIF}_j(k)$ should also get down to less than 10. Recall that a value of $\text{VIF}_j=1$ is a characteristic of an orthogonal system and a value of less than 10 indicates an noncollinear or stable system.
 
