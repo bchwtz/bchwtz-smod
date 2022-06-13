@@ -388,7 +388,7 @@ x <- cbind(std_PC1=c(NA,coefs1), org_PC1=beta_org1,
            std_PC2=c(NA,coefs2), org_PC2=beta_org2,
            std_PC3=c(NA,coefs3), org_PC3=beta_org3)
 rownames(x) <- c("Intercept","DOPROD","STOCK","CONSUM")
-kable(x, digits=3)
+kable(x, digits=3) 
 ```
 
 ## Caution when using Principal Component Regression
