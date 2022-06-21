@@ -4,3 +4,35 @@
 knitr::include_graphics("slides/gifs/05-Transformations.gif")
 ```
 
+## Elasticity
+
+> An elasticity coefficient is the ratio of the percentage change in the
+> forecast variable ($y$) to the percentage change in the predictor
+> variable ($x$). Mathematically, the elasticity is defined as
+> $(dy/dx)\times(x/y)$. Consider the log-log model, $$
+> \log y=\beta_0+\beta_1 \log x + \varepsilon.
+> $$ Express $y$ as a function of $x$ and show that the coefficient
+> $\beta_1$ is the elasticity coefficient.
+
+
+
+$$ \log(y) = \beta_0 + \beta_1 \log(x) + \varepsilon \qquad \mid \mathbb{E}(\cdot \mid x)$$
+Taking the conditional expectation on the left and right hand side of the quation
+
+$$\mathbb{E}(\log(y) \mid x) = \mathbb{E}(\beta_0 + \beta_1 \log(x) + \varepsilon \mid x)$$
+leads to the following as $\mathbb{E}(\varepsilon\mid x) = 0$.
+
+$$ \log(y) = \beta_0 + \beta_1 \log(x) \qquad \mid \frac{\partial}{\partial x}$$
+After taking derivatives of the left and right side with respect to $x$ we receive. The left hand side follows due to the implicit differentiation.
+
+$$ \frac{\partial}{\partial x}\log(y) = \frac{\partial}{\partial x}(\beta_0 + \beta_1 \log(x))$$
+
+
+
+$$\frac{\partial\log(y)}{\partial x} = 0 + \beta_1 \frac{1}{x}$$
+$$\frac{1}{y} \frac{\partial y}{\partial x} = \beta_1 \frac{1}{x} \qquad \mid \cdot x$$
+
+After rearranging we get the definition of the the elasticity.
+
+$$\beta_1 = \frac{x}{y} \frac{\partial y}{\partial x}$$
+
