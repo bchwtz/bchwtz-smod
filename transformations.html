@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Transformations | Statistical Modeling</title>
   <meta name="description" content="Chapter 5 Transformations | Statistical Modeling Course Notes" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Transformations | Statistical Modeling" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Buchwitz" />
 
 
-<meta name="date" content="2022-06-13" />
+<meta name="date" content="2022-06-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -145,7 +145,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple Linear Regression</a></li>
 <li class="chapter" data-level="3" data-path="regression-diagnostics.html"><a href="regression-diagnostics.html"><i class="fa fa-check"></i><b>3</b> Regression Diagnostics</a></li>
 <li class="chapter" data-level="4" data-path="qualitative-variables.html"><a href="qualitative-variables.html"><i class="fa fa-check"></i><b>4</b> Qualitative Variables</a></li>
-<li class="chapter" data-level="5" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>5</b> Transformations</a></li>
+<li class="chapter" data-level="5" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>5</b> Transformations</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="transformations.html"><a href="transformations.html#elasticity"><i class="fa fa-check"></i><b>5.1</b> Elasticity</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="weighted-least-squares.html"><a href="weighted-least-squares.html"><i class="fa fa-check"></i><b>6</b> Weighted Least Squares</a></li>
 <li class="chapter" data-level="7" data-path="correlated-errors.html"><a href="correlated-errors.html"><i class="fa fa-check"></i><b>7</b> Correlated Errors</a></li>
 <li class="chapter" data-level="8" data-path="collinear-data.html"><a href="collinear-data.html"><i class="fa fa-check"></i><b>8</b> Collinear Data</a></li>
@@ -200,7 +203,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 Figure 5.1: <a href="slides/05-Transformations.pdf">Download Slides</a>
 </p>
 </div>
+<div id="elasticity" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Elasticity<a href="transformations.html#elasticity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<blockquote>
+<p>An elasticity coefficient is the ratio of the percentage change in the
+forecast variable (<span class="math inline">\(y\)</span>) to the percentage change in the predictor
+variable (<span class="math inline">\(x\)</span>). Mathematically, the elasticity is defined as
+<span class="math inline">\((dy/dx)\times(x/y)\)</span>. Consider the log-log model, <span class="math display">\[
+\log y=\beta_0+\beta_1 \log x + \varepsilon.
+\]</span> Express <span class="math inline">\(y\)</span> as a function of <span class="math inline">\(x\)</span> and show that the coefficient
+<span class="math inline">\(\beta_1\)</span> is the elasticity coefficient.</p>
+</blockquote>
+<p><span class="math display">\[ \log(y) = \beta_0 + \beta_1 \log(x) + \varepsilon \qquad \mid \mathbb{E}(\cdot \mid x)\]</span>
+Taking the conditional expectation on the left and right hand side of the quation</p>
+<p><span class="math display">\[\mathbb{E}(\log(y) \mid x) = \mathbb{E}(\beta_0 + \beta_1 \log(x) + \varepsilon \mid x)\]</span>
+leads to the following as <span class="math inline">\(\mathbb{E}(\varepsilon\mid x) = 0\)</span>.</p>
+<p><span class="math display">\[ \log(y) = \beta_0 + \beta_1 \log(x) \qquad \mid \frac{\partial}{\partial x}\]</span>
+After taking derivatives of the left and right side with respect to <span class="math inline">\(x\)</span> we receive. The left hand side follows due to the implicit differentiation.</p>
+<p><span class="math display">\[ \frac{\partial}{\partial x}\log(y) = \frac{\partial}{\partial x}(\beta_0 + \beta_1 \log(x))\]</span></p>
+<p><span class="math display">\[\frac{\partial\log(y)}{\partial x} = 0 + \beta_1 \frac{1}{x}\]</span>
+<span class="math display">\[\frac{1}{y} \frac{\partial y}{\partial x} = \beta_1 \frac{1}{x} \qquad \mid \cdot x\]</span></p>
+<p>After rearranging we get the definition of the the elasticity.</p>
+<p><span class="math display">\[\beta_1 = \frac{x}{y} \frac{\partial y}{\partial x}\]</span></p>
 
+</div>
 </div>
             </section>
 

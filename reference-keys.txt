@@ -13,6 +13,7 @@ multiple-linear-regression
 regression-diagnostics
 qualitative-variables
 transformations
+elasticity
 weighted-least-squares
 correlated-errors
 collinear-data
