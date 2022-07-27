@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE,
 ```
 
 
-# Organizational Information 
+# Organizational Information
 
 ## Course Contents
 
