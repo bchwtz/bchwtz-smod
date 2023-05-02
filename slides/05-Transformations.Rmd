@@ -489,3 +489,14 @@ plot(P184$BodyWeight^-1, P184$BrainWeight^-1, xlab=expression(X^-1), ylab=expres
 - In the case of $\lambda=0$ the relationship looks linear, but three data points (dinosaurs) deviate from the other observations.
 - In the example the power tranformation has been applied to $X$ and $Y$ simultaneously and with the same value of $\lambda$. In practice it may be more appropriate to raise each value to a different power, choose tha values **independelty** or transform only a single variable.
 - Heteroscedasticity and non-linearity can be diagnsoed by checking the residuals of the model. The final model (with applied transformations) should not show evidence of heteroscedasticity or deterministic patterns.
+
+## Model
+
+```{r}
+data <- P184[-c(6,16,25), ]
+mod1 <- lm(BrainWeight ~  1 + BodyWeight, data = data)
+mod2 <- lm(BrainWeight ~ -1 + BodyWeight, data = data)
+texreg::texreg(list(mod1, mod2), digits = 4, 
+               custom.model.names = c("BrainWeight","BrainWeight"))
+```
+
