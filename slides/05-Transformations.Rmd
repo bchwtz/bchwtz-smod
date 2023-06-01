@@ -492,7 +492,7 @@ plot(P184$BodyWeight^-1, P184$BrainWeight^-1, xlab=expression(X^-1), ylab=expres
 
 ## Model
 
-```{r}
+```{r, results="asis"}
 data <- P184[-c(6,16,25), ]
 mod1 <- lm(BrainWeight ~  1 + BodyWeight, data = data)
 mod2 <- lm(BrainWeight ~ -1 + BodyWeight, data = data)
