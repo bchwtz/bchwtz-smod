@@ -78,6 +78,8 @@ Grading is based on a portfolio examination with three parts:
 2. Hand-in Exercises (40%)
 3. Final Case Study (40%)
 
+Outdated!
+
 # Introduction
 
 ## What is Regression Analysis?
