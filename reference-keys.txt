@@ -31,3 +31,7 @@ data-preparation-and-description
 selecting-numbers-of-factors
 applying-factor-analysis
 interpreting-the-factors
+assignments
+presentation
+dataset
+seminar-paper
