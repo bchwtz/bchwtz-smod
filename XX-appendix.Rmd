@@ -1,6 +1,29 @@
 # (PART\*) Appendix {-} 
 
+# Assignments
+
+## Presentation
+
+The lecture and the associated literate cover a range of topics. Those topics will be assigned to one student or a small group of students. Those assignees are responsible for the topic and prepare an educational presentation that 1) helps their fellow students to quickly recapitulate the basic concepts associated with the topic 2) highlights and explains potential pitfalls that are expected to appear when applying the concepts of the topic and 3) introduce at least one example that shows the application of the respective context in an analytical environment. The whole has to be in the form of a **presentation**, but especially the application can be supported with code either directly embedded in the presentation or in the form of an additional code file or notebook.
+
+## Dataset
+
+Identifying a data set is a preliminary step to prepare the upcoming seminar paper. Every seminar paper needs an **individual** data set. The data set can cover any topic as long as it supports the application of the methodological approaches discussed in the course. This effectively requires the data set to exhibit a metric dependent variable that can be explained by a set of independent variables (features) according to some formulated theory. The source of the data set can be any eligible source that supports academic usage, such as a company that you are associated with, scraped from a website or a collection of websites, an existing research paper that published its data or a data archive. There are no real constraints regarding the number of variables or number of observations as long as the data set is large enough to convincingly answer a formulated research hypothesis. Some examples for data sets can be found in the `fhswf` R package:
+
+```{r, eval=FALSE}
+library(fhswf)
+?fhswf::boatprices # Explanation of boat prices using features of the boat.
+?fhswf::whodata    # Explanation of macroeconomic indicators such as the 
+                   # human development index of a country using descriptives
+                   # for that country incl. considering development over time.
+```
+
+## Seminar Paper
+
+The seminar paper presents a comprehensive analytical use case that uses the proposed (and approved) data set to apply all (necessary) methodological steps teached and discussed in the course and the respective literature. This seminar paper is a piece of academic literature and therefore at least one research hypothesis needs to be formulated. This research hypothesis needs to be derived from literature (especially academic papers) and supporting arguments in form a formulated theory need to be presented. Next the data set needs to be introduced including univariate descriptive statistics for all relevant variables as well as statistics that explore the association of the introduced variables. The core of the seminar paper is the actual data analysis that is used to provide evidence for the stated research hypothesis. This analysis is followed by a intensive interpretation that deals with the topic of the paper (not statistical methodology) before you conclude, summarize and critique your work. This seminar paper deals with some form of (real world) domain, so the main arguments should relate to the chosen topic. As a consequence the employed statistical methodology requires no additional explanation. It can be assumed that all methodological topics that are actively teached in the course are well understood by the reader of your paper. However, if you choose to employ additional methods, more comprehensive statistical tests or any form of more complex modeling techniques, they need to be (briefly) introduced in the form of an additional *methodological theory* section to foster a common understanding. In summary the seminar paper is used to *mine* new knowledge from the presented data for an audience that is mainly interested in those findings and the domain of the data. This means the main body of the seminar paper consists of text and data, models or results are preferably presented in tables opposed to console output. As a consequence the actual code to generate the results is located in the appendix of the paper and not part of the body of the paper.
+
 # System Info {-}
+
 ```{r}
 Sys.time()
 sessionInfo()
