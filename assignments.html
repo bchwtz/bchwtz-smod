@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 12 Assignments | Statistical Modeling</title>
   <meta name="description" content="Chapter 12 Assignments | Statistical Modeling Course Notes" />
-  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 12 Assignments | Statistical Modeling" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Buchwitz" />
 
 
-<meta name="date" content="2023-11-22" />
+<meta name="date" content="2024-10-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -60,7 +60,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -70,7 +70,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -96,7 +96,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -109,7 +109,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -123,6 +123,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -210,11 +214,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="dataset" class="section level2 hasAnchor" number="12.2">
 <h2><span class="header-section-number">12.2</span> Dataset<a href="assignments.html#dataset" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Identifying a data set is a preliminary step to prepare the upcoming seminar paper. Every seminar paper needs an <strong>individual</strong> data set. The data set can cover any topic as long as it supports the application of the methodological approaches discussed in the course. This effectively requires the data set to exhibit a metric dependent variable that can be explained by a set of independent variables (features) according to some formulated theory. The source of the data set can be any eligible source that supports academic usage, such as a company that you are associated with, scraped from a website or a collection of websites, an existing research paper that published its data or a data archive. There are no real constraints regarding the number of variables or number of observations as long as the data set is large enough to convincingly answer a formulated research hypothesis. Some examples for data sets can be found in the <code>fhswf</code> R package:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="assignments.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fhswf)</span>
-<span id="cb52-2"><a href="assignments.html#cb52-2" aria-hidden="true" tabindex="-1"></a>?fhswf<span class="sc">::</span>boatprices <span class="co"># Explanation of boat prices using features of the boat.</span></span>
-<span id="cb52-3"><a href="assignments.html#cb52-3" aria-hidden="true" tabindex="-1"></a>?fhswf<span class="sc">::</span>whodata    <span class="co"># Explanation of macroeconomic indicators such as the </span></span>
-<span id="cb52-4"><a href="assignments.html#cb52-4" aria-hidden="true" tabindex="-1"></a>                   <span class="co"># human development index of a country using descriptives</span></span>
-<span id="cb52-5"><a href="assignments.html#cb52-5" aria-hidden="true" tabindex="-1"></a>                   <span class="co"># for that country incl. considering development over time.</span></span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="assignments.html#cb52-1" tabindex="-1"></a><span class="fu">library</span>(fhswf)</span>
+<span id="cb52-2"><a href="assignments.html#cb52-2" tabindex="-1"></a>?fhswf<span class="sc">::</span>boatprices <span class="co"># Explanation of boat prices using features of the boat.</span></span>
+<span id="cb52-3"><a href="assignments.html#cb52-3" tabindex="-1"></a>?fhswf<span class="sc">::</span>whodata    <span class="co"># Explanation of macroeconomic indicators such as the </span></span>
+<span id="cb52-4"><a href="assignments.html#cb52-4" tabindex="-1"></a>                   <span class="co"># human development index of a country using descriptives</span></span>
+<span id="cb52-5"><a href="assignments.html#cb52-5" tabindex="-1"></a>                   <span class="co"># for that country incl. considering development over time.</span></span></code></pre></div>
 </div>
 <div id="seminar-paper" class="section level2 hasAnchor" number="12.3">
 <h2><span class="header-section-number">12.3</span> Seminar Paper<a href="assignments.html#seminar-paper" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -287,7 +291,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
