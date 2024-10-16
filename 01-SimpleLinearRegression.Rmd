@@ -7,3 +7,4 @@
 knitr::include_graphics("slides/gifs/01-SimpleLinearRegression.gif")
 ```
 
+ 
