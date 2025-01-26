@@ -28,8 +28,6 @@ Regression analysis is one of the most popular tools for academic research and i
 
 For the sake of simplicity the following example papers discuss a rather intuitive concept: Apples. The papers referenced below investigate and analyse multiple perspectives on the prices and quality characteristics of apples. They differ by age, depth of methodological expertise, research community, cultural background and of course quality. Therefore these examples are no strict guideline or template but should provide a sneak peek of how regression results are derived, discussed and displayed in academic practice. 
 
-Depending on the academic outlet and the research community the length and 
-
 - Blend, J. R., & van Ravenswaay, E. O. (1999). Measuring Consumer Demand for Ecolabeled Apples. American Journal of Agricultural Economics, 81(5): 1072–1077. https://doi.org/10.2307/1244086
 - Carew, R. (2000). A Hedonic Analysis of Apple Prices and Product Quality Characteristics in British Columbia. Canadian Journal of Agricultural Economics/Revue canadienne d'agroeconomie, 48: 241-257. https://doi.org/10.1111/j.1744-7976.2000.tb00278.x
 - Carew, R. and Smith, E.G. (2004). The value of apple characteristics to wholesalers in western Canada: A hedonic approach. Canadian Journal of Plant Science. 84(3): 829-835. https://doi.org/10.4141/P03-164
@@ -37,7 +35,7 @@ Depending on the academic outlet and the research community the length and
 - Khan, J., S.A. Shah, K.N. Saddozai, M. Fayaz, S. Ali, A.U. Jan and G. Ali. (2019). A hedonic price analysis of consumers preferences and willingness to pay for quality attributes of apple. Sarhad Journal of Agriculture, 35(4): 1243-1246. http://dx.doi.org/10.17582/journal.sja/2019/35.4.1243.1246
 - Seppä, L., Latvala, T., Akaichi, F., Gil, J. M., & Tuorila, H. (2015). What are domestic apples worth? Hedonic responses and sensory information as drivers of willingness to pay. Food quality and preference, 43: 97-105. https://doi.org/10.1016/j.foodqual.2015.02.013
 
-
+Depending on the academic outlet and the research community the length and depth of the methological discussions varies greatly. However, each of these papers relies on some statistical software package and a body of statistical tests that is larger than whats presented in the final publication. This - potentially not published - part of the work can be presented in an additional appendix made available solely for the reviewers. When writing a seminar paper those methodological additions should of course be part of the submission. 
 
 # System Info {-}
 
