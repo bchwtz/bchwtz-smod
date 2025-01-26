@@ -4,20 +4,20 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Transformations | Statistical Modeling</title>
-  <meta name="description" content="Chapter 5 Transformations | Statistical Modeling Course Notes" />
+  <title>Examples | Statistical Modeling</title>
+  <meta name="description" content="Examples | Statistical Modeling Course Notes" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Transformations | Statistical Modeling" />
+  <meta property="og:title" content="Examples | Statistical Modeling" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Chapter 5 Transformations | Statistical Modeling Course Notes" />
+  <meta property="og:description" content="Examples | Statistical Modeling Course Notes" />
   <meta name="github-repo" content="bchwtz/bchwtz-smod" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Transformations | Statistical Modeling" />
+  <meta name="twitter:title" content="Examples | Statistical Modeling" />
   
-  <meta name="twitter:description" content="Chapter 5 Transformations | Statistical Modeling Course Notes" />
+  <meta name="twitter:description" content="Examples | Statistical Modeling Course Notes" />
   
 
 <meta name="author" content="Benjamin Buchwitz" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="qualitative-variables.html"/>
-<link rel="next" href="weighted-least-squares.html"/>
+<link rel="prev" href="assignments.html"/>
+<link rel="next" href="system-info.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -207,46 +207,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="transformations" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Transformations<a href="transformations.html#transformations" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
-<img src="slides/gifs/05-Transformations.gif" alt="[Download Slides](slides/05-Transformations.pdf)" width="80%" />
-<p class="caption">
-Figure 5.1: <a href="slides/05-Transformations.pdf">Download Slides</a>
-</p>
-</div>
-<div id="elasticity" class="section level2 hasAnchor" number="5.1">
-<h2><span class="header-section-number">5.1</span> Elasticity<a href="transformations.html#elasticity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<blockquote>
-<p>An elasticity coefficient is the ratio of the percentage change in the
-forecast variable (<span class="math inline">\(y\)</span>) to the percentage change in the predictor
-variable (<span class="math inline">\(x\)</span>). Mathematically, the elasticity is defined as
-<span class="math inline">\((dy/dx)\times(x/y)\)</span>. Consider the log-log model, <span class="math display">\[
-\log y=\beta_0+\beta_1 \log x + \varepsilon.
-\]</span> Express <span class="math inline">\(y\)</span> as a function of <span class="math inline">\(x\)</span> and show that the coefficient
-<span class="math inline">\(\beta_1\)</span> is the elasticity coefficient.</p>
-</blockquote>
-<p><span class="math display">\[ \log(y) = \beta_0 + \beta_1 \log(x) + \varepsilon \qquad \mid \mathbb{E}(\cdot \mid x)\]</span>
-Taking the conditional expectation on the left and right hand side of the quation</p>
-<p><span class="math display">\[\mathbb{E}(\log(y) \mid x) = \mathbb{E}(\beta_0 + \beta_1 \log(x) + \varepsilon \mid x)\]</span>
-leads to the following as <span class="math inline">\(\mathbb{E}(\varepsilon\mid x) = 0\)</span>.</p>
-<p><span class="math display">\[ \log(y) = \beta_0 + \beta_1 \log(x) \qquad \mid \frac{\partial}{\partial x}\]</span>
-After taking derivatives of the left and right side with respect to <span class="math inline">\(x\)</span> we receive. The left hand side follows due to the implicit differentiation.</p>
-<p><span class="math display">\[ \frac{\partial}{\partial x}\log(y) = \frac{\partial}{\partial x}(\beta_0 + \beta_1 \log(x))\]</span></p>
-<p><span class="math display">\[\frac{\partial\log(y)}{\partial x} = 0 + \beta_1 \frac{1}{x}\]</span>
-<span class="math display">\[\frac{1}{y} \frac{\partial y}{\partial x} = \beta_1 \frac{1}{x} \qquad \mid \cdot x\]</span></p>
-<p>After rearranging we get the definition of the the elasticity.</p>
-<p><span class="math display">\[\beta_1 = \frac{x}{y} \frac{\partial y}{\partial x}\]</span></p>
-
-</div>
+<div id="examples" class="section level1 unnumbered hasAnchor">
+<h1>Examples<a href="examples.html#examples" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Regression analysis is one of the most popular tools for academic research and is used frequently in almost all fields of science. Depending on the topic and the details of a specific research project the corresponding articles quickly become complex and difficult to understand. This is especially true, when the matter they discuss is complex and intertwined on its own.</p>
+<p>For the sake of simplicity the following example papers discuss a rather intuitive concept: Apples. The papers referenced below investigate and analyse multiple perspectives on the prices and quality characteristics of apples. They differ by age, depth of methodological expertise, research community, cultural background and of course quality. Therefore these examples are no strict guideline or template but should provide a sneak peek of how regression results are derived, discussed and displayed in academic practice.</p>
+<ul>
+<li>Blend, J. R., &amp; van Ravenswaay, E. O. (1999). Measuring Consumer Demand for Ecolabeled Apples. American Journal of Agricultural Economics, 81(5): 1072–1077. <a href="https://doi.org/10.2307/1244086" class="uri">https://doi.org/10.2307/1244086</a></li>
+<li>Carew, R. (2000). A Hedonic Analysis of Apple Prices and Product Quality Characteristics in British Columbia. Canadian Journal of Agricultural Economics/Revue canadienne d’agroeconomie, 48: 241-257. <a href="https://doi.org/10.1111/j.1744-7976.2000.tb00278.x" class="uri">https://doi.org/10.1111/j.1744-7976.2000.tb00278.x</a></li>
+<li>Carew, R. and Smith, E.G. (2004). The value of apple characteristics to wholesalers in western Canada: A hedonic approach. Canadian Journal of Plant Science. 84(3): 829-835. <a href="https://doi.org/10.4141/P03-164" class="uri">https://doi.org/10.4141/P03-164</a></li>
+<li>Kajikawa, C. (1998). Quality level and price in Japanese apple market. Agribusiness, 14: 227-234. <a href="https://doi.org/10.1002/(SICI)1520-6297(199805/06)14:3" class="uri">https://doi.org/10.1002/(SICI)1520-6297(199805/06)14:3</a>&lt;227::AID-AGR5&gt;3.0.CO;2-2</li>
+<li>Khan, J., S.A. Shah, K.N. Saddozai, M. Fayaz, S. Ali, A.U. Jan and G. Ali. (2019). A hedonic price analysis of consumers preferences and willingness to pay for quality attributes of apple. Sarhad Journal of Agriculture, 35(4): 1243-1246. <a href="http://dx.doi.org/10.17582/journal.sja/2019/35.4.1243.1246" class="uri">http://dx.doi.org/10.17582/journal.sja/2019/35.4.1243.1246</a></li>
+<li>Seppä, L., Latvala, T., Akaichi, F., Gil, J. M., &amp; Tuorila, H. (2015). What are domestic apples worth? Hedonic responses and sensory information as drivers of willingness to pay. Food quality and preference, 43: 97-105. <a href="https://doi.org/10.1016/j.foodqual.2015.02.013" class="uri">https://doi.org/10.1016/j.foodqual.2015.02.013</a></li>
+</ul>
+<p>Depending on the academic outlet and the research community the length and depth of the methological discussions varies greatly. However, each of these papers relies on some statistical software package and a body of statistical tests that is larger than whats presented in the final publication. This - potentially not published - part of the work can be presented in an additional appendix made available solely for the reviewers. When writing a seminar paper those methodological additions should of course be part of the submission.</p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="qualitative-variables.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="weighted-least-squares.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="assignments.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="system-info.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -277,7 +258,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-Transformations.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/XX-appendix.Rmd",
 "text": "Edit"
 },
 "history": {
