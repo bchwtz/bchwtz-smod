@@ -31,7 +31,7 @@ For the sake of simplicity the following example papers discuss a rather intuiti
 - Blend, J. R., & van Ravenswaay, E. O. (1999). Measuring Consumer Demand for Ecolabeled Apples. American Journal of Agricultural Economics, 81(5): 1072–1077. https://doi.org/10.2307/1244086
 - Carew, R. (2000). A Hedonic Analysis of Apple Prices and Product Quality Characteristics in British Columbia. Canadian Journal of Agricultural Economics/Revue canadienne d'agroeconomie, 48: 241-257. https://doi.org/10.1111/j.1744-7976.2000.tb00278.x
 - Carew, R. and Smith, E.G. (2004). The value of apple characteristics to wholesalers in western Canada: A hedonic approach. Canadian Journal of Plant Science. 84(3): 829-835. https://doi.org/10.4141/P03-164
-- Kajikawa, C. (1998). Quality level and price in Japanese apple market. Agribusiness, 14: 227-234. https://doi.org/10.1002/(SICI)1520-6297(199805/06)14:3<227::AID-AGR5>3.0.CO;2-2
+- Kajikawa, C. (1998). Quality level and price in Japanese apple market. Agribusiness, 14: 227-234. [https://doi.org/10.1002/(SICI)1520-6297(199805/06)14:3<227::AID-AGR5>3.0.CO;2-2](https://doi.org/10.1002/(SICI)1520-6297(199805/06)14:3<227::AID-AGR5>3.0.CO;2-2)
 - Khan, J., S.A. Shah, K.N. Saddozai, M. Fayaz, S. Ali, A.U. Jan and G. Ali. (2019). A hedonic price analysis of consumers preferences and willingness to pay for quality attributes of apple. Sarhad Journal of Agriculture, 35(4): 1243-1246. http://dx.doi.org/10.17582/journal.sja/2019/35.4.1243.1246
 - Seppä, L., Latvala, T., Akaichi, F., Gil, J. M., & Tuorila, H. (2015). What are domestic apples worth? Hedonic responses and sensory information as drivers of willingness to pay. Food quality and preference, 43: 97-105. https://doi.org/10.1016/j.foodqual.2015.02.013
 
