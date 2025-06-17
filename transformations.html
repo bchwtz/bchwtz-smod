@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Buchwitz" />
 
 
-<meta name="date" content="2025-06-02" />
+<meta name="date" content="2025-06-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -152,7 +152,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="qualitative-variables.html"><a href="qualitative-variables.html"><i class="fa fa-check"></i><b>4</b> Qualitative Variables</a></li>
 <li class="chapter" data-level="5" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>5</b> Transformations</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="transformations.html"><a href="transformations.html#elasticity"><i class="fa fa-check"></i><b>5.1</b> Elasticity</a></li>
+<li class="chapter" data-level="5.1" data-path="transformations.html"><a href="transformations.html#squared-terms-in-regression-models"><i class="fa fa-check"></i><b>5.1</b> Squared Terms in Regression Models</a></li>
+<li class="chapter" data-level="5.2" data-path="transformations.html"><a href="transformations.html#elasticity"><i class="fa fa-check"></i><b>5.2</b> Elasticity</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="weighted-least-squares.html"><a href="weighted-least-squares.html"><i class="fa fa-check"></i><b>6</b> Weighted Least Squares</a></li>
 <li class="chapter" data-level="7" data-path="correlated-errors.html"><a href="correlated-errors.html"><i class="fa fa-check"></i><b>7</b> Correlated Errors</a></li>
@@ -215,8 +216,141 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 Figure 5.1: <a href="slides/05-Transformations.pdf">Download Slides</a>
 </p>
 </div>
-<div id="elasticity" class="section level2 hasAnchor" number="5.1">
-<h2><span class="header-section-number">5.1</span> Elasticity<a href="transformations.html#elasticity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="squared-terms-in-regression-models" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Squared Terms in Regression Models<a href="transformations.html#squared-terms-in-regression-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="transformations.html#cb1-1" tabindex="-1"></a><span class="co"># First Idea</span></span>
+<span id="cb1-2"><a href="transformations.html#cb1-2" tabindex="-1"></a><span class="fu">summary</span>(mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(dist <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> speed, <span class="at">data =</span> cars))</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = dist ~ 1 + speed, data = cars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -29.069  -9.525  -2.272   9.215  43.201 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -17.5791     6.7584  -2.601   0.0123 *  
+## speed         3.9324     0.4155   9.464 1.49e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 15.38 on 48 degrees of freedom
+## Multiple R-squared:  0.6511, Adjusted R-squared:  0.6438 
+## F-statistic: 89.57 on 1 and 48 DF,  p-value: 1.49e-12</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="transformations.html#cb3-1" tabindex="-1"></a><span class="fu">plot</span>(cars<span class="sc">$</span>speed,cars<span class="sc">$</span>dist)</span>
+<span id="cb3-2"><a href="transformations.html#cb3-2" tabindex="-1"></a><span class="fu">abline</span>(mod)</span></code></pre></div>
+<p><img src="bchwtz-smod_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="transformations.html#cb4-1" tabindex="-1"></a><span class="co"># Introducing Transformations</span></span>
+<span id="cb4-2"><a href="transformations.html#cb4-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> cars</span>
+<span id="cb4-3"><a href="transformations.html#cb4-3" tabindex="-1"></a>df<span class="sc">$</span>speed_sq <span class="ot">&lt;-</span> cars<span class="sc">$</span>speed<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="transformations.html#cb5-1" tabindex="-1"></a><span class="co"># More Models</span></span>
+<span id="cb5-2"><a href="transformations.html#cb5-2" tabindex="-1"></a><span class="fu">summary</span>(mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(dist <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> speed_sq, <span class="at">data =</span> df))</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = dist ~ 1 + speed_sq, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -28.448  -9.211  -3.594   5.076  45.862 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  8.86005    4.08633   2.168   0.0351 *  
+## speed_sq     0.12897    0.01319   9.781  5.2e-13 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 15.05 on 48 degrees of freedom
+## Multiple R-squared:  0.6659, Adjusted R-squared:  0.6589 
+## F-statistic: 95.67 on 1 and 48 DF,  p-value: 5.2e-13</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="transformations.html#cb7-1" tabindex="-1"></a><span class="fu">summary</span>(mod3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(dist <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> speed <span class="sc">+</span> speed_sq, <span class="at">data =</span> df))</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = dist ~ 1 + speed + speed_sq, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -28.720  -9.184  -3.188   4.628  45.152 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)  2.47014   14.81716   0.167    0.868
+## speed        0.91329    2.03422   0.449    0.656
+## speed_sq     0.09996    0.06597   1.515    0.136
+## 
+## Residual standard error: 15.18 on 47 degrees of freedom
+## Multiple R-squared:  0.6673, Adjusted R-squared:  0.6532 
+## F-statistic: 47.14 on 2 and 47 DF,  p-value: 5.852e-12</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="transformations.html#cb9-1" tabindex="-1"></a><span class="fu">plot</span>(cars<span class="sc">$</span>speed,cars<span class="sc">$</span>dist)</span>
+<span id="cb9-2"><a href="transformations.html#cb9-2" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="cf">function</span>(x){<span class="fl">2.47</span> <span class="sc">+</span> <span class="fl">0.91</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fl">0.099</span> <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span>}</span>
+<span id="cb9-3"><a href="transformations.html#cb9-3" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, model), <span class="at">col=</span><span class="st">&quot;red&quot;</span>,<span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span>
+<span id="cb9-4"><a href="transformations.html#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="transformations.html#cb9-5" tabindex="-1"></a>model_sqonly <span class="ot">&lt;-</span> <span class="cf">function</span>(x){<span class="fl">8.86</span> <span class="sc">+</span> <span class="fl">0.129</span> <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span>}</span>
+<span id="cb9-6"><a href="transformations.html#cb9-6" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,model_sqonly), <span class="at">col=</span><span class="st">&quot;blue&quot;</span>,<span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<p><img src="bchwtz-smod_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="transformations.html#cb10-1" tabindex="-1"></a><span class="co"># Removing Heteroscedasticity</span></span>
+<span id="cb10-2"><a href="transformations.html#cb10-2" tabindex="-1"></a><span class="fu">summary</span>(mod4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(dist) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> speed <span class="sc">+</span> speed_sq, <span class="at">data =</span> df))</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(dist) ~ 1 + speed + speed_sq, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.97128 -0.23532 -0.02021  0.24297  0.87944 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.639838   0.406555   1.574   0.1222    
+## speed        0.276815   0.055815   4.959 9.65e-06 ***
+## speed_sq    -0.005167   0.001810  -2.854   0.0064 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4164 on 47 degrees of freedom
+## Multiple R-squared:  0.7241, Adjusted R-squared:  0.7124 
+## F-statistic: 61.69 on 2 and 47 DF,  p-value: 7.177e-14</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="transformations.html#cb12-1" tabindex="-1"></a><span class="fu">summary</span>(mod5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(dist) <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">+</span> speed <span class="sc">+</span> speed_sq, <span class="at">data =</span> df))</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(dist) ~ -1 + speed + speed_sq, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.76424 -0.26184  0.00965  0.30250  0.98119 
+## 
+## Coefficients:
+##            Estimate Std. Error t value Pr(&gt;|t|)    
+## speed     0.3611914  0.0157595  22.919  &lt; 2e-16 ***
+## speed_sq -0.0077104  0.0008271  -9.322  2.4e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4228 on 48 degrees of freedom
+## Multiple R-squared:  0.9869, Adjusted R-squared:  0.9863 
+## F-statistic:  1808 on 2 and 48 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="transformations.html#cb14-1" tabindex="-1"></a><span class="fu">summary</span>(mod5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(dist) <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>  <span class="sc">+</span> speed_sq, <span class="at">data =</span> df))</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(dist) ~ -1 + speed_sq, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.2594 -0.1085  0.8586  1.6941  2.5656 
+## 
+## Coefficients:
+##           Estimate Std. Error t value Pr(&gt;|t|)    
+## speed_sq 0.0107233  0.0006599   16.25   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.446 on 49 degrees of freedom
+## Multiple R-squared:  0.8435, Adjusted R-squared:  0.8403 
+## F-statistic: 264.1 on 1 and 49 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="transformations.html#cb16-1" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Add final plot</span></span></code></pre></div>
+</div>
+<div id="elasticity" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Elasticity<a href="transformations.html#elasticity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <blockquote>
 <p>An elasticity coefficient is the ratio of the percentage change in the
 forecast variable (<span class="math inline">\(y\)</span>) to the percentage change in the predictor
