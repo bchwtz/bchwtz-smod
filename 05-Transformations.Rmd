@@ -4,6 +4,50 @@
 knitr::include_graphics("slides/gifs/05-Transformations.gif")
 ```
 
+## Squared Terms in Regression Models
+
+```{r}
+# First Idea
+summary(mod <- lm(dist ~ 1 + speed, data = cars))
+plot(cars$speed,cars$dist)
+abline(mod)
+```
+
+
+```{r}
+# Introducing Transformations
+df <- cars
+df$speed_sq <- cars$speed^2
+```
+
+```{r}
+# More Models
+summary(mod2 <- lm(dist ~ 1 + speed_sq, data = df))
+summary(mod3 <- lm(dist ~ 1 + speed + speed_sq, data = df))
+
+plot(cars$speed,cars$dist)
+model <- function(x){2.47 + 0.91 * x + 0.099 * x^2}
+points(1:100, sapply(1:100, model), col="red",type="l")
+
+model_sqonly <- function(x){8.86 + 0.129 * x^2}
+points(1:100, sapply(1:100,model_sqonly), col="blue",type="l")
+```
+
+
+```{r}
+# Removing Heteroscedasticity
+summary(mod4 <- lm(log(dist) ~ 1 + speed + speed_sq, data = df))
+summary(mod5 <- lm(log(dist) ~ -1 + speed + speed_sq, data = df))
+summary(mod5 <- lm(log(dist) ~ -1  + speed_sq, data = df))
+```
+
+
+```{r}
+# TODO: Add final plot
+```
+
+
+
 ## Elasticity
 
 > An elasticity coefficient is the ratio of the percentage change in the
